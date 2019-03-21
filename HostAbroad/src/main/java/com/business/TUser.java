@@ -5,8 +5,17 @@ public class TUser {
 	private double rating;
 	private String description;
 	private boolean host;
+	private boolean traveler;
 	
 	public TUser() {};
+	
+	public TUser(String nickname, double rating, String description, boolean host,boolean traveler){
+		this.nickname = nickname;
+		this.rating = rating;
+		this.description = description;
+		this.host = host;
+		this.setTraveler(traveler);
+	}
 	
 	public TUser(String nickname, double rating, String description, boolean host){
 		this.nickname = nickname;
@@ -14,6 +23,14 @@ public class TUser {
 		this.description = description;
 		this.host = host;
 	}
+	
+	public TUser(String nickname, double rating, boolean traveler, String description){
+		this.nickname = nickname;
+		this.rating = rating;
+		this.description = description;
+		this.setTraveler(traveler);
+	}
+	
 	
 	public TUser(String nickname, double rating, String description){
 		this.nickname = nickname;
@@ -51,5 +68,13 @@ public class TUser {
 	
 	public boolean getHost() {
 		return this.host;
+	}
+
+	public boolean getTraveler() {
+		return this.traveler;
+	}
+
+	public void setTraveler(boolean traveler) {
+		this.traveler = traveler;
 	}
 }
