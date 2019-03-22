@@ -1,19 +1,19 @@
 package com.presentation.commands;
 
 import com.business.ASFactory.ASFactory;
-import com.business.ASSearch.ASSearch;
+import com.business.ASUser.ASUser;
 import com.business.TUser;
 
-import java.util.ArrayList;
+
 
 public class CommandCreateUser extends Command {
     @Override
     public Pair<Integer, Object> execute(Object transfer) {
         int result;
-        ASCreate saCreate = ASFactory.getInstance().createASCreate();     //Create SA
-        ArrayList<TUser> hosts = saCreate.searchHost();
-        result = hosts == null ? 0 : 1;
+        ASUser saCreate = ASFactory.getInstance().createASUser();     //Create SA
+        boolean created = saCreate.createUser((TUser)transfer);
+        result = created ? 0 : 1; // Return value 0 when the user has been created and return 1 when the user has not been created.
 
-        return new Pair<Integer,Object>(result,hosts);
+        return new Pair<>(result,created);
     }
 }

@@ -11,19 +11,6 @@
         </webroots>
       </configuration>
     </facet>
-    <facet type="jpa" name="JPA">
-      <configuration>
-        <setting name="validation-enabled" value="true" />
-        <datasource-mapping>
-          <factory-entry name="HostAbroad" />
-        </datasource-mapping>
-        <naming-strategy-map />
-        <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/resources/META-INF/persistence.xml" />
-      </configuration>
-    </facet>
-    <facet type="google-app-engine" name="Google App Engine">
-      <configuration />
-    </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output url="file://$MODULE_DIR$/target/classes" />
@@ -35,6 +22,16 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: com.vaadin:vaadin-login-flow:1.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-login:1.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-lumo-styles:1.4.1" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-button:2.1.2" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-control-state-mixin:2.1.2" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-overlay:3.2.6" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-text-field:2.3.0" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-themable-mixin:1.4.1" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bowergithub.webcomponents:shadycss:1.5.0-1" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-usage-statistics:2.0.2" level="project" />
     <orderEntry type="library" name="Maven: com.vaadin:vaadin-compatibility-server:8.7.1" level="project" />
     <orderEntry type="library" name="Maven: com.vaadin:vaadin-server:8.7.1" level="project" />
     <orderEntry type="library" name="Maven: com.vaadin:vaadin-sass-compiler:0.9.13" level="project" />
