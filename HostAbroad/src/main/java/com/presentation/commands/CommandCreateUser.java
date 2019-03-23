@@ -10,7 +10,7 @@ public class CommandCreateUser extends Command {
     @Override
     public Pair<Integer, Object> execute(Object transfer) {
         int result;
-        ASUser saCreate = ASFactory.getInstance().createASUser();     //Create SA USer
+        ASUser saCreate = ASFactory.getInstance().createASUser();     //Create SA
         boolean created = saCreate.createUser((TUser)transfer);
         result = created ? 0 : 1; // Return value 0 when the user has been created and return 1 when the user has not been created.
 
