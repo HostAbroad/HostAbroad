@@ -1,5 +1,6 @@
 package com.business.ASSearch;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -9,10 +10,11 @@ import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import com.business.TUser;
+import com.business.User;
+
 public class ASSearchImp implements ASSearch {
 	
-	
-
 	@Override
 	public TUser searchHostByName(String nickname) {
 		TUser tUser = new TUser();
@@ -31,10 +33,10 @@ public class ASSearchImp implements ASSearch {
 				user =  (User) query.getSingleResult();
 			}
 			catch (NoResultException ex) {
-				System.out.println(e.getMessage());
+				System.out.println(ex.getMessage());
 			}
 			if(user != null){
-				tUser.setNickName(user.getNickname());
+				tUser.setNickname(user.getNickname());
 				tUser.setRating(user.getRating());
 				tUser.setDescription(user.getDescription());
 				tUser.setHost(user.getHost());
@@ -49,8 +51,8 @@ public class ASSearchImp implements ASSearch {
 
 
 	@Override
-	public List<TUser> searchHost() {
-		List<TUser> lista = new List<TUser>();
+	public ArrayList<TUser> searchHost() {
+		ArrayList<TUser> list = new ArrayList<TUser>();
 		
 		try {
 			EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
@@ -58,18 +60,59 @@ public class ASSearchImp implements ASSearch {
 			EntityTransaction tr = em.getTransaction();
 			tr.begin();
 
-			String consulta = "SELECT user FROM User WHERE host = true ";
-			Query query = em.createQuery(consulta);
+			String consult = "SELECT * FROM User WHERE host = 1;";
+			Query query = em.createNativeQuery(consult, User.class);
 			
 			
 			try {
-				List<User> resultList = (List<User>) query.getResultList();
+				@SuppressWarnings("unchecked")
+				List<User> resultList = query.getResultList();
 				for(User user : resultList){
 					
-					lista.add(new TUser(user.getNickname(),
+					list.add(new TUser(user.getNickname(),
 										user.getRating(),
-										user.getDescription(),
-										user.getHost()));
+										user.getDescription()));
+				}
+				tr.commit();
+			}
+			catch(NoResultException e){
+				System.out.println(e.getMessage());
+			}	
+			
+			em.close();
+			emf.close();
+		}
+		catch (Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		
+		return list;
+	}
+
+
+	@Override
+	public ArrayList<TUser> searchTraveler() {
+		
+		ArrayList<TUser> list = new ArrayList<TUser>();
+		
+		try {
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
+			EntityManager em = emf.createEntityManager();
+			EntityTransaction tr = em.getTransaction();
+			tr.begin();
+
+			String consult = "SELECT * FROM User WHERE traveler = 1;";
+			Query query = em.createNativeQuery(consult, User.class);
+			
+			
+			try {
+				@SuppressWarnings("unchecked")
+				List<User> resultList = query.getResultList();
+				for(User user : resultList){
+					
+					list.add(new TUser(user.getNickname(),
+										user.getRating(),
+										user.getDescription()));
 				}
 				tr.commit();
 			}

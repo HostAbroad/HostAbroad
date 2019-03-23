@@ -9,9 +9,25 @@
       <param-value>com.presentation.Test</param-value>
     </init-param>
   </servlet>
+  
   <servlet-mapping>
     <servlet-name>HostAbroad</servlet-name>
     <url-pattern>/*</url-pattern>
+  </servlet-mapping>
+  
+  <display-name>SearchUI</display-name>
+  <servlet>
+    <servlet-name>SearchUI</servlet-name>
+    <servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
+    <init-param>
+      <param-name>UI</param-name>
+      <param-value>com.presentation.searchUI.SearchUI</param-value>
+    </init-param>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>SearchUI</servlet-name>
+    <url-pattern>/search/*</url-pattern>
   </servlet-mapping>
   
 </web-app>
