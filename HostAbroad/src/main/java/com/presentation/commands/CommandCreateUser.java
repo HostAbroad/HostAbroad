@@ -12,7 +12,7 @@ public class CommandCreateUser extends Command {
         int result;
         ASUser saCreate = ASFactory.getInstance().createASUser();     //Create SA
         boolean created = saCreate.createUser((TUser)transfer);
-        result = created ? 0 : 1; // Return value 0 when the user has been created and return 1 when the user has not been created.
+        result = created ? 1 : 0; // Return value 1 when the user has been created and return 0 when the user has not been created.
 
         return new Pair<>(result,created);
     }

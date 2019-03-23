@@ -12,7 +12,7 @@ public class ASFactoryImp extends ASFactory {
 	}
 
 	public ASUser createASUser() {
-		return ASUserImp();
+		return new ASUserImp();
 	}
 	
 	
