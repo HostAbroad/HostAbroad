@@ -74,7 +74,7 @@ public class SearchUI extends UI{
 		secondaryLayout.addComponent(searchOptionsLayout);
 
 		secondaryLayout.addComponent(resultsLayout);
-		resultsLayout.setSizeFull();
+		//resultsLayout.setSizeFull();
 		
 		
 		this.setContent(mainLayout);
@@ -95,23 +95,17 @@ public class SearchUI extends UI{
 			SearchUI.this.secondaryLayout.removeComponent(1, 0);
 			if(hostCheckbox.getValue()) {
 				Pair<Integer, Object> filtered = Controller.getInstance().action(Commands.CommandSearchHost, null);
-				System.out.println(filtered.getLeft());
-				System.out.println(filtered.getLeft());
-				System.out.println(filtered.getLeft());
-				if(filtered.getLeft() == 1) {
+				if(filtered.getLeft() == 0) {
 					Notification notif = new Notification( "There are no users matching your criteria.");
-					notif.setDelayMsec(20000);
+					notif.setDelayMsec(10000);
 					notif.setPosition(Position.MIDDLE_CENTER);
 					notif.show(Page.getCurrent());
 				}
 				else {
 					SearchUI.this.results = (ArrayList)filtered.getRight();
-					if(results.size() > 0) {
-						SearchUI.this.resultsLayout.addComponent(createResultPanel(results));
-						SearchUI.this.secondaryLayout.removeComponent(resultsLayout);
-						SearchUI.this.secondaryLayout.addComponent(resultsLayout);
+					SearchUI.this.resultsLayout = createResultPanel(results);
+					SearchUI.this.secondaryLayout.addComponent(resultsLayout);
 						//secondaryLayout.setWidth("50%");
-					}
 //					else {
 //						Notification notif = new Notification( "There are no users matching your criteria.");
 //						notif.setDelayMsec(2000);

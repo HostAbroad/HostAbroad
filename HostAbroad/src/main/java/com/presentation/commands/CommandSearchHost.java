@@ -14,7 +14,7 @@ public class CommandSearchHost extends Command{
 		int result;
 		ASSearch saSearch = ASFactory.getInstance().createASSearch();
 		ArrayList<TUser> hosts = saSearch.searchHost();
-		result = hosts == null ? 0 : 1;
+		result = hosts.size() <= 0 ? 0 : 1;
 		
 		return new Pair<Integer,Object>(result,hosts);
 	}
