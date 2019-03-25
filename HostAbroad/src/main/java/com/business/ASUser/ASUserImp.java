@@ -59,55 +59,25 @@ public class ASUserImp implements ASUser {
 			EntityManager em = emf.createEntityManager();
 			EntityTransaction tr = em.getTransaction();
 			tr.begin();
-
-			// Checks if the email is valid and execute the query
-			if (checkEmail(email)) {
-				String consulta = "SELECT pass FROM registeredusers r WHERE r.email = :email";
-				Query query = em.createQuery(consulta);
-				query.setParameter("email", email);
-				System.out.println(query);
-				// The password is saved into result and if it's valid loged = true
-				String result = (String) query.getSingleResult();
-				if (checkPassword(result)) {
-					loged = true;
-				} else {
-					throw new Exception(
-							"The password must contain at least one number and one letter, and have a length between 6 and 30 characters");
-				}
+			String consulta = "SELECT pass FROM registeredusers r WHERE r.email = :email";
+			Query query = em.createQuery(consulta);
+			query.setParameter("email", email);
+			System.out.println(query);
+			String result = (String) query.getSingleResult();
+			if (result == password) {
+				loged = true;
 			} else {
-				throw new Exception("Invalid email");
+				throw new Exception("The password is incorrect");
 			}
+
 			em.close();
 			emf.close();
-		} catch (Exception e) {
+		} catch (
+
+		Exception e) {
 			System.out.println(e.getMessage());
 		}
 		return loged;
-	}
-
-	/**
-	 * This method checks if yhe email length is, at least, 30 chars, and the first
-	 * 3 chars are before the @ symbol
-	 * 
-	 * @param email Email to check
-	 * @return True if the email is OK, False if not
-	 */
-	private boolean checkEmail(String email) {
-		boolean check = false;
-		if ((email.length() <= 30) && (email.charAt(2) != '@')) {
-			check = true;
-		}
-		return check;
-	}
-
-	private boolean checkPassword(String password) {
-		boolean check = false;
-
-		if ((password.length() <= 30) && (password.substring(0, 2).matches("[A-Za-z0-9]"))) {
-			check = true;
-		}
-
-		return check;
 	}
 
 }
