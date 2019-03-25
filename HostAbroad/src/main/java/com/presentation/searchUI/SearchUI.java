@@ -16,6 +16,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
@@ -39,8 +40,12 @@ public class SearchUI extends UI{
 			
 		//main helper
 		VerticalLayout mainVertical = new VerticalLayout();
+		Panel panel = new Panel();
+		panel.setSizeFull();
+		panel.setContent(mainVertical);
+		mainLayout.addComponent(panel);
 		
-		mainLayout.addComponent(mainVertical);
+		
 		
 		//navbar
 		HorizontalLayout navarLayout = createNavBar();
@@ -54,11 +59,13 @@ public class SearchUI extends UI{
 		
 		mainVertical.addComponent(secondaryLayout);
 		
+		
 		this.resultsLayout = new VerticalLayout();
 		this.resultsLayout.setSizeUndefined();
 		
 		//search options layout
 		VerticalLayout searchOptionsLayout = new VerticalLayout();
+		
 		searchOptionsLayout.addComponent(this.createSearchOptions());
 		searchOptionsLayout.setSizeUndefined();
 		searchOptionsLayout.setMargin(false);
@@ -80,11 +87,12 @@ public class SearchUI extends UI{
 		this.setContent(mainLayout);
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private Panel createSearchOptions() {
 		Panel optionsPanel = new Panel();
 		optionsPanel.setHeight("100%");
 		optionsPanel.setWidth("20%");
-		
+	
 		//checkbox
 		CheckBox hostCheckbox = new CheckBox("Host");
 		hostCheckbox.setId("checkBoxHost");
@@ -102,9 +110,15 @@ public class SearchUI extends UI{
 					notif.show(Page.getCurrent());
 				}
 				else {
-					SearchUI.this.results = (ArrayList)filtered.getRight();
-					SearchUI.this.resultsLayout = createResultPanel(results);
+					
+					SearchUI.this.results = new ArrayList<>();
+					resultsLayout = createResultPanel(results);
 					SearchUI.this.secondaryLayout.addComponent(resultsLayout);
+					
+					SearchUI.this.results = (ArrayList)filtered.getRight();
+					resultsLayout = createResultPanel(results);
+					SearchUI.this.secondaryLayout.addComponent(resultsLayout);
+					
 						//secondaryLayout.setWidth("50%");
 //					else {
 //						Notification notif = new Notification( "There are no users matching your criteria.");
@@ -132,6 +146,7 @@ public class SearchUI extends UI{
 		VerticalLayout result = new VerticalLayout();
 		result.setMargin(false);
 		result.setSizeFull();
+		result.removeAllComponents();
 		int counter = 1;
 		for(TUser u: users) {
 			Card card = new Card(u.getNickname(), u.getDescription());
