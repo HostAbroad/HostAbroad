@@ -1,14 +1,10 @@
 package com.presentation.loginUI;
 
-import com.business.User;
-import com.presentation.commands.CommandEnum;
-import com.presentation.commands.Pair;
-import com.presentation.controller.Controller;
+
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinService;
-import com.vaadin.shared.Position;
 import com.vaadin.ui.*;
 
 import java.io.File;
