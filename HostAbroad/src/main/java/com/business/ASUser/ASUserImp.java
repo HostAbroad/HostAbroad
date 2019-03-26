@@ -59,15 +59,15 @@ public class ASUserImp implements ASUser {
 			EntityManager em = emf.createEntityManager();
 			EntityTransaction tr = em.getTransaction();
 			tr.begin();
-			String consulta = "SELECT pass FROM registeredusers r WHERE r.email = :email";
+			String consulta = "SELECT * FROM registeredusers r WHERE r.email = :email";
 			Query query = em.createQuery(consulta);
 			query.setParameter("email", user.getEmail());
 			System.out.println(query);
-			String result = (String) query.getSingleResult();
-			if (result == user.getPassword()) {
+			User result = (User) query.getSingleResult();
+			if (result.getPassword().equals(user.getPassword())) {
 				loged = true;
 			} else {
-				throw new Exception("The password is incorrect");
+				System.out.println("Invalid password");
 			}
 
 			em.close();
