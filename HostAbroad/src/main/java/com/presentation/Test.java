@@ -1,5 +1,6 @@
 package com.presentation;
 
+import com.presentation.loginUI.HomePage;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
@@ -13,6 +14,8 @@ public class Test extends UI {
     @Override
     protected void init(VaadinRequest request) {
     	//addWindow(/*Window*/);
-    	addWindow(new Window("hi"));
+    	//addWindow(new Window("hi"));
+        HomePage home = new HomePage();
+        setContent(home);
     }
 }

@@ -17,8 +17,8 @@ import java.io.File;
 
 public class HomePage extends Panel {
 
-    public HomePage(String nickname) {
-        GridLayout grid = new GridLayout(3,3);
+    public HomePage() {
+        GridLayout grid = new GridLayout(3,3); //I use a grid layout because I will need 3 rows and 3 columns
         //Locating the inner layouts
         grid.addComponent(createLeftPartOfLogin());
         grid.addComponent(createCenterPartOfLogin());
@@ -29,8 +29,7 @@ public class HomePage extends Panel {
         this.setSizeFull();
     }
 
-
-    private Image loadImage(String url) {
+    private Image loadImage(String url) { //This method load all images
         //reading the image
         //-----------------------------------
         String basepath = VaadinService.getCurrent()
@@ -49,11 +48,11 @@ public class HomePage extends Panel {
     }
 
 
-    private Component createLeftPartOfLogin() {
+    private Component createLeftPartOfLogin() { //
         VerticalLayout Traveller = new VerticalLayout();
         Label titulo = new Label("Traveler");
         final Page.Styles styles = Page.getCurrent().getStyles();
-        String css = ".v-label-stylename {\n" +
+        String css = ".v-label-stylename {\n" +  //This fragment allows you to configure the title font
                 "    font-size: 35px;\n" +
                 "    font-weight: bold;\n" +
                 "    line-height: normal;\n" +
@@ -82,14 +81,14 @@ public class HomePage extends Panel {
     private Component createCenterPartOfLogin() {
         VerticalLayout Logo = new VerticalLayout();
         //later the loadImage will be called with the photo that correspond to the user
-        Image image = this.loadImage("logoIcon.png");
+        Image image = this.loadImage("logo.png");
         Logo.addComponent(image); //TODO LUEGO SE PONDRA ESTE METODO EN UNA CLASE AUXILIAR
         Logo.setComponentAlignment(image,Alignment.TOP_CENTER);
         Component panel = createBottomPanel();
         Logo.addComponent(panel);
-        Logo.setComponentAlignment(panel,Alignment.BOTTOM_CENTER);
+        Logo.setComponentAlignment(panel,Alignment.MIDDLE_CENTER);
         Logo.setSizeFull();
-        Logo.setMargin(true);
+        Logo.setMargin(false);
         return Logo;
     }
 
