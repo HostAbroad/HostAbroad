@@ -6,6 +6,8 @@ public class TUser {
 	private String description;
 	private boolean host;
 	private boolean traveler;
+	private String email;
+	private String password;
 	
 	public TUser() {};
 	
@@ -38,6 +40,11 @@ public class TUser {
 		this.description = description;
 	}
 	
+	public TUser(String email, String password) {
+		this.email = email;
+		this.password = password;
+	}
+	
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
@@ -56,6 +63,22 @@ public class TUser {
 	
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	public String getEmail() {
+		return this.email;
+	}
+	
+	public String getPassword() {
+		return this.password;
 	}
 	
 	public String getDescription() {

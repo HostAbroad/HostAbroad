@@ -14,6 +14,8 @@ public class User {
 	private String description;
 	private boolean host;
 	private boolean traveler;
+	private String email;
+	private String password;
 	
 	public User() {};
 	
@@ -29,6 +31,11 @@ public class User {
 		this.nickname = nickname;
 		this.rating = rating;
 		this.description = description;
+	}
+	
+	public User(String email, String password) {
+		this.email = email;
+		this.password = password;
 	}
 	
 	public void setNickname(String nickname) {
@@ -61,5 +68,21 @@ public class User {
 	
 	public boolean getHost() {
 		return this.host;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	public String getEmail() {
+		return this.email;
+	}
+	
+	public String getPassword() {
+		return this.password;
 	}
 }

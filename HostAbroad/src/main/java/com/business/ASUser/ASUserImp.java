@@ -51,7 +51,7 @@ public class ASUserImp implements ASUser {
 	}
 
 	@Override
-	public boolean loginUser(String email, String password) {
+	public boolean loginUser(TUser user) {
 		boolean loged = false;
 
 		try {
@@ -61,10 +61,10 @@ public class ASUserImp implements ASUser {
 			tr.begin();
 			String consulta = "SELECT pass FROM registeredusers r WHERE r.email = :email";
 			Query query = em.createQuery(consulta);
-			query.setParameter("email", email);
+			query.setParameter("email", user.getEmail());
 			System.out.println(query);
 			String result = (String) query.getSingleResult();
-			if (result == password) {
+			if (result == user.getPassword()) {
 				loged = true;
 			} else {
 				throw new Exception("The password is incorrect");
@@ -72,12 +72,9 @@ public class ASUserImp implements ASUser {
 
 			em.close();
 			emf.close();
-		} catch (
-
-		Exception e) {
+		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 		return loged;
 	}
-
 }
