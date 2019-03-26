@@ -9,7 +9,7 @@ public class CommandLogin extends Command {
 		int result;
 		ASUser saUser = ASFactory.getInstance().createASUser();
 		boolean loged = saUser.loginUser();
-		result = loged ? 0 : 1;
+		result = loged ? 1 : 0;
 		
 		return new Pair<Integer,Object>(result,loged);
 	}
