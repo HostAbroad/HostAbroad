@@ -71,7 +71,9 @@ public class ASSearchImp implements ASSearch {
 					list.add(new TUser(user.getNickname(),
 										user.getRating(),
 										user.getDescription(),
-										user.getHost()));
+										user.getHost(),
+										user.getEmail(),
+										user.getPassword()));
 				}
 				tr.commit();
 			}
