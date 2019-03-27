@@ -54,7 +54,7 @@ public class LoginUI extends Panel {
 
             // Checks if the email is valid and execute the query
             if (checkEmail(email)) {
-                String consult = "SELECT user FROM USER user WHERE user.email = :email AND user.password = :pass";
+                String consult = "SELECT * FROM USER user WHERE user.email = :email AND user.password = :pass";
                 Query query = em.createQuery(consult);
                 query.setParameter("email", email);
                 User user = null;
