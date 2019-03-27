@@ -25,7 +25,7 @@ public class ASSearchImp implements ASSearch {
 		tr.begin();
 		
 		try {
-			String queryString = "SELECT user FROM User user WHERE user.nickname = :nickname";
+			String queryString = "SELECT user FROM USER user WHERE user.nickname = :nickname";
 			Query query = em.createQuery(queryString);
 			query.setParameter("nickname", nickname);
 			User user = null;

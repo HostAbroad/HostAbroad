@@ -1,12 +1,16 @@
 package com.presentation.loginUI;
 
 
+import com.business.TUser;
+import com.business.User;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinService;
+import com.vaadin.shared.Position;
 import com.vaadin.ui.*;
 
+import javax.persistence.*;
 import java.io.File;
 
 public class LoginUI extends Panel {
@@ -19,6 +23,76 @@ public class LoginUI extends Panel {
         this.setContent(layout);
 
     }
+
+    private boolean checkEmail(String email) {
+        boolean check = false;
+        if ((email.length() <= 30) && (email.charAt(2) != '@')) {
+            check = true;
+        }
+        return check;
+    }
+
+    private boolean checkPassword(String password) {
+        boolean check = false;
+
+        if ((password.length() <= 30) && (password.substring(0, 2).matches("[A-Za-z0-9]"))) {
+            check = true;
+        }
+
+        return check;
+    }
+
+    private TUser authenticate(String email, String pass){
+        TUser tUser = new TUser();
+
+        try {
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
+            EntityManager em = emf.createEntityManager();
+            EntityTransaction tr = em.getTransaction();
+            tr.begin();
+
+
+            // Checks if the email is valid and execute the query
+            if (checkEmail(email)) {
+                String consult = "SELECT user FROM USER user WHERE user.email = :email AND user.password = :pass";
+                Query query = em.createNativeQuery(consult, User.class);
+                User user = null;
+                try {
+                    user =  (User) query.getSingleResult();
+                }
+                catch (NoResultException ex) {
+                    System.out.println(ex.getMessage());
+                }
+                if(user != null){
+                    Notification correct = new Notification( "!!!Correct!!!");
+                    correct.setDelayMsec(2000);
+                    correct.setPosition(Position.MIDDLE_CENTER);
+                    correct.show(Page.getCurrent());
+                    tUser.setDescription(user.getDescription());
+                    tUser.setHost(user.getHost());
+                    tUser.setNickname(user.getNickname());
+                    tUser.setRating(user.getRating());
+
+                }
+                else {
+                    Notification wrong = new Notification( "Invalid Password.");
+                    wrong.setDelayMsec(2000);
+                    wrong.setPosition(Position.MIDDLE_CENTER);
+                    wrong.show(Page.getCurrent());
+                }
+            } else {
+                throw new Exception("Invalid Email");
+            }
+            em.close();
+            emf.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return tUser;
+    }
+
+
+
 
     private Image loadImage(String url) { //This method load all images
         //reading the image
@@ -63,10 +137,10 @@ public class LoginUI extends Panel {
         styles.add(css);
         title.setStyleName("v-label-stylename");
         form.addComponent(title);
-        TextField name = new TextField("Email");
-        name.setIcon(VaadinIcons.USER); //Vaadin Icons for texfield
-        form.addComponent(name);
-        form.setComponentAlignment(name,Alignment.MIDDLE_CENTER);
+        TextField email = new TextField("Email");
+        email.setIcon(VaadinIcons.USER); //Vaadin Icons for texfield
+        form.addComponent(email);
+        form.setComponentAlignment(email,Alignment.MIDDLE_CENTER);
         PasswordField pass = new PasswordField("Password");
         pass.setIcon(VaadinIcons.LOCK); //Vaadin Icons for textfield
         form.addComponent(pass);
@@ -74,11 +148,14 @@ public class LoginUI extends Panel {
 
         // Button allows specifying icon resource in constructor
         Button login = new Button("Login", VaadinIcons.CHECK);
-        if(name.getValue().equals("") ||  pass.getValue().equals("")) { //Check if the name and password have any value
-        login.setEnabled(false); //Disable the Botton
-        }
-        else login.setEnabled(true); //Enable if the textfield has value.
         login.addClickListener(event->{
+            TUser tUser = authenticate(email.getValue(),pass.getValue());
+            if(tUser != null){
+                   //New view with tUser
+            }
+            else {
+                Notification.show("Invalid credentials", Notification.Type.ERROR_MESSAGE);
+            }
 
 
         });
