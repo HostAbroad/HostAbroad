@@ -6,6 +6,6 @@ public interface ASUser {
 	
 	public abstract boolean createUser(TUser user);
 
-	public abstract boolean loginUser(TUser user);
+	public abstract TUser loginUser(TUser user);
 	
 }

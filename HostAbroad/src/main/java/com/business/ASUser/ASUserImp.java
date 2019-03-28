@@ -9,6 +9,9 @@ import javax.persistence.Query;
 
 import com.business.TUser;
 import com.business.User;
+import com.vaadin.server.Page;
+import com.vaadin.shared.Position;
+import com.vaadin.ui.Notification;
 
 public class ASUserImp implements ASUser {
 
@@ -51,33 +54,45 @@ public class ASUserImp implements ASUser {
 	}
 
 	@Override
-	public boolean loginUser(TUser user) {
-		boolean loged = false;
+	public TUser loginUser(TUser user) {
+		TUser logedUser = new TUser();
 
 		try {
 			EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
 			EntityManager em = emf.createEntityManager();
 			EntityTransaction tr = em.getTransaction();
 			tr.begin();
-			String consulta = "SELECT DISTINCT * FROM PRUEBA u WHERE u.email = ':email'";
+			String consulta = "SELECT * FROM USER u WHERE u.email = ':email'AND u.paswd = ':pass'";
 			Query query = em.createNativeQuery(consulta, User.class);
 			query.setParameter("email", user.getEmail());
+			query.setParameter("pass", user.getPassword());
 			User result = null;
 			try {
 				result = (User) query.getSingleResult();
-				if ((result != null) && (result.getEmail().equals(user.getEmail()))) {
-					loged = true;
-				} else {
-					System.out.println("Invalid password");
-				}
 			} catch (NoResultException ex) {
 				System.out.println(ex.getMessage());
 			}
+			if(result != null) {
+				Notification correct = new Notification( "Login succesful");
+                correct.setDelayMsec(2000);
+                correct.setPosition(Position.MIDDLE_CENTER);
+                correct.show(Page.getCurrent());
+                logedUser.setDescription(result.getDescription());
+                logedUser.setHost(result.getHost());
+                logedUser.setNickname(result.getNickname());
+                logedUser.setRating(result.getRating());
+			}
+			else {
+                Notification wrong = new Notification( "Invalid Username or Password.");
+                wrong.setDelayMsec(2000);
+                wrong.setPosition(Position.MIDDLE_CENTER);
+                wrong.show(Page.getCurrent());
+            }
 			em.close();
 			emf.close();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		return loged;
+		return logedUser;
 	}
 }
