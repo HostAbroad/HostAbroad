@@ -62,4 +62,11 @@ public class User {
 	public boolean getHost() {
 		return this.host;
 	}
+	public boolean getTraveler() {
+		return this.traveler;
+	}
+
+	public void setTraveler(boolean traveler) {
+		this.traveler = traveler;
+	}
 }
