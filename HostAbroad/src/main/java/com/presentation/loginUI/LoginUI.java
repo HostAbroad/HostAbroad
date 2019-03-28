@@ -2,15 +2,17 @@ package com.presentation.loginUI;
 
 
 import com.business.TUser;
-import com.business.User;
+import com.presentation.commands.CommandEnum;
+import com.presentation.commands.Pair;
+import com.presentation.controller.Controller;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinService;
-import com.vaadin.shared.Position;
+
 import com.vaadin.ui.*;
 
-import javax.persistence.*;
+
 import java.io.File;
 
 public class LoginUI extends Panel {
@@ -41,58 +43,6 @@ public class LoginUI extends Panel {
 
         return check;
     }
-
-    private TUser authenticate(String email, String pass){
-        TUser tUser = new TUser();
-
-        try {
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
-            EntityManager em = emf.createEntityManager();
-            EntityTransaction tr = em.getTransaction();
-            tr.begin();
-
-
-            // Checks if the email is valid and execute the query
-            if (checkEmail(email)) {
-                String consult = "SELECT * FROM USER WHERE user.email = :email AND user.password = :pass";
-                Query query = em.createNativeQuery(consult, User.class);
-                User user = null;
-                try {
-                    user =  (User) query.getSingleResult();
-                }
-                catch (NoResultException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                if(user != null){
-                    Notification correct = new Notification( "!!!Correct!!!");
-                    correct.setDelayMsec(2000);
-                    correct.setPosition(Position.MIDDLE_CENTER);
-                    correct.show(Page.getCurrent());
-                    tUser.setDescription(user.getDescription());
-                    tUser.setHost(user.getHost());
-                    tUser.setNickname(user.getNickname());
-                    tUser.setRating(user.getRating());
-
-                }
-                else {
-                    Notification wrong = new Notification( "Invalid Password.");
-                    wrong.setDelayMsec(2000);
-                    wrong.setPosition(Position.MIDDLE_CENTER);
-                    wrong.show(Page.getCurrent());
-                }
-            } else {
-                throw new Exception("Invalid Email");
-            }
-            em.close();
-            emf.close();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return tUser;
-    }
-
-
-
 
     private Image loadImage(String url) { //This method load all images
         //reading the image
@@ -149,14 +99,13 @@ public class LoginUI extends Panel {
         // Button allows specifying icon resource in constructor
         Button login = new Button("Login", VaadinIcons.CHECK);
         login.addClickListener(event->{
-            TUser tUser = authenticate(email.getValue(),pass.getValue());
-            if(tUser != null){
-                   //New view with tUser
+            if(checkEmail(email.getValue()) && checkPassword(pass.getValue())){
+                TUser tUser = new TUser(email.getValue(), pass.getValue());
+                Pair<Integer, Object> filtered = Controller.getInstance().action(CommandEnum.Commands.CommandLogin, tUser);
             }
             else {
                 Notification.show("Invalid credentials", Notification.Type.ERROR_MESSAGE);
             }
-
 
         });
         form.addComponent(login);

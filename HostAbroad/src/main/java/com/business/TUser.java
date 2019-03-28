@@ -24,7 +24,12 @@ public class TUser {
 		this.rating = rating;
 		this.description = description;
 	}
-	
+
+	public TUser(String email, String password) {
+		this.email = email;
+		this.password = password;
+	}
+
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
