@@ -2,6 +2,9 @@ package com.business;
 
 public class TUser {
 	private String nickname;
+	private String fullName;
+	private String password;
+	private String email;
 	private double rating;
 	private String description;
 	private boolean host;
@@ -9,8 +12,11 @@ public class TUser {
 	
 	public TUser() {};
 	
-	public TUser(String nickname, double rating, String description, boolean host,boolean traveler){
+	public TUser(String nickname, String fullName, String email, String password, double rating, String description, boolean host,boolean traveler){
 		this.nickname = nickname;
+		this.fullName = fullName;
+		this.email = email;
+		this.password = password;
 		this.rating = rating;
 		this.description = description;
 		this.host = host;
@@ -76,5 +82,29 @@ public class TUser {
 
 	public void setTraveler(boolean traveler) {
 		this.traveler = traveler;
+	}
+	
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+	
+	public String getFullName() {
+		return this.fullName;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	public String getEmail() {
+		return this.email;
+	}
+	
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	public String getPassword() {
+		return this.password;
 	}
 }
