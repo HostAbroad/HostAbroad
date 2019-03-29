@@ -81,7 +81,7 @@ public class ASUserImp implements ASUser {
                 		logedUser.setNickname(result.getNickname());
                 		logedUser.setRating(result.getRating());
 				logedUser.setEmail(result.getEmail());
-				logedUser.setPaswd(result.getPaswd);
+				logedUser.setPassword(result.getPassword);
 			}
 	
 			tr.commmit();
