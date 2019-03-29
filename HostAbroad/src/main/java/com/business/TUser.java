@@ -42,7 +42,7 @@ public class TUser {
 	
 	public TUser(String email, String password) {
 		this.email = email;
-		this.password = password;
+		this.passwd = password;
 	}
 	
 	public TUser(String nickname, double rating, String description, boolean host,boolean traveler, String email, String password){
