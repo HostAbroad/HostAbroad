@@ -13,14 +13,16 @@ public class User {
 	private double rating;
 	private String description;
 	private boolean host;
+	private boolean traveler;
 	
 	public User() {};
 	
-	public User(String nickname, double rating, String description, boolean host){
+	public User(String nickname, double rating, String description, boolean host, boolean traveler){
 		this.nickname = nickname;
 		this.rating = rating;
 		this.description = description;
 		this.host = host;
+		this.traveler = traveler;
 	}
 	
 	public User(String nickname, double rating, String description){
@@ -59,5 +61,13 @@ public class User {
 	
 	public boolean getHost() {
 		return this.host;
+	}
+
+	public boolean getTraveler() {
+		return traveler;
+	}
+
+	public void setTraveler(boolean traveler) {
+		this.traveler = traveler;
 	}
 }
