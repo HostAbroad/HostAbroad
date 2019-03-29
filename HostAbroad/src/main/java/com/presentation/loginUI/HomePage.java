@@ -4,6 +4,7 @@ package com.presentation.loginUI;
 
 import com.vaadin.server.FileResource;
 import com.vaadin.server.Page;
+import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.*;
@@ -15,9 +16,10 @@ import com.vaadin.ui.Panel;
 
 import java.io.File;
 
-public class HomePage extends Panel {
+public class HomePage extends UI {
 
-    public HomePage() {
+    @Override
+    protected void init(VaadinRequest request) {
         GridLayout grid = new GridLayout(3,3); //I use a grid layout because I will need 3 rows and 3 columns
         //Locating the inner layouts
         grid.addComponent(createLeftPartOfLogin());
@@ -27,7 +29,9 @@ public class HomePage extends Panel {
         this.setContent(grid);
         this.setSizeUndefined();
         this.setSizeFull();
+
     }
+
 
     private Image loadImage(String url) { //This method load all images
         //reading the image

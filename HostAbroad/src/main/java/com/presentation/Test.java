@@ -14,8 +14,7 @@ public class Test extends UI {
     @Override
     protected void init(VaadinRequest request) {
     	//addWindow(/*Window*/);
-    	//addWindow(new Window("hi"));
-        HomePage home = new HomePage();
-        setContent(home);
+    	addWindow(new Window("hi"));
+
     }
 }
