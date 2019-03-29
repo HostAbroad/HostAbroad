@@ -30,4 +30,19 @@
     <url-pattern>/search/*</url-pattern>
   </servlet-mapping>
   
+   <display-name>RegisterUserUI</display-name>
+  <servlet>
+    <servlet-name>RegisterUserUI</servlet-name>
+    <servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
+    <init-param>
+      <param-name>UI</param-name>
+      <param-value>com.presentation.createUserUI.RegisterUserUI</param-value>
+    </init-param>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>RegisterUserUI</servlet-name>
+    <url-pattern>/register/*</url-pattern>
+  </servlet-mapping>
+  
 </web-app>
