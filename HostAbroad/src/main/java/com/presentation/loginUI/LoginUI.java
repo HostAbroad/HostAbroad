@@ -26,24 +26,6 @@ public class LoginUI extends Panel {
 
     }
 
-    private boolean checkEmail(String email) {
-        boolean check = false;
-        if ((email.length() <= 30) && (email.charAt(2) != '@')) {
-            check = true;
-        }
-        return check;
-    }
-
-    private boolean checkPassword(String password) {
-        boolean check = false;
-
-        if ((password.length() <= 30) && (password.substring(0, 2).matches("[A-Za-z0-9]"))) {
-            check = true;
-        }
-
-        return check;
-    }
-
     private Image loadImage(String url) { //This method load all images
         //reading the image
         //-----------------------------------
@@ -102,9 +84,12 @@ public class LoginUI extends Panel {
             if(!email.getValue().equals("") && !pass.getValue().equals("")){
                 TUser tUser = new TUser(email.getValue(), pass.getValue());
                 Pair<Integer, Object> filtered = Controller.getInstance().action(CommandEnum.Commands.CommandLogin, tUser);
-            }
-            else {
-                Notification.show("Invalid credentials", Notification.Type.ERROR_MESSAGE);
+                if(filtered.getLeft() == 1){
+                    //Redirecciono a SearchUI
+                }
+                else {
+                    Notification.show("Invalid credentials", Notification.Type.ERROR_MESSAGE);
+                }
             }
 
         });
