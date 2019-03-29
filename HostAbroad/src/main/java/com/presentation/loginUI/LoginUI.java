@@ -99,7 +99,7 @@ public class LoginUI extends Panel {
         // Button allows specifying icon resource in constructor
         Button login = new Button("Login", VaadinIcons.CHECK);
         login.addClickListener(event->{
-            if(checkEmail(email.getValue()) && checkPassword(pass.getValue())){
+            if(!email.getValue().equals("") && !pass.getValue().equals("")){
                 TUser tUser = new TUser(email.getValue(), pass.getValue());
                 Pair<Integer, Object> filtered = Controller.getInstance().action(CommandEnum.Commands.CommandLogin, tUser);
             }
