@@ -15,7 +15,7 @@ public class User {
 	private boolean host;
 	private boolean traveler;
 	private String email;
-	private String password;
+	private String passwd;
 
 	public User() {
 	};
@@ -36,7 +36,7 @@ public class User {
 
 	public User(String email, String password) {
 		this.email = email;
-		this.password = password;
+		this.passwd = password;
 	}
 
 	public User(String nickname, double rating, String description, boolean host, boolean traveler, String email,
@@ -47,7 +47,7 @@ public class User {
 		this.host = host;
 		this.traveler = traveler;
 		this.email = email;
-		this.password = password;
+		this.passwd = password;
 	}
 
 	public void setNickname(String nickname) {
@@ -87,7 +87,7 @@ public class User {
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.passwd = password;
 	}
 
 	public String getEmail() {
@@ -95,6 +95,6 @@ public class User {
 	}
 
 	public String getPassword() {
-		return this.password;
+		return this.passwd;
 	}
 }
