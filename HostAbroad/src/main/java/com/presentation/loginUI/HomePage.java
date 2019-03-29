@@ -12,7 +12,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Panel;
+
 
 import java.io.File;
 
@@ -129,6 +129,7 @@ public class HomePage extends UI {
     private Component createBottomPanel(){
         HorizontalLayout panel = new HorizontalLayout();
         Button join = new Button("Join");
+        join.setId("joinBtn");
         join.addClickListener(event->{
             //This is a example
             //LoginUI form = new LoginUI();
@@ -139,6 +140,7 @@ public class HomePage extends UI {
 
 
         Button login = new Button("Sign in");
+        login.setId("loginBtn");
         login.addClickListener(event->{
                 LoginUI form = new LoginUI();
                 setContent(form);

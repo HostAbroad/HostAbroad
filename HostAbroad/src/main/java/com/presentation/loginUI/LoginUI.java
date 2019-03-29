@@ -71,16 +71,19 @@ public class LoginUI extends Panel {
         title.setStyleName("v-label-stylename");
         form.addComponent(title);
         TextField email = new TextField("Email");
+        email.setId("emailTextField");
         email.setIcon(VaadinIcons.USER); //Vaadin Icons for texfield
         form.addComponent(email);
         form.setComponentAlignment(email,Alignment.MIDDLE_CENTER);
         PasswordField pass = new PasswordField("Password");
+        pass.setId("passTextField");
         pass.setIcon(VaadinIcons.LOCK); //Vaadin Icons for textfield
         form.addComponent(pass);
         form.setComponentAlignment(pass,Alignment.MIDDLE_CENTER);
 
         // Button allows specifying icon resource in constructor
         Button login = new Button("Login", VaadinIcons.CHECK);
+        login.setId("loginBtn");
         login.addClickListener(event->{
             if(!email.getValue().equals("") && !pass.getValue().equals("")){
                 TUser tUser = new TUser(email.getValue(), pass.getValue());
