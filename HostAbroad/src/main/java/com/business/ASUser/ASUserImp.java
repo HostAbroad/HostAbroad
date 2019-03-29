@@ -26,7 +26,7 @@ public class ASUserImp implements ASUser {
 			EntityTransaction tr = em.getTransaction();
 			tr.begin();
 
-			String consulta = "SELECT user FROM User user WHERE user.nickname = :nickname";
+			String consulta = "SELECT * FROM user WHERE user.nickname = :nickname";
 			Query query = em.createQuery(consulta);
 			query.setParameter("nickname", tUser.getNickname());
 
@@ -67,27 +67,24 @@ public class ASUserImp implements ASUser {
 			query.setParameter("email", user.getEmail());
 			query.setParameter("pass", user.getPassword());
 			User result = null;
+			
 			try {
 				result = (User) query.getSingleResult();
 			} catch (NoResultException ex) {
 				System.out.println(ex.getMessage());
 			}
+			
 			if(result != null) {
-				Notification correct = new Notification( "Login succesful");
-                correct.setDelayMsec(2000);
-                correct.setPosition(Position.MIDDLE_CENTER);
-                correct.show(Page.getCurrent());
-                logedUser.setDescription(result.getDescription());
-                logedUser.setHost(result.getHost());
-                logedUser.setNickname(result.getNickname());
-                logedUser.setRating(result.getRating());
+                		logedUser.setDescription(result.getDescription());
+                		logedUser.setHost(result.getHost());
+				logedUser.setTraveler(result.getTraveler())
+                		logedUser.setNickname(result.getNickname());
+                		logedUser.setRating(result.getRating());
+				logedUser.setEmail(result.getEmail());
+				logedUser.setPaswd(result.getPaswd);
 			}
-			else {
-                Notification wrong = new Notification( "Invalid Username or Password.");
-                wrong.setDelayMsec(2000);
-                wrong.setPosition(Position.MIDDLE_CENTER);
-                wrong.show(Page.getCurrent());
-            }
+	
+			tr.commmit();
 			em.close();
 			emf.close();
 		} catch (Exception e) {
