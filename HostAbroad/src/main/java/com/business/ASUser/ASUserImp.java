@@ -62,7 +62,7 @@ public class ASUserImp implements ASUser {
 			EntityManager em = emf.createEntityManager();
 			EntityTransaction tr = em.getTransaction();
 			tr.begin();
-			String consulta = "SELECT * FROM USER u WHERE u.email = ':email'AND u.paswd = ':pass'";
+			String consulta = "SELECT * FROM USER u WHERE u.email = ':email'AND u.passwd = ':pass'";
 			Query query = em.createNativeQuery(consulta, User.class);
 			query.setParameter("email", user.getEmail());
 			query.setParameter("pass", user.getPassword());
