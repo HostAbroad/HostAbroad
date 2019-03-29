@@ -16,18 +16,17 @@ import com.vaadin.ui.*;
 
 import java.io.File;
 
-public class LoginUI extends UI {
-    @Override
-    protected void init(VaadinRequest request) {
+public class LoginUI extends Panel {
 
+        public LoginUI(){
         AbsoluteLayout layout = new AbsoluteLayout(); //Use absolute layout to be able to put the background image
         layout.addComponent(loadImage("wallpaper.jpg"));
         Component panel = createPanel();
         layout.addComponent(panel,"top: 138.0px; left: 500.0px;"); //The centered form
         layout.setWidth("100%");
         this.setContent(layout);
-
     }
+
 
     private Image loadImage(String url) { //This method load all images
         //reading the image
@@ -85,15 +84,14 @@ public class LoginUI extends UI {
         Button login = new Button("Login", VaadinIcons.CHECK);
         login.addClickListener(event->{
             if(!email.getValue().equals("") && !pass.getValue().equals("")){
-                LoginUI.this.getUI().getPage().setLocation("search");
-                //TUser tUser = new TUser(email.getValue(), pass.getValue());
-                //Pair<Integer, Object> filtered = Controller.getInstance().action(CommandEnum.Commands.CommandLogin, tUser);
-                //if(filtered.getLeft() == 1){
-                    //LoginUI.this.getUI().getPage().setLocation("search");
-                //}
-                //else {
-                   // Notification.show("Invalid credentials", Notification.Type.ERROR_MESSAGE);
-                //}
+                TUser tUser = new TUser(email.getValue(), pass.getValue());
+                Pair<Integer, Object> filtered = Controller.getInstance().action(CommandEnum.Commands.CommandLogin, tUser);
+                if(filtered.getLeft() == 1){
+                    LoginUI.this.getUI().getPage().setLocation("search");
+                }
+                else {
+                    Notification.show("Invalid credentials", Notification.Type.ERROR_MESSAGE);
+                }
             }
 
         });
