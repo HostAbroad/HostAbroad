@@ -7,7 +7,7 @@ public class TUser {
 	private boolean host;
 	private boolean traveler;
 	private String email;
-	private String password;
+	private String passwd;
 	
 	public TUser() {};
 	
@@ -52,7 +52,7 @@ public class TUser {
 		this.host = host;
 		this.setTraveler(traveler);
 		this.email = email;
-		this.password = password;
+		this.passwd = password;
 	}
 	
 	public void setNickname(String nickname) {
@@ -80,7 +80,7 @@ public class TUser {
 	}
 	
 	public void setPassword(String password) {
-		this.password = password;
+		this.passwd = password;
 	}
 	
 	public String getEmail() {
@@ -88,7 +88,7 @@ public class TUser {
 	}
 	
 	public String getPassword() {
-		return this.password;
+		return this.passwd;
 	}
 	
 	public String getDescription() {
