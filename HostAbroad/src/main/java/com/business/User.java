@@ -96,5 +96,12 @@ public class User {
 
 	public String getPassword() {
 		return this.passwd;
+  }
+	public boolean getTraveler() {
+		return this.traveler;
+	}
+
+	public void setTraveler(boolean traveler) {
+		this.traveler = traveler;
 	}
 }

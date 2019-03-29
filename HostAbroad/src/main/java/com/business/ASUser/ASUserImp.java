@@ -44,6 +44,7 @@ public class ASUserImp implements ASUser {
 				em.persist(user);
 				result = true;
 			}
+			tr.commit();
 			em.close();
 			emf.close();
 		} catch (Exception ex) {
