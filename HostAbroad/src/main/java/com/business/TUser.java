@@ -61,6 +61,14 @@ public class TUser {
 		this.password = password;
 	}
 	
+	public TUser(String nickname, double rating, String description, boolean host, boolean traveler) {
+		this.nickname = nickname;
+		this.rating = rating;
+		this.description = description;
+		this.host = host;
+		this.traveler = traveler;
+	}
+
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}

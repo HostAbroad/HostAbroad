@@ -94,53 +94,6 @@ public class ASSearchImp implements ASSearch {
 		return list;
 	}
 
-
-	@Override
-	public ArrayList<TUser> searchTraveler() {
-		
-		ArrayList<TUser> list = new ArrayList<TUser>();
-		
-		try {
-			EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
-			EntityManager em = emf.createEntityManager();
-			EntityTransaction tr = em.getTransaction();
-			tr.begin();
-
-			String consult = "SELECT * FROM User WHERE traveler = 1;";
-			
-			Query query = em.createNativeQuery(consult, User.class);
-			
-			
-			try {
-				@SuppressWarnings("unchecked")
-				List<User> resultList = query.getResultList();
-				System.out.println(resultList.size() +"A");
-				for(User user : resultList){
-					
-					list.add(new TUser(user.getNickname(),
-										user.getRating(),
-										user.getDescription(),
-										user.getHost(),
-										user.getTraveler()));
-										user.getDescription()));
-				}
-				tr.commit();
-			}
-			catch(NoResultException e){
-				System.out.println(e.getMessage());
-			}	
-			
-			em.close();
-			emf.close();
-		}
-		catch (Exception ex) {
-			System.out.println(ex.getMessage());
-		}
-		
-		return list;
-	}
-
-
 	@Override
 	public ArrayList<TUser> searchTraveler() {
 		
