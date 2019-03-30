@@ -3,15 +3,15 @@ package com.business.ASUser;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.LockModeType;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import com.business.Host;
+import com.business.THost;
 import com.business.TUser;
 import com.business.User;
-import com.vaadin.server.Page;
-import com.vaadin.shared.Position;
-import com.vaadin.ui.Notification;
 
 public class ASUserImp implements ASUser {
 
@@ -63,7 +63,7 @@ public class ASUserImp implements ASUser {
 			EntityManager em = emf.createEntityManager();
 			EntityTransaction tr = em.getTransaction();
 			tr.begin();
-			String consulta = "SELECT * FROM USER u WHERE u.email = ?1 AND u.passwd = ?2";
+			String consulta = "SELECT * FROM USER u WHERE u.email = ?1 AND u.password = ?2";
 			Query query = em.createNativeQuery(consulta, User.class);
 			query.setParameter(1, user.getEmail());
 			query.setParameter(2, user.getPassword());
@@ -94,4 +94,59 @@ public class ASUserImp implements ASUser {
 		}
 		return logedUser;
 	}
+	
+	/**
+	 This method receives tHost with nickname and list of interests.
+	 If a user with that nickname doesn't exist the method returns false;
+	 If the user exists, then it is checked if the host exists, in which case we just modify the interests.
+	 If host does not exist, a new one is created with the corresponding nickname.
+	 The user's atribute host (boolean) is updated only if needed.
+	**/
+	@Override
+	public boolean editHostInformation(THost tHost) { 
+		
+		boolean updated = false;
+		EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("HostAbroad");
+		EntityManager em = emfactory.createEntityManager();
+		EntityTransaction t = em.getTransaction();
+		t.begin();
+		
+		User user = em.find(User.class, tHost.getNickname());
+		
+		if(user != null) {
+			em.lock(user, LockModeType.OPTIMISTIC);
+			Host host;
+			
+			try {
+				String query = "SELECT * FROM HOST WHERE USER_NICKNAME = ?1";
+				host = (Host)em.createNativeQuery(query, Host.class).setParameter(1, tHost.getNickname()).getSingleResult();
+				host.setListOfInterests(tHost.getListOfInterests());
+			}catch(NoResultException e) {
+				host = new Host(user, tHost.getListOfInterests());
+			}
+			
+			em.persist(host);
+			
+			if(!user.getHost()) {
+				user.setHost(true);
+				user.setHostEntity(host);
+				em.persist(user);
+			}
+			
+			updated = true;
+		}
+		
+		try{
+			em.getTransaction().commit();
+		}
+		catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		em.close();
+		emfactory.close();
+		
+		return updated;
+	}
+	
 }
