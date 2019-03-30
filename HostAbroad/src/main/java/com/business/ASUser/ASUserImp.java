@@ -114,7 +114,6 @@ public class ASUserImp implements ASUser {
 		User user = em.find(User.class, tHost.getNickname());
 		
 		if(user != null) {
-			em.lock(user, LockModeType.OPTIMISTIC);
 			Host host;
 			
 			try {
