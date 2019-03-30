@@ -28,13 +28,14 @@ public class TUser {
 		this.rating = rating;
 		this.description = description;
 		this.host = host;
+		this.traveler = traveler;
 	}
 	
 	public TUser(String nickname, double rating, boolean traveler, String description){
 		this.nickname = nickname;
 		this.rating = rating;
 		this.description = description;
-		this.setTraveler(traveler);
+		this.traveler = traveler;
 	}
 	
 	
@@ -109,13 +110,13 @@ public class TUser {
 	}
 
 	public boolean getTraveler() {
-		return this.traveler;
+		return traveler;
 	}
 
 	public void setTraveler(boolean traveler) {
 		this.traveler = traveler;
 	}
-	
+
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
 	}
@@ -123,6 +124,4 @@ public class TUser {
 	public String getFullName() {
 		return this.fullName;
 	}
-	
-
 }
