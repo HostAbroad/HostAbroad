@@ -21,6 +21,8 @@ public class MyPlacesUI extends UI {
 		TextArea description = new TextArea("Description");
 		description.setWordWrap(false);
 		
+		
+		
 		mainLayout.addComponent(pic);
 		mainLayout.addComponent(placesForm);
 		this.setContent(mainLayout);
