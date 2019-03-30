@@ -1,6 +1,7 @@
 package com.business.ASUser;
 
 import com.business.THost;
+import com.business.TTraveler;
 import com.business.TUser;
 
 public interface ASUser {
@@ -10,5 +11,6 @@ public interface ASUser {
 	public abstract TUser loginUser(TUser user);
 	
 	public abstract boolean editHostInformation(THost tHost);
-	
+
+	public abstract boolean editTravelerInformation(TTraveler tTraveler);
 }
