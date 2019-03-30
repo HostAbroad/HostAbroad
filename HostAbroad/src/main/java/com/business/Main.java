@@ -1,7 +1,5 @@
 package com.business;
 
-import java.util.ArrayList;
-
 import com.business.ASUser.ASUserImp;
 
 public class Main {
@@ -11,10 +9,7 @@ public class Main {
 
 		ASUserImp asUser = new ASUserImp();
 		
-		ArrayList<InterestsEnum> listOfInterests = new ArrayList<InterestsEnum>();
-		listOfInterests.add(InterestsEnum.Int2);
-		
-		asUser.editHostInformation(new THost("prueba", listOfInterests));
+		asUser.editTravelerInformation(new TTraveler("prueba", null, null, null));
 		
 		
 	}

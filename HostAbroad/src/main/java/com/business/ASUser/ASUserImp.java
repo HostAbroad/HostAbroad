@@ -10,7 +10,9 @@ import javax.persistence.Query;
 
 import com.business.Host;
 import com.business.THost;
+import com.business.TTraveler;
 import com.business.TUser;
+import com.business.Traveler;
 import com.business.User;
 
 public class ASUserImp implements ASUser {
@@ -129,6 +131,54 @@ public class ASUserImp implements ASUser {
 			if(!user.getHost()) {
 				user.setHost(true);
 				user.setHostEntity(host);
+				em.persist(user);
+			}
+			
+			updated = true;
+		}
+		
+		try{
+			em.getTransaction().commit();
+		}
+		catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		em.close();
+		emfactory.close();
+		
+		return updated;
+	}
+
+	@Override
+	public boolean editTravelerInformation(TTraveler tTraveler) {
+		boolean updated = false;
+		
+		EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("HostAbroad");
+		EntityManager em = emfactory.createEntityManager();
+		EntityTransaction t = em.getTransaction();
+		t.begin();
+		
+		User user = em.find(User.class, tTraveler.getNickname());
+		
+		if(user != null) {
+			Traveler traveler;
+			
+			try {
+				String query = "SELECT * FROM TRAVELER WHERE USER_NICKNAME = ?1";
+				traveler = (Traveler)em.createNativeQuery(query, Traveler.class).setParameter(1, tTraveler.getNickname()).getSingleResult();
+				traveler.setDurationOfStay(tTraveler.getDurationOfStay());
+				traveler.setListOfCountries(tTraveler.getListOfCountries());
+				traveler.setListOfKnowledges(tTraveler.getListOfKnowledges());
+			}catch(NoResultException e) {
+				traveler = new Traveler(user, tTraveler.getListOfCountries(), tTraveler.getListOfKnowledges(), tTraveler.getDurationOfStay());
+			}
+			
+			em.persist(traveler);
+			
+			if(!user.getTraveler()) {
+				user.setTraveler(true);
+				user.setTravelerEntity(traveler);
 				em.persist(user);
 			}
 			

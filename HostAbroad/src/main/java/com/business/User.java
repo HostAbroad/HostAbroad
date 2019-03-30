@@ -23,10 +23,13 @@ public class User {
     private boolean traveler;
     @OneToOne (mappedBy = "user")
 	private Host hostEntity;
+    @OneToOne (mappedBy = "user")
+	private Traveler travelerEntity;
 
     public User() {};
 
-    public User(String nickname, String fullName, String email, String password, double rating, String description, boolean host, boolean traveler) {
+    public User(String nickname, String fullName, String email, String password, 
+    		double rating, String description, boolean host, boolean traveler) {
         this.nickname = nickname;
         this.fullName = fullName;
         this.email = email;
@@ -37,9 +40,8 @@ public class User {
         this.traveler = traveler;
     }
 
-
-
-    public User(String nickname, double rating, String description, boolean host, boolean traveler) {
+    public User(String nickname, double rating, String description, boolean host, 
+    		boolean traveler) {
         this.nickname = nickname;
         this.rating = rating;
         this.description = description;
@@ -82,6 +84,21 @@ public class User {
         this.password = password;
         this.hostEntity = hostEntity;
     }
+    
+    public User(String nickname, String fullName, String email, String password, 
+			double rating, String description, boolean host, boolean traveler, 
+			Host hostEntity, Traveler travelerEntity) {
+    this.nickname = nickname;
+    this.fullName = fullName;
+    this.rating = rating;
+    this.description = description;
+    this.host = host;
+    this.traveler = traveler;
+    this.email = email;
+    this.password = password;
+    this.hostEntity = hostEntity;
+    this.travelerEntity = travelerEntity;
+}
     
     public User(String nickname, double rating, String description, boolean host, boolean traveler, String email,
             String password) {
@@ -173,6 +190,14 @@ public class User {
     
     public Host getHostEntity() {
     	return this.hostEntity;
+    }
+    
+    public void setTravelerEntity(Traveler traveler) {
+    	this.travelerEntity = traveler;
+    }
+    
+    public Traveler getTravelerEntity() {
+    	return this.travelerEntity;
     }
 }
 
