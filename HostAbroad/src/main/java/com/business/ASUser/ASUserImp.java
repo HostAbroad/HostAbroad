@@ -18,7 +18,8 @@ public class ASUserImp implements ASUser {
 
 	
 	/**
-	*This method checks if a user 
+	*This method checks if a user with that nicknameor password exists.
+	*the password is cripted with hashCode
 	 **/
 	@Override
 	public boolean createUser(TUser tUser) {
@@ -53,7 +54,7 @@ public class ASUserImp implements ASUser {
 	}
 	
 	/**
- 	* 
+ 	* this method logs in the user if it exists
  	*/
 	@Override
 	public TUser loginUser(TUser tUser) {
@@ -95,11 +96,11 @@ public class ASUserImp implements ASUser {
 	}
 	
 	/**
-	 This method receives tHost with nickname and list of interests.
-	 If a user with that nickname doesn't exist the method returns false;
-	 If the user exists, then it is checked if the host exists, in which case we just modify the interests.
-	 If host does not exist, a new one is created with the corresponding nickname.
-	 The user's atribute host (boolean) is updated only if needed.
+	 *This method receives tHost with nickname and list of interests.
+	 *If a user with that nickname doesn't exist the method returns false;
+	 *If the user exists, then it is checked if the host exists, in which case we just modify the interests.
+	 *If host does not exist, a new one is created with the corresponding nickname.
+	 *The user's atribute host (boolean) is updated only if needed.
 	**/
 	@Override
 	public boolean editHostInformation(THost tHost) { 
@@ -147,6 +148,9 @@ public class ASUserImp implements ASUser {
 		return updated;
 	}
 
+	/**
+	 * This method edits a traveler information
+	 */
 	@Override
 	public boolean editTravelerInformation(TTraveler tTraveler) {
 		boolean updated = false;
