@@ -12,6 +12,4 @@ public interface ASSearch {
 	
 	public abstract ArrayList<TUser> searchTraveler();
 
-	public abstract ArrayList<TUser> searchTraveler();
-
 }
