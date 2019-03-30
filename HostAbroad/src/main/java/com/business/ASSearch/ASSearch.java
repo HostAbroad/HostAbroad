@@ -9,6 +9,8 @@ public interface ASSearch {
 	public abstract TUser searchHostByName(String nickname);
 	
 	public abstract ArrayList<TUser> searchHost();
+	
+	public abstract ArrayList<TUser> searchTraveler();
 
 	public abstract ArrayList<TUser> searchTraveler();
 

@@ -1,6 +1,7 @@
 package com.business.ASFactory;
 
 import com.business.ASSearch.ASSearch;
+import com.business.ASUser.ASUser;
 
 public abstract class ASFactory {
 	
@@ -14,5 +15,7 @@ public abstract class ASFactory {
 	}
 	
 	public abstract ASSearch createASSearch();
+	
+	public abstract ASUser createASUser();
 
 }

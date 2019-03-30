@@ -6,5 +6,7 @@ public class CommandEnum {
 	public enum Commands {
 	    CommandSearchHost,
 	    CommandSearchTraveler
+	    CommandCreateUser,
+		  CommandLogin
 	}
 }
