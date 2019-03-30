@@ -1,0 +1,9 @@
+SearchUI and Cards
+These classes are not completed should be reviewed and in some cases rewritten.
+
+Cards:
+ -image and usernick are not located with an appropriate padding
+ 
+ SearchUI:
+  -There is not a scroll so you your results are with more than 3 cards you would not see them
+  -Bug when you click more than ones the button apply(All of results are moving left)
