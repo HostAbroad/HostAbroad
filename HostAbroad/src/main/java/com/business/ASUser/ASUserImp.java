@@ -3,7 +3,6 @@ package com.business.ASUser;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.LockModeType;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
@@ -17,6 +16,10 @@ import com.business.User;
 
 public class ASUserImp implements ASUser {
 
+	
+	/**
+	*This method checks if a user 
+	 **/
 	@Override
 	public boolean createUser(TUser tUser) {
 
@@ -28,24 +31,17 @@ public class ASUserImp implements ASUser {
 			EntityTransaction tr = em.getTransaction();
 			tr.begin();
 
-			String consulta = "SELECT * FROM user WHERE user.nickname = :nickname";
-			Query query = em.createQuery(consulta);
-			query.setParameter("nickname", tUser.getNickname());
-
-			User user = null;
-
 			try {
-				user = (User) query.getSingleResult();
-			} catch (NoResultException ex) {
-				System.out.println(ex.getMessage());
-			}
-
-			if (user == null) {
-				user = new User(tUser.getNickname(), tUser.getRating(), tUser.getDescription(), tUser.getHost(),
-						tUser.getTraveler());
+				String query = "SELECT * FROM USER WHERE NICKNAME = ?1 OR EMAIL = ?2";
+				User user = (User)em.createNativeQuery(query, User.class)
+						.setParameter(1, tUser.getNickname()).setParameter(2, 
+								tUser.getEmail()).getSingleResult();
+				user = new User(tUser.getNickname(), tUser.getFullName(), tUser.getEmail(), 
+				tUser.getPassword().hashCode());
 				em.persist(user);
 				result = true;
-			}
+			}catch(NoResultException e) {}
+			
 			tr.commit();
 			em.close();
 			emf.close();
@@ -55,9 +51,12 @@ public class ASUserImp implements ASUser {
 
 		return result;
 	}
-
+	
+	/**
+ 	* 
+ 	*/
 	@Override
-	public TUser loginUser(TUser user) {
+	public TUser loginUser(TUser tUser) {
 		TUser logedUser = null;
 
 		try {
@@ -65,29 +64,27 @@ public class ASUserImp implements ASUser {
 			EntityManager em = emf.createEntityManager();
 			EntityTransaction tr = em.getTransaction();
 			tr.begin();
-			String consulta = "SELECT * FROM USER u WHERE u.email = ?1 AND u.password = ?2";
-			Query query = em.createNativeQuery(consulta, User.class);
-			query.setParameter(1, user.getEmail());
-			query.setParameter(2, user.getPassword());
-			User result = null;
 			
+			String consulta = "SELECT * FROM USER WHERE email = ?1 AND password = ?2";
+			User result;
 			try {
-				result = (User) query.getSingleResult();
+				result = (User)em.createNativeQuery(consulta, User.class)
+						.setParameter(1, tUser.getEmail()).setParameter(2, 
+								tUser.getPassword().hashCode()).getSingleResult();
+				logedUser = new TUser();
+				
+				logedUser.setNickname(result.getNickname());
+				logedUser.setFullName(result.getFullName());
+				logedUser.setPassword(result.getPassword().toString());
+				logedUser.setRating(result.getRating());
+        		logedUser.setDescription(result.getDescription());
+        		logedUser.setHost(result.getHost());
+				logedUser.setTraveler(result.getTraveler());
+        		logedUser.setEmail(result.getEmail());
 			} catch (NoResultException ex) {
 				System.out.println(ex.getMessage());
 			}
 			
-			if(result != null) {
-				logedUser = new TUser();
-                		logedUser.setDescription(result.getDescription());
-                		logedUser.setHost(result.getHost());
-						logedUser.setTraveler(result.getTraveler());
-                		logedUser.setNickname(result.getNickname());
-                		logedUser.setRating(result.getRating());
-                		logedUser.setEmail(result.getEmail());
-                		logedUser.setPassword(result.getPassword());
-			}
-	
 			tr.commit();
 			em.close();
 			emf.close();

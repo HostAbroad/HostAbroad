@@ -16,7 +16,7 @@ public class User {
     private int version;
     private String fullName;
     private String email;
-    private String password;
+    private int password;
     private double rating;
     private String description;
     private boolean host;
@@ -27,8 +27,24 @@ public class User {
 	private Traveler travelerEntity;
 
     public User() {};
+    
+    //full constructor
+    public User(String nickname, String fullName, String email, int password, 
+			double rating, String description, boolean host, boolean traveler, 
+			Host hostEntity, Traveler travelerEntity) {
+    this.nickname = nickname;
+    this.fullName = fullName;
+    this.rating = rating;
+    this.description = description;
+    this.host = host;
+    this.traveler = traveler;
+    this.email = email;
+    this.password = password;
+    this.hostEntity = hostEntity;
+    this.travelerEntity = travelerEntity;
+}
 
-    public User(String nickname, String fullName, String email, String password, 
+    public User(String nickname, String fullName, String email, int password, 
     		double rating, String description, boolean host, boolean traveler) {
         this.nickname = nickname;
         this.fullName = fullName;
@@ -50,7 +66,7 @@ public class User {
     }
     
     public User(String nickname, String fullName, double rating, String description,
-    		String email, String passwd, boolean host, boolean traveler) {
+    		String email, int passwd, boolean host, boolean traveler) {
         this.nickname = nickname;
         this.fullName = fullName;
         this.email = email;
@@ -67,12 +83,7 @@ public class User {
         this.description = description;
     }
 
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
-
-    public User(String nickname, String fullName, String email, String password, 
+    public User(String nickname, String fullName, String email, int password, 
     			double rating, String description, boolean host, boolean traveler, Host hostEntity) {
         this.nickname = nickname;
         this.fullName = fullName;
@@ -85,31 +96,23 @@ public class User {
         this.hostEntity = hostEntity;
     }
     
-    public User(String nickname, String fullName, String email, String password, 
-			double rating, String description, boolean host, boolean traveler, 
-			Host hostEntity, Traveler travelerEntity) {
+    public User(String nickname, double rating, String description, boolean host, boolean traveler, String email,
+            int password) {
     this.nickname = nickname;
-    this.fullName = fullName;
     this.rating = rating;
     this.description = description;
     this.host = host;
     this.traveler = traveler;
     this.email = email;
     this.password = password;
-    this.hostEntity = hostEntity;
-    this.travelerEntity = travelerEntity;
 }
     
-    public User(String nickname, double rating, String description, boolean host, boolean traveler, String email,
-            String password) {
-    this.nickname = nickname;
-    this.rating = rating;
-    this.description = description;
-    this.host = host;
-    this.traveler = traveler;
-    this.email = email;
-    this.password = password;
-}
+    public User(String nickname, String fullName, String email, int password) {
+    	this.nickname = nickname;
+    	this.fullName = fullName;
+    	this.email = email;
+    	this.password = password;
+    }
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
@@ -168,11 +171,11 @@ public class User {
         return this.email;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(int password) {
         this.password = password;
     }
 
-    public String getPassword() {
+    public Integer getPassword() {
         return this.password;
     }
     
