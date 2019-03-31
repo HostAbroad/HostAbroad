@@ -1,7 +1,10 @@
 package com.business;
 
+import java.util.Collection;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -25,10 +28,28 @@ public class User {
 	private Host hostEntity;
     @OneToOne (mappedBy = "user")
 	private Traveler travelerEntity;
+    @OneToMany(mappedBy = "userSender")
+	private Collection<Likes> likes;
 
     public User() {};
     
     //full constructor
+    public User(String nickname, String fullName, String email, int password, 
+			double rating, String description, boolean host, boolean traveler, 
+			Host hostEntity, Traveler travelerEntity, Collection<Likes> likes) {
+    this.nickname = nickname;
+    this.fullName = fullName;
+    this.rating = rating;
+    this.description = description;
+    this.host = host;
+    this.traveler = traveler;
+    this.email = email;
+    this.password = password;
+    this.hostEntity = hostEntity;
+    this.travelerEntity = travelerEntity;
+    this.likes = likes;
+    }
+   
     public User(String nickname, String fullName, String email, int password, 
 			double rating, String description, boolean host, boolean traveler, 
 			Host hostEntity, Traveler travelerEntity) {
@@ -201,6 +222,14 @@ public class User {
     
     public Traveler getTravelerEntity() {
     	return this.travelerEntity;
+    }
+    
+    public void setLikes(Collection<Likes> likes) {
+    	this.likes = likes;
+    }
+    
+    public Collection<Likes> getLikes(){
+    	return likes;
     }
 }
 

@@ -7,6 +7,7 @@ public class CommandEnum {
 	    CommandSearchHost,
 	    CommandSearchTraveler,
 		CommandLogin,
-		CommandCreateUser
+		CommandCreateUser,
+		CommandSendLike
 	}
 }
