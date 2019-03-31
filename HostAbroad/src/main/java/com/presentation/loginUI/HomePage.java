@@ -2,6 +2,7 @@ package com.presentation.loginUI;
 
 
 
+import com.presentation.searchUI.SearchUI;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
@@ -131,9 +132,7 @@ public class HomePage extends UI {
         Button join = new Button("Join");
         join.setId("joinBtn");
         join.addClickListener(event->{
-            //This is a example
-            //LoginUI form = new LoginUI();
-            //setContent(form);
+        	HomePage.this.getUI().getPage().setLocation("register");
         });
         panel.addComponent(join);
         panel.setComponentAlignment(join,Alignment.MIDDLE_CENTER);

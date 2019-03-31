@@ -197,6 +197,13 @@ public class SearchUI extends UI{
 			}
 		});
 		MenuItem logIn = menu.addItem("Log in/ Sign in");
+		logIn.setCommand(new Command() {
+			//this method redirects you to the page HostAbtoad
+			@Override
+			public void menuSelected(MenuItem selectedItem) {
+			SearchUI.this.getUI().getPage().setLocation("/HostAbroad");
+			}
+		});
 		navBarLayout.addComponent(menu);
 		navBarLayout.setComponentAlignment(menu, Alignment.TOP_LEFT);
 		navBarLayout.setMargin(false);
