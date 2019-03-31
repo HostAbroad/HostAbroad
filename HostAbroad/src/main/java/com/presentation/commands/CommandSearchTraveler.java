@@ -13,7 +13,7 @@ public class CommandSearchTraveler extends Command{
 		int result;
 		ASSearch saSearch = ASFactory.getInstance().createASSearch();
 		ArrayList<TUser> travelers = saSearch.searchTraveler();
-		result = travelers == null ? 0 : 1;
+		result = travelers.size() <= 0 ? 0 : 1;
 		
 		return new Pair<Integer,Object>(result,travelers);
 	}
