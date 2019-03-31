@@ -1,7 +1,5 @@
 package com.business;
 
-
-
 public enum CountriesEnum {
 
 	Argentina,

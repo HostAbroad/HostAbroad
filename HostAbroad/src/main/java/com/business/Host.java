@@ -1,12 +1,15 @@
 package com.business;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Version;
 
@@ -22,8 +25,20 @@ public class Host {
 	private User user;
 	private ArrayList<InterestsEnum> listOfInterests;
 	
+	@OneToMany(mappedBy="host")
+	private Collection<Place> places;
 	
 	public Host() {}
+	
+	//full constructor
+	public Host(int id, int version, User user, ArrayList<InterestsEnum> interests,
+			ArrayList<Place> places) {
+		this.id = id;
+		this.version = version;
+		this.user = user;
+		this.listOfInterests = interests;
+		this.places = places;
+	}
 	
 	public Host(ArrayList<InterestsEnum> listOfInterests) {
 		this.listOfInterests = listOfInterests;
@@ -72,5 +87,11 @@ public class Host {
 		return this.listOfInterests;
 	}
 	
+	public void setPlaces(ArrayList<Place> places) {
+		this.places = places;
+	}
 	
+	public Collection<Place> getPlaces(){
+		return this.places;
+	}
 }

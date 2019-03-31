@@ -5,10 +5,11 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
 
 import com.business.Host;
+import com.business.Place;
 import com.business.THost;
+import com.business.TPlace;
 import com.business.TTraveler;
 import com.business.TUser;
 import com.business.Traveler;
@@ -16,10 +17,9 @@ import com.business.User;
 
 public class ASUserImp implements ASUser {
 
-	
 	/**
-	*This method checks if a user with that nicknameor password exists.
-	*the password is cripted with hashCode
+	*This method checks if a user with that nickname or password exists.
+	*the password is encrypted with hashCode
 	 **/
 	@Override
 	public boolean createUser(TUser tUser) {
@@ -32,16 +32,19 @@ public class ASUserImp implements ASUser {
 			EntityTransaction tr = em.getTransaction();
 			tr.begin();
 
+			User user;
 			try {
 				String query = "SELECT * FROM USER WHERE NICKNAME = ?1 OR EMAIL = ?2";
-				User user = (User)em.createNativeQuery(query, User.class)
+				user = (User)em.createNativeQuery(query, User.class)
 						.setParameter(1, tUser.getNickname()).setParameter(2, 
 								tUser.getEmail()).getSingleResult();
+				
+			}catch(NoResultException e) {
 				user = new User(tUser.getNickname(), tUser.getFullName(), tUser.getEmail(), 
-				tUser.getPassword().hashCode());
-				em.persist(user);
-				result = true;
-			}catch(NoResultException e) {}
+						tUser.getPassword().hashCode());
+						em.persist(user);
+						result = true;
+			}
 			
 			tr.commit();
 			em.close();
@@ -198,5 +201,48 @@ public class ASUserImp implements ASUser {
 		
 		return updated;
 	}
-	
+
+	/**
+	 * This method adds a place to a existing host
+	 */
+	@Override
+	public boolean addPlace(TPlace tPlace) {
+		boolean updated = false;
+		
+		EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("HostAbroad");
+		EntityManager em = emfactory.createEntityManager();
+		EntityTransaction t = em.getTransaction();
+		t.begin();
+            	 Host host;
+                 String consulta = "SELECT * FROM HOST WHERE USER_NICKNAME = ?1";
+                 try {
+                	 host = (Host)em.createNativeQuery(consulta, Host.class)
+                    		 .setParameter(1, tPlace.getNickname()).getSingleResult();
+                     consulta = "SELECT * FROM PLACE WHERE ADDRESS = ?1 AND HOST_ID = ?2";
+                     Place place;
+                     try {
+                         place = (Place)em.createNativeQuery(consulta, Place.class)
+                        		 .setParameter(1, tPlace.getAddress()).setParameter(2, 
+                        				 host.getId()).getSingleResult();
+                     } catch (NoResultException e) {
+                         place = new Place();
+                         place.setHost(host);
+                         place.setAddress(tPlace.getAddress());
+                         host.getPlaces().add(place);
+                     }
+                     
+                     place.setDescription(tPlace.getDescription());
+                     place.setFamilyUnit(tPlace.getFamilyUnit());
+                     place.setNoAvaliableDates(tPlace.getNoAvaliableDates());
+                     place.setPhoto(tPlace.getPhoto());
+                     em.persist(place);
+                     em.persist(host);
+                     updated = true;
+                 }catch(NoResultException e){}
+                 
+            em.getTransaction().commit();
+            em.close();
+    		emfactory.close();
+        return updated;
+	}
 }
