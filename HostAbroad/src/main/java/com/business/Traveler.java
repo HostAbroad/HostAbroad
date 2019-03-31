@@ -100,4 +100,9 @@ public class Traveler{
 	public DurationOfStayEnum getDurationOfStay() {
 		return this.durationOfStay;
 	}
+
+	public TTraveler toTransfer() {
+		return new TTraveler(this.user.getNickname(), this.listOfCountries, 
+				this.listOfKnowledges, this.durationOfStay);
+	}
 }

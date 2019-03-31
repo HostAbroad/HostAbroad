@@ -20,7 +20,7 @@ public class Main {
 		//ArrayList<InterestsEnum> interests = new ArrayList<InterestsEnum>();
 		//interests.add(InterestsEnum.Int1);
 		//asUser.editHostInformation(new THost("sani", interests));
-		
-		asLikes.sendLike(new TLikes("sani", "Roni"));
+		System.out.println(asUser.readHostInformation(new TUser("sani", 10, "", true)).getNickname());;
+		//asLikes.sendLike(new TLikes("sani", "Roni"));
 	}
 }

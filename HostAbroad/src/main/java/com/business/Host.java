@@ -94,4 +94,8 @@ public class Host {
 	public Collection<Place> getPlaces(){
 		return this.places;
 	}
+	
+	public THost toTransfer() {
+		return new THost(this.user.getNickname(), this.listOfInterests);
+	}
 }

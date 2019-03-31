@@ -4,8 +4,6 @@ import com.business.ASFactory.ASFactory;
 import com.business.ASUser.ASUser;
 import com.business.TUser;
 
-
-
 public class CommandCreateUser extends Command {
     @Override
     public Pair<Integer, Object> execute(Object transfer) {

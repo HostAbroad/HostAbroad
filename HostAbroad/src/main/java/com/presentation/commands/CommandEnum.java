@@ -8,6 +8,8 @@ public class CommandEnum {
 	    CommandSearchTraveler,
 		CommandLogin,
 		CommandCreateUser,
-		CommandSendLike
+		CommandSendLike,
+		CommandReadHostInformation,
+		CommandReadTravelerInformation
 	}
 }

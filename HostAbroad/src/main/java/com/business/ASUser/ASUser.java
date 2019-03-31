@@ -16,4 +16,8 @@ public interface ASUser {
 	public abstract boolean editTravelerInformation(TTraveler tTraveler);
 	
 	public abstract boolean addPlace(TPlace place);
+	
+	public abstract THost readHostInformation(TUser user);
+	
+	public abstract TTraveler readTravelerInformation(TUser user);
 }
