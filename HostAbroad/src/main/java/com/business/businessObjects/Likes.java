@@ -1,4 +1,4 @@
-package com.business;
+package com.business.businessObjects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
+import com.business.transfers.TLikes;
 
 @Entity
 @Table

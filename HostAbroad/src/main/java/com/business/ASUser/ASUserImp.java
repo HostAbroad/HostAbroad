@@ -6,14 +6,14 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 
-import com.business.Host;
-import com.business.Place;
-import com.business.THost;
-import com.business.TPlace;
-import com.business.TTraveler;
-import com.business.TUser;
-import com.business.Traveler;
-import com.business.User;
+import com.business.businessObjects.Host;
+import com.business.businessObjects.Place;
+import com.business.businessObjects.Traveler;
+import com.business.businessObjects.User;
+import com.business.transfers.THost;
+import com.business.transfers.TPlace;
+import com.business.transfers.TTraveler;
+import com.business.transfers.TUser;
 
 public class ASUserImp implements ASUser {
 

@@ -1,9 +1,9 @@
 package com.presentation.commands;
 
-import com.business.TTraveler;
-import com.business.TUser;
 import com.business.ASFactory.ASFactory;
 import com.business.ASUser.ASUser;
+import com.business.transfers.TTraveler;
+import com.business.transfers.TUser;
 
 public class CommandReadTravelerInformation extends Command {
 

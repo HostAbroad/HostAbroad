@@ -2,7 +2,7 @@ package com.presentation.searchUI;
 
 import java.util.ArrayList;
 
-import com.business.TUser;
+import com.business.transfers.TUser;
 import com.presentation.card.Card;
 import com.presentation.commands.CommandEnum.Commands;
 import com.presentation.commands.Pair;

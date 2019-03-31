@@ -2,7 +2,7 @@ package com.business.ASSearch;
 
 import java.util.ArrayList;
 
-import com.business.TUser;
+import com.business.transfers.TUser;
 
 public interface ASSearch {
 	

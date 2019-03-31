@@ -4,8 +4,8 @@ import java.io.File;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.business.TUser;
 import com.presentation.commands.CommandEnum.Commands;
+import com.business.transfers.TUser;
 import com.presentation.commands.Pair;
 import com.presentation.controller.Controller;
 import com.vaadin.data.Binder;

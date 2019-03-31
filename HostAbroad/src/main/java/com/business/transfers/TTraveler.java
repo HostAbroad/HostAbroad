@@ -1,6 +1,10 @@
-package com.business;
+package com.business.transfers;
 
 import java.util.ArrayList;
+
+import com.business.enums.CountriesEnum;
+import com.business.enums.DurationOfStayEnum;
+import com.business.enums.KnowledgesEnum;
 
 public class TTraveler{
 

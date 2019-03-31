@@ -1,7 +1,7 @@
 package com.presentation.loginUI;
 
 
-import com.business.TUser;
+import com.business.transfers.TUser;
 import com.presentation.commands.CommandEnum;
 import com.presentation.commands.Pair;
 import com.presentation.controller.Controller;

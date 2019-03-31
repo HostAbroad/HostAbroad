@@ -1,6 +1,8 @@
-package com.business;
+package com.business.transfers;
 
 import java.util.ArrayList;
+
+import com.business.enums.InterestsEnum;
 
 public class THost {
 	

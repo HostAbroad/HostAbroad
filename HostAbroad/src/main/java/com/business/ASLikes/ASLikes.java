@@ -1,6 +1,6 @@
 package com.business.ASLikes;
 
-import com.business.TLikes;
+import com.business.transfers.TLikes;
 
 public interface ASLikes {
 	

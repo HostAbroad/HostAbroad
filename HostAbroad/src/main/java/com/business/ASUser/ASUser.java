@@ -1,9 +1,9 @@
 package com.business.ASUser;
 
-import com.business.THost;
-import com.business.TPlace;
-import com.business.TTraveler;
-import com.business.TUser;
+import com.business.transfers.THost;
+import com.business.transfers.TPlace;
+import com.business.transfers.TTraveler;
+import com.business.transfers.TUser;
 
 public interface ASUser {
 	

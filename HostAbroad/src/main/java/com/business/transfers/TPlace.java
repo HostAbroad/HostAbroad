@@ -1,7 +1,9 @@
-package com.business;
+package com.business.transfers;
 
 import java.util.ArrayList;
 import java.util.Date;
+
+import com.business.enums.FamilyUnit;
 
 public class TPlace { 
 	private String address;

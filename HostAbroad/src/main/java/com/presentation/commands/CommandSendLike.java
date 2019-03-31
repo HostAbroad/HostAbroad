@@ -1,8 +1,8 @@
 package com.presentation.commands;
 
-import com.business.TLikes;
 import com.business.ASFactory.ASFactory;
 import com.business.ASLikes.ASLikes;
+import com.business.transfers.TLikes;
 
 public class CommandSendLike extends Command{
 
