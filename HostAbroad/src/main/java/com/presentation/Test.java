@@ -1,8 +1,10 @@
 package com.presentation;
 
-import com.presentation.loginUI.HomePage;
+import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 /*
@@ -10,12 +12,17 @@ import com.vaadin.ui.Window;
  * to represent how to create a new page of the web site.
  * Note: New page means localhost:8080/HostAbroad/NEW_PAGE
  * */
+@Theme("mytheme")
 public class Test extends UI {
 
     @Override
     protected void init(VaadinRequest request) {
     	//addWindow(/*Window*/);
-    	addWindow(new Window("hi"));
+    	Window w = new Window();
+    	VerticalLayout l = new VerticalLayout();
+    	l.setStyleName("test");
+    	w.setContent(l);
+    	this.addWindow(w);
 
     }
 }
