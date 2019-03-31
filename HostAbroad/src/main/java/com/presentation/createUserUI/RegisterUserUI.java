@@ -5,6 +5,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.business.TUser;
+import com.presentation.commands.CommandEnum.Commands;
+import com.presentation.commands.Pair;
+import com.presentation.controller.Controller;
 import com.vaadin.data.Binder;
 import com.vaadin.data.BinderValidationStatus;
 import com.vaadin.data.BindingValidationStatus;
@@ -113,13 +116,22 @@ public class RegisterUserUI extends UI{
 		save.setId("saveBtn");
 		save.addClickListener(event->{
 			    if (binder.writeBeanIfValid(user)) {
-			    	System.out.println("saved");
-			    	System.out.println(user.getNickname());
-			    	System.out.println(user.getPassword());
-			    	System.out.println(user.getFullName());
-			    	System.out.println(user.getEmail());
-			    	//here we will call the controller with create User command
-			    	//after that we will redirect to MyProfile page
+			    	TUser newUser = new TUser(user.getNickname(),user.getFullName(),user.getEmail(),user.getPassword());
+			    	Pair<Integer, Object> result = Controller.getInstance().action(Commands.CommandCreateUser, newUser);
+			    	if((boolean)result.getRight()) {
+			    		Notification notif = new Notification("User successfully created.");
+						notif.setDelayMsec(10000);
+						notif.setPosition(Position.MIDDLE_CENTER);
+						notif.show(Page.getCurrent());
+						//after that we will redirect to MyProfile page
+			    	}
+			    	else {
+				        Notification notif = new Notification("User with this email or nickname abready exists.");
+						notif.setDelayMsec(10000);
+						notif.setPosition(Position.MIDDLE_CENTER);
+						notif.show(Page.getCurrent());
+			    	}
+			    	
 			    } else {
 			        BinderValidationStatus<TUser> validate = binder.validate();
 			        String errorText = validate.getFieldValidationStatuses()
