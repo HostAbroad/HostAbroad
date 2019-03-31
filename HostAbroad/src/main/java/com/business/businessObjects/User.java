@@ -1,4 +1,4 @@
-package com.business;
+package com.business.businessObjects;
 
 import java.util.Collection;
 

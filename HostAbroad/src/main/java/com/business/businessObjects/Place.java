@@ -1,10 +1,12 @@
-package com.business;
+package com.business.businessObjects;
 
 import java.util.*;
 import javax.persistence.Entity;
 import javax.persistence.Id; 
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.business.enums.FamilyUnit;
  
 @Entity 
 @Table

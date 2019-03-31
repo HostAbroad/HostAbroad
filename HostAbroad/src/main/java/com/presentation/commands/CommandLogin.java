@@ -1,7 +1,7 @@
 package com.presentation.commands;
 
 import com.business.ASUser.ASUser;
-import com.business.TUser;
+import com.business.transfers.TUser;
 import com.business.ASFactory.ASFactory;
 
 public class CommandLogin extends Command {

@@ -1,4 +1,4 @@
-package com.business;
+package com.business.businessObjects;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Version;
+
+import com.business.enums.InterestsEnum;
+import com.business.transfers.THost;
 
 @Entity
 @Table

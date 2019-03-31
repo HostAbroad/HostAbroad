@@ -2,9 +2,9 @@ package com.presentation.commands;
 
 import java.util.ArrayList;
 
-import com.business.TUser;
 import com.business.ASFactory.ASFactory;
 import com.business.ASSearch.ASSearch;
+import com.business.transfers.TUser;
 
 public class CommandSearchTraveler extends Command{
 

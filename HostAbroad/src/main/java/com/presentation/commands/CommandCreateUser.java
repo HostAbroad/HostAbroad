@@ -2,7 +2,7 @@ package com.presentation.commands;
 
 import com.business.ASFactory.ASFactory;
 import com.business.ASUser.ASUser;
-import com.business.TUser;
+import com.business.transfers.TUser;
 
 public class CommandCreateUser extends Command {
     @Override

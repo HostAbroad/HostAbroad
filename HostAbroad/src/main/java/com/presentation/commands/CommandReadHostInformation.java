@@ -1,9 +1,9 @@
 package com.presentation.commands;
 
-import com.business.THost;
-import com.business.TUser;
 import com.business.ASFactory.ASFactory;
 import com.business.ASUser.ASUser;
+import com.business.transfers.THost;
+import com.business.transfers.TUser;
 
 public class CommandReadHostInformation extends Command {
 

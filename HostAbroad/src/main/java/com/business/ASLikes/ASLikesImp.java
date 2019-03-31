@@ -6,9 +6,9 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 
-import com.business.Likes;
-import com.business.TLikes;
-import com.business.User;
+import com.business.businessObjects.Likes;
+import com.business.businessObjects.User;
+import com.business.transfers.TLikes;
 
 public class ASLikesImp implements ASLikes{
 
