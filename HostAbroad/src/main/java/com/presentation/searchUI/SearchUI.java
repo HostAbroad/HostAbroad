@@ -7,6 +7,9 @@ import com.presentation.card.Card;
 import com.presentation.commands.CommandEnum.Commands;
 import com.presentation.commands.Pair;
 import com.presentation.controller.Controller;
+import com.presentation.headerAndFooter.Footer;
+import com.presentation.headerAndFooter.Header;
+import com.vaadin.annotations.Theme;
 import com.vaadin.server.Page;
 import com.vaadin.server.Page.Styles;
 import com.vaadin.server.VaadinRequest;
@@ -14,9 +17,9 @@ import com.vaadin.shared.Position;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Layout;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
@@ -25,7 +28,7 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-
+@Theme("mytheme")
 public class SearchUI extends UI{
 	
 	private ArrayList<TUser> results;
@@ -41,23 +44,23 @@ public class SearchUI extends UI{
 		//main helper
 		VerticalLayout mainVertical = new VerticalLayout();
 		Panel panel = new Panel();
-		panel.setSizeFull();
+		panel.setHeight("100%");
 		panel.setContent(mainVertical);
 		mainLayout.addComponent(panel);
 		
 		
 		
 		//navbar
-		HorizontalLayout navarLayout = createNavBar();
 		
-		mainVertical.addComponent(navarLayout);
+		mainVertical.addComponent(new Header());
 		//if that's false the navbar is on the top of the screen, else - there is a margin
 		mainVertical.setMargin(false);
 		//secondary layout for the 2 parts
 		
 		secondaryLayout = new GridLayout(2, 1);
+		secondaryLayout.setSizeFull();
 		
-		mainVertical.addComponent(secondaryLayout);
+		mainVertical.addComponentsAndExpand(secondaryLayout);
 		
 		
 		this.resultsLayout = new VerticalLayout();
@@ -65,8 +68,8 @@ public class SearchUI extends UI{
 		
 		//search options layout
 		VerticalLayout searchOptionsLayout = new VerticalLayout();
-		
-		searchOptionsLayout.addComponent(this.createSearchOptions());
+		searchOptionsLayout.setSizeFull();
+		searchOptionsLayout.addComponentsAndExpand(this.createSearchOptions());
 		searchOptionsLayout.setSizeUndefined();
 		searchOptionsLayout.setMargin(false);
 		
@@ -82,8 +85,8 @@ public class SearchUI extends UI{
 
 		secondaryLayout.addComponent(resultsLayout);
 		//resultsLayout.setSizeFull();
-		
-		
+		mainVertical.addComponent(new Footer());
+		mainLayout.setHeight("100%");
 		this.setContent(mainLayout);
 	}
 	

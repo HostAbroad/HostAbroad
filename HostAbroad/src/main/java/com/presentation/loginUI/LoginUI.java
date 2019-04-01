@@ -1,29 +1,46 @@
 package com.presentation.loginUI;
 
 
+import java.io.File;
+
 import com.business.transfers.TUser;
 import com.presentation.commands.CommandEnum;
 import com.presentation.commands.Pair;
 import com.presentation.controller.Controller;
+import com.presentation.headerAndFooter.Footer;
+import com.presentation.headerAndFooter.Header;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinService;
-
-import com.vaadin.ui.*;
-
-
-import java.io.File;
+import com.vaadin.ui.AbsoluteLayout;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Panel;
+import com.vaadin.ui.PasswordField;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.VerticalLayout;
 
 public class LoginUI extends Panel {
 
         public LoginUI(){
+        VerticalLayout mainLayout = new VerticalLayout();
+        mainLayout.setMargin(false);
+        mainLayout.setSpacing(false);
         AbsoluteLayout layout = new AbsoluteLayout(); //Use absolute layout to be able to put the background image
         layout.addComponent(loadImage("wallpaper.jpg"));
         Component panel = createPanel();
-        layout.addComponent(panel,"top: 138.0px; left: 500.0px;"); //The centered form
+        layout.addComponent(panel,"top: 25%; left: 30%;"); //The centered form
         layout.setWidth("100%");
-        this.setContent(layout);
+        mainLayout.addComponent(new Header());
+        mainLayout.addComponentsAndExpand(layout);
+        mainLayout.addComponent(new Footer());
+        this.setContent(mainLayout);
     }
 
 
