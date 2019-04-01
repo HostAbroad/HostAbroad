@@ -1,7 +1,6 @@
 package com.presentation.myProfileUI;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 import com.business.enums.CountriesEnum;
 import com.business.enums.DurationOfStayEnum;
@@ -14,6 +13,9 @@ import com.presentation.card.Card;
 import com.presentation.commands.CommandEnum.Commands;
 import com.presentation.commands.Pair;
 import com.presentation.controller.Controller;
+import com.presentation.headerAndFooter.Footer;
+import com.presentation.headerAndFooter.Header;
+import com.vaadin.annotations.Theme;
 import com.vaadin.data.Binder;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.data.validator.RegexpValidator;
@@ -40,6 +42,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+@Theme("mytheme")
 public class MyProfileUI extends UI {
 	
 	private TabSheet tabs;
@@ -48,6 +51,10 @@ public class MyProfileUI extends UI {
 	@Override
 	protected void init(VaadinRequest request) {
 		
+		VerticalLayout superLayout = new VerticalLayout();
+		superLayout.setSpacing(false);
+		superLayout.setMargin(false);
+
 		//Para probar que funciona añadir en la bbdd los likes con sus ID. Hay que poner en receivedUser el
 		//mismo nombre que ponemos en este transfer
 				
@@ -57,6 +64,7 @@ public class MyProfileUI extends UI {
 		
 		TUser myUser = new TUser("Prueba", "PruebaFull", "ivan@ucm.es", "1234", 5, "Im prueba", false, false, likes);
 		
+
 		HorizontalLayout mainLayout = new HorizontalLayout();
 		mainLayout.setSizeFull();
 		mainLayout.setId("mainLayout");
@@ -95,7 +103,11 @@ public class MyProfileUI extends UI {
 		myLikesTab.setId("myLikesTab");
 		tabs.addTab(myLikesTab, "My Likes");
 		
-		this.setContent(mainLayout);
+		superLayout.addComponent(new Header());
+		superLayout.addComponentsAndExpand(panel);
+		superLayout.addComponent(new Footer());
+		
+		this.setContent(superLayout);
 	}
 
 	private HorizontalLayout myInterests(TUser user) {
@@ -239,7 +251,7 @@ public class MyProfileUI extends UI {
 		save.setId("ProfileSave");
 		
 		personalInfo.addComponents(fullName, username, email, genderCB, languageCB, save);
-		personalInfo.setComponentAlignment(save, Alignment.BOTTOM_CENTER);
+		personalInfo.setComponentAlignment(save, Alignment.BOTTOM_RIGHT);
 		
 		mainLayout.addComponent(imageAndDescription);
 		mainLayout.addComponent(personalInfo);
