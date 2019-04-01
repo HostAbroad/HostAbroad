@@ -1,10 +1,14 @@
 package com.presentation.card;
 
 import java.io.File;
+
+import com.presentation.controller.Controller;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
@@ -82,8 +86,13 @@ public class Card extends Panel{
 		// Put the content in it
 		area.setValue(description);
 		
+		VaadinIcons v = VaadinIcons.HEART;
+		Button button = new Button("", v);
 		descriptionLayout.setWidth("500px");
+		descriptionLayout.addComponent(button);
 		descriptionLayout.addComponent(area);
+		descriptionLayout.setComponentAlignment(button, Alignment.TOP_RIGHT);
+		
 		
 		return descriptionLayout;
 	}

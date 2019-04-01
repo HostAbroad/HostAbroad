@@ -10,6 +10,7 @@ import com.business.enums.KnowledgesEnum;
 import com.business.transfers.THost;
 import com.business.transfers.TTraveler;
 import com.business.transfers.TUser;
+import com.presentation.card.Card;
 import com.presentation.commands.CommandEnum.Commands;
 import com.presentation.commands.Pair;
 import com.presentation.controller.Controller;
@@ -29,6 +30,7 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.RadioButtonGroup;
@@ -82,7 +84,10 @@ public class MyProfileUI extends UI {
 		tabs.addTab(messagesTab, "Messages");
 		
 		HorizontalLayout myLikesTab = new HorizontalLayout();
+		myLikesTab = myLikes(myUser);
+		myLikesTab.setId("myLikesTab");
 		tabs.addTab(myLikesTab, "My Likes");
+		
 		this.setContent(mainLayout);
 	}
 
@@ -317,5 +322,58 @@ public class MyProfileUI extends UI {
 		mainLayoutInterests.addComponent(mainLayout);
 
 		return mainLayoutInterests;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private HorizontalLayout myLikes(TUser myUser) {
+		
+		HorizontalLayout mainLayout = new HorizontalLayout();
+		mainLayout.setId("mainLayout");
+		mainLayout.setSizeFull();
+			
+		//main helper
+		VerticalLayout mainVertical = new VerticalLayout();
+		mainVertical.setId("mainVertical");
+		Panel panelMain = new Panel();
+		panelMain.setSizeFull();
+		panelMain.setContent(mainVertical);
+		panelMain.setId("panelMain");
+		mainLayout.addComponent(panelMain);
+		
+		
+		Pair<Integer, Object> result = Controller.getInstance().action(Commands.CommandSendersLike, myUser);
+		
+		if(result.getLeft() == 1) {
+
+			VerticalLayout resultsLikes = createResultPanel((ArrayList<TUser>)result.getRight());
+			resultsLikes.setId("resultsLikes");
+			mainVertical.addComponent(resultsLikes);
+			
+		}
+		else {
+			
+			Label labelNoLikes = new Label("No likes");
+			labelNoLikes.setId("labelNoLikes");
+			mainVertical.addComponent(labelNoLikes);
+		}
+		
+		return mainLayout;
+	}
+	
+	private VerticalLayout createResultPanel(ArrayList<TUser> users) {
+		VerticalLayout resultLayout = new VerticalLayout();
+		resultLayout.setMargin(false);
+		resultLayout.setSizeFull();
+		resultLayout.removeAllComponents();
+		resultLayout.setId("resultLayout");
+		int counter = 1;
+		for(TUser u: users) {
+			Card card = new Card(u.getNickname(), u.getDescription());
+			card.setId("card" + counter++);
+			resultLayout.addComponent(card);
+			resultLayout.setComponentAlignment(card, Alignment.TOP_LEFT);
+		}
+		resultLayout.setHeight("100%");
+		return resultLayout;
 	}
 }

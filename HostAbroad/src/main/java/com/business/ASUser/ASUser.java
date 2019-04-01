@@ -1,5 +1,7 @@
 package com.business.ASUser;
 
+import java.util.ArrayList;
+
 import com.business.transfers.THost;
 import com.business.transfers.TPlace;
 import com.business.transfers.TTraveler;
@@ -20,4 +22,6 @@ public interface ASUser {
 	public abstract THost readHostInformation(TUser user);
 	
 	public abstract TTraveler readTravelerInformation(TUser user);
+	
+	public abstract ArrayList<TUser> SendersLike(TUser tUser);
 }
