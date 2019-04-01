@@ -1,8 +1,6 @@
 package com.presentation.card;
 
 import java.io.File;
-
-import com.presentation.controller.Controller;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileResource;

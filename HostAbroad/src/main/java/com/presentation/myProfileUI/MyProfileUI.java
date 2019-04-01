@@ -51,10 +51,20 @@ public class MyProfileUI extends UI {
 	@Override
 	protected void init(VaadinRequest request) {
 		
-		TUser myUser = new TUser("Prueba", "PruebaFull", "ivan@ucm.es", "1234", 5, "Im prueba", false, false);
 		VerticalLayout superLayout = new VerticalLayout();
 		superLayout.setSpacing(false);
 		superLayout.setMargin(false);
+
+		//Para probar que funciona añadir en la bbdd los likes con sus ID. Hay que poner en receivedUser el
+		//mismo nombre que ponemos en este transfer
+				
+		ArrayList<Integer> likes = new ArrayList<Integer>();
+		likes.add(1);
+		likes.add(2);
+		
+		TUser myUser = new TUser("Prueba", "PruebaFull", "ivan@ucm.es", "1234", 5, "Im prueba", false, false, likes);
+		
+
 		HorizontalLayout mainLayout = new HorizontalLayout();
 		mainLayout.setSizeFull();
 		mainLayout.setId("mainLayout");
