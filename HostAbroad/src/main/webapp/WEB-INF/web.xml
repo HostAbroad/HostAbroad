@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
-  <display-name>HostAbroad</display-name>
-  <servlet>
-    <servlet-name>HostAbroad</servlet-name>
-    <servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
-    <init-param>
-      <param-name>UI</param-name>
-      <param-value>com.presentation.Test</param-value>
-    </init-param>
-  </servlet>
+  
+ 	 <display-name>home</display-name>
+		  <servlet>
+		    <servlet-name>home</servlet-name>
+		    <servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
+		    <init-param>
+		      <param-name>UI</param-name>
+		      <param-value>com.presentation.loginUI.HomePage</param-value>
+		    </init-param>
+	  </servlet>
   
   <servlet-mapping>
-    <servlet-name>HostAbroad</servlet-name>
+    <servlet-name>home</servlet-name>
     <url-pattern>/*</url-pattern>
   </servlet-mapping>
   
@@ -28,6 +29,51 @@
   <servlet-mapping>
     <servlet-name>SearchUI</servlet-name>
     <url-pattern>/search/*</url-pattern>
+  </servlet-mapping>
+  
+   <display-name>Register</display-name>
+  <servlet>
+    <servlet-name>Register</servlet-name>
+    <servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
+    <init-param>
+      <param-name>UI</param-name>
+      <param-value>com.presentation.createUserUI.RegisterUserUI</param-value>
+    </init-param>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>Register</servlet-name>
+    <url-pattern>/register/*</url-pattern>
+  </servlet-mapping>
+  
+   <display-name>Test</display-name>
+  <servlet>
+    <servlet-name>Test</servlet-name>
+    <servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
+    <init-param>
+      <param-name>UI</param-name>
+      <param-value>com.presentation.Test</param-value>
+    </init-param>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>Test</servlet-name>
+    <url-pattern>/test/*</url-pattern>
+  </servlet-mapping>
+  
+  <display-name>MyProfile</display-name>
+  <servlet>
+    <servlet-name>MyProfile</servlet-name>
+    <servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
+    <init-param>
+      <param-name>UI</param-name>
+      <param-value>com.presentation.myProfileUI.MyProfileUI</param-value>
+    </init-param>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>MyProfile</servlet-name>
+    <url-pattern>/my_profile/*</url-pattern>
   </servlet-mapping>
   
   <display-name>PlacesUI</display-name>

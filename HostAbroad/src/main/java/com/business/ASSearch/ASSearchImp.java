@@ -10,8 +10,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-import com.business.TUser;
-import com.business.User;
+import com.business.businessObjects.User;
+import com.business.transfers.TUser;
 
 public class ASSearchImp implements ASSearch {
 	
@@ -54,6 +54,7 @@ public class ASSearchImp implements ASSearch {
 	public ArrayList<TUser> searchHost() {
 		ArrayList<TUser> list = new ArrayList<TUser>();
 		
+		
 		try {
 			EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
 			EntityManager em = emf.createEntityManager();
@@ -61,22 +62,65 @@ public class ASSearchImp implements ASSearch {
 			tr.begin();
 
 			String consult = "SELECT * FROM User WHERE host = 1;";
+			
 			Query query = em.createNativeQuery(consult, User.class);
 			
 			
 			try {
 				List<User> resultList = query.getResultList();
+				System.out.println(resultList.size() +"A");
 				for(User user : resultList){
 					
 					list.add(new TUser(user.getNickname(),
 										user.getRating(),
 										user.getDescription(),
-										user.getHost()));
+										user.getHost(),
+										user.getTraveler()));
+				}
+				tr.commit();
+				System.out.println(resultList.toString());
+			}
+			catch(NoResultException e){
+				System.out.println("NO ENCONTRADO");
+			}	
+			
+			em.close();
+			emf.close();
+		}
+		catch (Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		
+		return list;
+	}
+
+	@Override
+	public ArrayList<TUser> searchTraveler() {
+		
+		ArrayList<TUser> list = new ArrayList<TUser>();
+		
+		try {
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
+			EntityManager em = emf.createEntityManager();
+			EntityTransaction tr = em.getTransaction();
+			tr.begin();
+
+			String consult = "SELECT * FROM User WHERE traveler = 1;";
+			Query query = em.createNativeQuery(consult, User.class);
+		
+			try {
+				@SuppressWarnings("unchecked")
+				List<User> resultList = query.getResultList();
+				for(User user : resultList){
+					
+					list.add(new TUser(user.getNickname(),
+										user.getRating(),
+										user.getDescription()));
 				}
 				tr.commit();
 			}
 			catch(NoResultException e){
-				System.out.println(e.getMessage());
+				System.out.println("NO ENCONTRADO");
 			}	
 			
 			em.close();
