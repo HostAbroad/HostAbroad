@@ -2,7 +2,7 @@ package com.business.enums;
 
 public enum DurationOfStayEnum {
 
-	ZetoToSixDays,
+	ZeroToSixDays,
 	OneToTwoWeeks,
 	TwoWeeksToAMonth,
 	MoreThanMonth
