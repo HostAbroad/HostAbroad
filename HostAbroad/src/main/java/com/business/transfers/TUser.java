@@ -1,5 +1,7 @@
 package com.business.transfers;
 
+import java.util.ArrayList;
+
 public class TUser {
 	private String nickname;
 	private String fullName;
@@ -9,6 +11,7 @@ public class TUser {
 	private boolean host;
 	private boolean traveler;
 	private String email;
+	private ArrayList<Integer> likes;
 	
 	public TUser() {};
 	
@@ -138,5 +141,13 @@ public class TUser {
 	
 	public String getFullName() {
 		return this.fullName;
+	}
+
+	public ArrayList<Integer> getLikes() {
+		return likes;
+	}
+
+	public void setLikes(ArrayList<Integer> likes) {
+		this.likes = likes;
 	}
 }
