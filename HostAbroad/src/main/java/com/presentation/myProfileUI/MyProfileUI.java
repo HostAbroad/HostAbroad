@@ -46,7 +46,7 @@ public class MyProfileUI extends UI {
 	@Override
 	protected void init(VaadinRequest request) {
 		
-		TUser myUser = new TUser("Prueba", "PruebaFull", "ivan@ucm.es", "1234", 5, "Im prueba", true, true);
+		TUser myUser = new TUser("Prueba", "PruebaFull", "ivan@ucm.es", "1234", 5, "Im prueba", false, false);
 		
 		HorizontalLayout mainLayout = new HorizontalLayout();
 		mainLayout.setSizeFull();
@@ -101,21 +101,16 @@ public class MyProfileUI extends UI {
 		interests.setItems(InterestsEnum.values());
 		interests.setId("interests");
 		
-		if(user.getHost()) {
-			
 			
 			Pair<Integer, Object> resultRead = Controller.getInstance().action(Commands.CommandReadHostInformation, user);
 			
-			if(resultRead.getLeft() == 0) {
-				Notification.show("Error, We couldnt read your interests", Notification.Type.ERROR_MESSAGE);
-			}
-			else {
-
+			if(resultRead.getLeft() == 1) {
+		
 				for(int i = 0; i < ((THost)resultRead.getRight()).getListOfInterests().size(); i++)
 					interests.select(((THost)resultRead.getRight()).getListOfInterests().get(i));
 
 			}
-		}
+		
 		
 		THost tHost = new THost();
 		
@@ -263,7 +258,7 @@ public class MyProfileUI extends UI {
 		days.setItems(DurationOfStayEnum.values());
 		days.setId("days");
 		
-		if(user.getTraveler()) {
+		
 			
 			Pair<Integer, Object> resultRead = Controller.getInstance().action(Commands.CommandReadTravelerInformation, user);
 	
@@ -279,7 +274,7 @@ public class MyProfileUI extends UI {
 					days.setSelectedItem(((TTraveler)resultRead.getRight()).getDurationOfStay());
 				
 			}
-		}
+		
 
 		TTraveler tTraveler = new TTraveler();
 
