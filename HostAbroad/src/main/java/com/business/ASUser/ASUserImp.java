@@ -1,12 +1,16 @@
 package com.business.ASUser;
 
+import java.util.ArrayList;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 import com.business.businessObjects.Host;
+import com.business.businessObjects.Likes;
 import com.business.businessObjects.Place;
 import com.business.businessObjects.Traveler;
 import com.business.businessObjects.User;
@@ -269,6 +273,7 @@ public class ASUserImp implements ASUser {
 
 	@Override
 	public TTraveler readTravelerInformation(TUser user) {
+
 		TTraveler traveler = null;
 		EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("HostAbroad");
 		EntityManager em = emfactory.createEntityManager();
@@ -286,5 +291,49 @@ public class ASUserImp implements ASUser {
         em.close();
  		emfactory.close();
 		return traveler;
+	}
+	
+	public ArrayList<TUser> SendersLike(TUser tUser) {
+		
+		 ArrayList<TUser> sendersUser = new ArrayList<TUser>();
+		
+	
+		try {
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
+			EntityManager em = emf.createEntityManager();
+			EntityTransaction tr = em.getTransaction();
+			tr.begin();
+			
+			TUser tUserSender;
+			for(Integer id : tUser.getLikes()) {
+				
+				String consulta = "SELECT * FROM LIKES WHERE id = ?1";
+				Query query = em.createNativeQuery(consulta, Likes.class);
+				query.setParameter(1, id);
+	
+				Likes like = null;
+				
+				try {
+					like = (Likes) query.getSingleResult();
+				}
+				catch (NoResultException ex) {
+					System.out.println(ex.getMessage());
+				}
+			
+				tUserSender = new TUser(like.getUserSender().getNickname(), like.getUserSender().getRating(),
+						like.getUserSender().getDescription());
+				
+				sendersUser.add(tUserSender);
+				
+			}
+			em.close();
+			emf.close();
+		}
+		catch (Exception ex) {
+			System.out.println(ex.getMessage());
+		}		
+		
+		
+		return  sendersUser;
 	}
 }
