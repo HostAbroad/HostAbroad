@@ -33,7 +33,8 @@ public class LoginUI extends Panel {
         mainLayout.setMargin(false);
         mainLayout.setSpacing(false);
         AbsoluteLayout layout = new AbsoluteLayout(); //Use absolute layout to be able to put the background image
-        layout.addComponent(loadImage("wallpaper.jpg"));
+        layout.setStyleName("login-layout");
+        //layout.addComponent(loadImage("wallpaper.jpg"));
         Component panel = createPanel();
         layout.addComponent(panel,"top: 25%; left: 30%;"); //The centered form
         layout.setWidth("100%");
