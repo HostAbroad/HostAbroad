@@ -3,10 +3,6 @@ package com.presentation.myPlacesUI;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.presentation.commands.Pair;
-import com.presentation.commands.CommandEnum.Commands;
-import com.presentation.controller.Controller;
-import com.presentation.searchUI.SearchUI;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
@@ -21,7 +17,6 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.v7.ui.Calendar;
 
 public class MyPlacesUI extends UI {
 
@@ -67,7 +62,6 @@ public class MyPlacesUI extends UI {
 		secondaryLayout.addComponent(grid);
 		secondaryLayout.addComponent(save);
 		secondaryLayout.setComponentAlignment(save, Alignment.MIDDLE_CENTER);
-		// mainLayout.addComponent(calendar); Mirar lo del servlet
 		mainLayout.addComponent(secondaryLayout);
 		this.setContent(mainLayout);
 	}
