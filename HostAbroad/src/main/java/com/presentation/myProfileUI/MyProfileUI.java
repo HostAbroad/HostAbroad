@@ -118,7 +118,7 @@ public class MyProfileUI extends UI {
 		saveButton.setId("saveButton");
 		saveButton.addClickListener(event -> {
 			
-			InterestsEnum arrayInterests[] = null;
+			/*InterestsEnum arrayInterests[] = null;
 			ArrayList<InterestsEnum> arrayListInterests = new ArrayList<InterestsEnum>();
 			Set<InterestsEnum> setInterests = interests.getSelectedItems();
 			arrayListInterests.addAll(setInterests);
@@ -135,7 +135,7 @@ public class MyProfileUI extends UI {
 			else {
 				Notification.show("Error, We couldnt save your interests", Notification.Type.ERROR_MESSAGE);
 				
-			}
+			}*/
 		});
 		
 
@@ -282,7 +282,7 @@ public class MyProfileUI extends UI {
 		saveButton.setId("saveButton");
 		saveButton.addClickListener(event -> {
 
-			ArrayList<KnowledgesEnum> arrayListKnowledges = new ArrayList<KnowledgesEnum>();
+			/*ArrayList<KnowledgesEnum> arrayListKnowledges = new ArrayList<KnowledgesEnum>();
 			Set<KnowledgesEnum> setKnowledges = knowledges.getSelectedItems();
 			arrayListKnowledges.addAll(setKnowledges);
 			
@@ -305,7 +305,7 @@ public class MyProfileUI extends UI {
 			else {
 				Notification.show("Error, We couldnt save your properties", Notification.Type.ERROR_MESSAGE);
 
-			}
+			}*/
 		});
 
 		mainLayout.addComponent(knowledges, 0, 0);
