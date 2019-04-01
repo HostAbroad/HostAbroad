@@ -2,12 +2,10 @@ package com.presentation.card;
 
 import java.io.File;
 
-<<<<<<< HEAD
+
 import com.presentation.controller.Controller;
 import com.vaadin.icons.VaadinIcons;
-=======
 import com.vaadin.server.ExternalResource;
->>>>>>> 7f38cc3712e89dacb33125eaa685543f5ad3503b
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.ContentMode;

@@ -15,6 +15,18 @@ public class TUser {
 	
 	public TUser() {};
 	
+	public TUser(String nickname, String fullName, String email, String password, double rating, String description, boolean host, boolean traveler, ArrayList<Integer> likes){
+		this.nickname = nickname;
+		this.fullName = fullName;
+		this.email = email;
+		this.password = password;
+		this.rating = rating;
+		this.description = description;
+		this.host = host;
+		this.setTraveler(traveler);
+		this.likes = likes;
+	}
+	
 	public TUser(String nickname, String fullName, String email, String password, double rating, String description, boolean host,boolean traveler){
 		this.nickname = nickname;
 		this.fullName = fullName;
