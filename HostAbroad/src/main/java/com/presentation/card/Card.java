@@ -1,6 +1,8 @@
 package com.presentation.card;
 
 import java.io.File;
+
+import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.ContentMode;
@@ -58,7 +60,9 @@ public class Card extends Panel{
 		
 		VerticalLayout imageNickNameLayout = new VerticalLayout();
 		//later the loadImage will be called with the photo that correspond to the user
-		imageNickNameLayout.addComponent(this.loadImage("userIcon.png"));
+		Image userIcon = new Image();
+		userIcon.setSource(new ExternalResource("https://raw.githubusercontent.com/evivar/images/master/userIcon.png"));
+		imageNickNameLayout.addComponent(userIcon);
 		Label nicknameLabel = this.createNicknameLabel(nickname);
 		imageNickNameLayout.addComponent(nicknameLabel);
 		imageNickNameLayout.setComponentAlignment(nicknameLabel, Alignment.TOP_LEFT);

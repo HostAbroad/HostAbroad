@@ -5,6 +5,7 @@ import java.io.File;
 import com.presentation.headerAndFooter.Footer;
 import com.presentation.headerAndFooter.Header;
 import com.vaadin.annotations.Theme;
+import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
@@ -77,7 +78,7 @@ public class HomePage extends UI {
 		String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 
 		// Image as a file resource
-		FileResource resource = new FileResource(new File(basepath + "/WEB-INF/images/" + url));
+		FileResource resource = new FileResource(new File(/*basepath + "/WEB-INF/images/" +*/ url));
 
 		// Show the image
 		Image image = new Image("", resource);
@@ -100,7 +101,8 @@ public class HomePage extends UI {
 						+ "Do you want to pay with your knowledge?\n" + "Come and join us now, Traveler.\n",
 				ContentMode.PREFORMATTED);
 
-		Image img = this.loadImage("ftp://waws-prod-db3-087.ftp.azurewebsites.windows.net/images/traveller.png");
+		Image img = new Image();
+		img.setSource(new ExternalResource("https://raw.githubusercontent.com/evivar/images/master/traveler.jpg"));
 		img.setWidth(400, Unit.PIXELS);
 
 		Traveller.addComponent(titulo);
@@ -145,7 +147,8 @@ public class HomePage extends UI {
 						+ "Do you want to gain new knowledge?\n" + "Join us as Host and feel at home.\n",
 				ContentMode.PREFORMATTED);
 
-		Image img = this.loadImage("host.png");
+		Image img = new Image();
+		img.setSource(new ExternalResource("https://raw.githubusercontent.com/evivar/images/master/host.jpg"));
 		img.setWidth(400, Unit.PIXELS);
 
 		Host.addComponent(title);
