@@ -135,7 +135,7 @@ public class RegisterUserUI extends UI {
 					notif.setDelayMsec(10000);
 					notif.setPosition(Position.MIDDLE_CENTER);
 					notif.show(Page.getCurrent());
-					// after that we will redirect to MyProfile page
+					Page.getCurrent().setLocation("my_profile");
 				} else {
 					Notification notif = new Notification("User with this email or nickname abready exists.");
 					notif.setDelayMsec(10000);
