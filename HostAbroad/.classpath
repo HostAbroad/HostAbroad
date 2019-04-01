@@ -29,8 +29,8 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="F:/Descargas Chrome/commons-net-3.6-bin/commons-net-3.6.jar"/>
-	<classpathentry kind="lib" path="F:/Descargas Chrome/commons-net-3.6-bin/commons-net-3.6-sources.jar"/>
-	<classpathentry kind="lib" path="F:/Descargas Chrome/commons-net-3.6-bin/commons-net-examples-3.6.jar"/>
+	<classpathentry kind="lib" path="commons-net-3.6-sources.jar"/>
+	<classpathentry kind="lib" path="commons-net-3.6.jar"/>
+	<classpathentry kind="lib" path="commons-net-examples-3.6.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
