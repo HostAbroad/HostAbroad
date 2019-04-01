@@ -96,10 +96,14 @@ public class HomePage extends UI {
 				"    font-size: 35px;\n" + "    font-weight: bold;\n" + "    line-height: normal;\n" + "}";
 		styles.add(css);
 		titulo.setStyleName("v-label-stylename");
-		Label description = new Label(
-				"Traveling around the world is your passion? \n" + "Are you ready for new adventures?\n"
-						+ "Do you want to pay with your knowledge?\n" + "Come and join us now, Traveler.\n",
-				ContentMode.PREFORMATTED);
+		Label description = new Label("Traveling around the world is your passion?\n" + 
+				"<br>\n" + 
+				"Are you ready for new adventures?\n" + 
+				"<br>\n" + 
+				"Do you want to pay with your knowledge?\n" + 
+				"<br>\n" + 
+				"Come and join us now, Traveler.",
+				ContentMode.HTML);
 
 		Image img = new Image();
 		img.setSource(new ExternalResource("https://raw.githubusercontent.com/evivar/images/master/traveler.jpg"));
@@ -143,9 +147,14 @@ public class HomePage extends UI {
 		styles.add(css);
 		title.setStyleName("v-label-stylename");
 		Label description = new Label(
-				"Do you like meeting new people and learning \n" + "about different cultures?\n"
-						+ "Do you want to gain new knowledge?\n" + "Join us as Host and feel at home.\n",
-				ContentMode.PREFORMATTED);
+				"Do you like meeting new people and learning " +
+				"<br>\n" 
+				+ "about different cultures?\n" + 
+				"<br>\n" + 
+				"Do you want to gain new knowledge?\n" + 
+				"<br>\n" + 
+				"Join us as Host. Explore the world in the comfort of your home.\n",
+				ContentMode.HTML);
 
 		Image img = new Image();
 		img.setSource(new ExternalResource("https://raw.githubusercontent.com/evivar/images/master/host.jpg"));
@@ -174,8 +183,7 @@ public class HomePage extends UI {
 		Button login = new Button("Sign in");
 		login.setId("loginBtn");
 		login.addClickListener(event -> {
-			LoginUI form = new LoginUI();
-			setContent(form);
+			HomePage.this.getUI().getPage().setLocation("login");
 		});
 		panel.addComponent(login);
 		panel.setComponentAlignment(login, Alignment.MIDDLE_CENTER);
