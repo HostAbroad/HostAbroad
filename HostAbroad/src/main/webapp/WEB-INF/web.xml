@@ -61,4 +61,19 @@
     <url-pattern>/test/*</url-pattern>
   </servlet-mapping>
   
+  <display-name>MyProfile</display-name>
+  <servlet>
+    <servlet-name>MyProfile</servlet-name>
+    <servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
+    <init-param>
+      <param-name>UI</param-name>
+      <param-value>com.presentation.myProfileUI.MyProfileUI</param-value>
+    </init-param>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>MyProfile</servlet-name>
+    <url-pattern>/my_profile/*</url-pattern>
+  </servlet-mapping>
+  
 </web-app>
