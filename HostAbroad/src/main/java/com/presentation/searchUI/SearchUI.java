@@ -155,16 +155,17 @@ public class SearchUI extends UI{
 	private GridLayout createResultPanel(ArrayList<TUser> users) {
 		GridLayout result = new GridLayout();
 		result.setMargin(false);
-		result.setSizeUndefined();
+		result.setSizeFull();
+		result.setStyleName("v-scrollable");
 		result.removeAllComponents();
 		int counter = 1;
 		for(TUser u: users) {
 			Card card = new Card(u.getNickname(), u.getDescription());
 			card.setId("card" + counter++);
 			result.addComponent(card);
-			result.setComponentAlignment(card, Alignment.TOP_LEFT);
+			result.setComponentAlignment(card, Alignment.TOP_CENTER);
 		}
-		result.setHeight("100%");
+		result.setWidth("100%");
 		return result;
 	}
 	
