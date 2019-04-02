@@ -40,7 +40,10 @@
       <param-value>com.presentation.createUserUI.RegisterUserUI</param-value>
     </init-param>
   </servlet>
-  
+  <servlet-mapping>
+    <servlet-name>Register</servlet-name>
+    <url-pattern>/register/*</url-pattern>
+  </servlet-mapping>
   <display-name>Login</display-name>
   <servlet>
     <servlet-name>Login</servlet-name>

@@ -62,7 +62,7 @@ public class Card extends Panel{
 		VerticalLayout imageNickNameLayout = new VerticalLayout();
 		//later the loadImage will be called with the photo that correspond to the user
 		Image userIcon = new Image();
-		userIcon.setSource(new ExternalResource("https://raw.githubusercontent.com/evivar/images/master/userIcon.png"));
+		userIcon.setSource(new ExternalResource("https://raw.githubusercontent.com/evivar/images/master/cartas.jpg"));
 		imageNickNameLayout.addComponent(userIcon);
 		Label nicknameLabel = this.createNicknameLabel(nickname);
 		imageNickNameLayout.addComponent(nicknameLabel);
