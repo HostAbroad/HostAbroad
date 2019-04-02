@@ -33,7 +33,7 @@ public class SearchUI extends UI{
 	
 	private ArrayList<TUser> results;
 	private GridLayout secondaryLayout;
-	private VerticalLayout resultsLayout;
+	private GridLayout resultsLayout;
 
 	@Override
 	protected void init(VaadinRequest request) {
@@ -63,7 +63,7 @@ public class SearchUI extends UI{
 		mainVertical.addComponentsAndExpand(secondaryLayout);
 		
 		
-		this.resultsLayout = new VerticalLayout();
+		this.resultsLayout = new GridLayout();
 		resultsLayout.setSpacing(true);
 		this.resultsLayout.setSizeUndefined();
 		
@@ -116,11 +116,6 @@ public class SearchUI extends UI{
 					notif.show(Page.getCurrent());
 				}
 				else {
-					
-					SearchUI.this.results = new ArrayList<>();
-					resultsLayout = createResultPanel(results);
-					SearchUI.this.secondaryLayout.addComponent(resultsLayout);
-					
 					SearchUI.this.results = (ArrayList)filtered.getRight();
 					resultsLayout = createResultPanel(results);
 					SearchUI.this.secondaryLayout.addComponent(resultsLayout,1,0);
@@ -157,16 +152,16 @@ public class SearchUI extends UI{
 		return optionsPanel;
 	}
 
-	private VerticalLayout createResultPanel(ArrayList<TUser> users) {
-		VerticalLayout result = new VerticalLayout();
+	private GridLayout createResultPanel(ArrayList<TUser> users) {
+		GridLayout result = new GridLayout();
 		result.setMargin(false);
-		result.setSizeFull();
+		result.setSizeUndefined();
 		result.removeAllComponents();
 		int counter = 1;
 		for(TUser u: users) {
 			Card card = new Card(u.getNickname(), u.getDescription());
 			card.setId("card" + counter++);
-			result.addComponentAsFirst(card);
+			result.addComponent(card);
 			result.setComponentAlignment(card, Alignment.TOP_LEFT);
 		}
 		result.setHeight("100%");
