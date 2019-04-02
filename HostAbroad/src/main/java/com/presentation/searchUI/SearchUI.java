@@ -64,6 +64,7 @@ public class SearchUI extends UI{
 		
 		
 		this.resultsLayout = new VerticalLayout();
+		resultsLayout.setSpacing(true);
 		this.resultsLayout.setSizeUndefined();
 		
 		//search options layout
@@ -122,7 +123,8 @@ public class SearchUI extends UI{
 					
 					SearchUI.this.results = (ArrayList)filtered.getRight();
 					resultsLayout = createResultPanel(results);
-					SearchUI.this.secondaryLayout.addComponent(resultsLayout);
+					SearchUI.this.secondaryLayout.addComponent(resultsLayout,1,0);
+					SearchUI.this.secondaryLayout.setComponentAlignment(resultsLayout, Alignment.TOP_CENTER);
 				}
 				
 			}else if(travelerCheckbox.getValue()) {
@@ -136,7 +138,8 @@ public class SearchUI extends UI{
 				else {
 					SearchUI.this.results = (ArrayList)filtered.getRight();
 					SearchUI.this.resultsLayout = createResultPanel(results);
-					SearchUI.this.secondaryLayout.addComponent(resultsLayout);
+					SearchUI.this.secondaryLayout.addComponent(resultsLayout, 1, 0);
+					SearchUI.this.secondaryLayout.setComponentAlignment(resultsLayout, Alignment.TOP_CENTER);
 					
 				}
 			}
@@ -163,54 +166,11 @@ public class SearchUI extends UI{
 		for(TUser u: users) {
 			Card card = new Card(u.getNickname(), u.getDescription());
 			card.setId("card" + counter++);
-			result.addComponent(card);
+			result.addComponentAsFirst(card);
 			result.setComponentAlignment(card, Alignment.TOP_LEFT);
 		}
 		result.setHeight("100%");
 		return result;
 	}
 	
-	private HorizontalLayout createNavBar() {
-		HorizontalLayout navBarLayout = new HorizontalLayout();
-		navBarLayout.setWidth("100%");
-		//navBarLayout.setMargin(false);
-		
-		final Styles styles = Page.getCurrent().getStyles();
-		String css = ".valo .v-menubar {\n" 
-											+ "    height: 50px;\n" 
-											+ "    padding: 5px; \n"
-											+ "    border: white; \n"
-											+ "	   background-color: white; \n"
-											+ "}";
-		styles.add(css);
-		
-		MenuBar menu = new MenuBar();
-		menu.setStyleName("valo .v-menubar");
-		MenuItem profile = menu.addItem("My Profile");
-		
-		//created search working button
-		MenuItem search = menu.addItem("Search");
-		//this is the redirection of the pages.
-		search.setCommand(new Command() {
-			
-			//this method redirects you to the page HostAbtoad/chosenLocation
-			@Override
-			public void menuSelected(MenuItem selectedItem) {
-			SearchUI.this.getUI().getPage().setLocation("search");
-			}
-		});
-		MenuItem logIn = menu.addItem("Log in/ Sign in");
-		logIn.setCommand(new Command() {
-			//this method redirects you to the page HostAbtoad
-			@Override
-			public void menuSelected(MenuItem selectedItem) {
-			SearchUI.this.getUI().getPage().setLocation("/HostAbroad");
-			}
-		});
-		navBarLayout.addComponent(menu);
-		navBarLayout.setComponentAlignment(menu, Alignment.TOP_LEFT);
-		navBarLayout.setMargin(false);
-		
-		return navBarLayout;
-	}
 }
