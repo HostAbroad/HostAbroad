@@ -48,7 +48,7 @@ $login-background-color: $editor-background-color !default;
 // Get more background images from unsplash.com (remember to optimize the filesize)
 $login-background-image: "img/archetype-login-bg.jpg" !default;
 
-$editor-shadow: 0 0 10px 10px rgba(0,0,0,.1) !default;
+$editor-shadow: 0 0 10px 10px rgba(0, 0, 0, .1) !default;
 $editor-embed-background-color: darken($editor-background-color, 5%) !default;
 $editor-raised-background-color: lighten($editor-background-color, 10%) !default;
 $editor-caption-font-color: valo-font-color($editor-background-color, 0.5) !default;
@@ -256,6 +256,7 @@ $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
     }
     // hide the logo for a more compact header when the menu is narrow
     .v-ui[width-range~="801px-1100px"] .valo-menu-part {
+
         .v-slot-logo,
         .v-slot-logo + .v-spacing {
             display: none;
@@ -331,12 +332,14 @@ $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
     }
 
     .header-color-blue {
-        background-color: #4d94ff;
+        background-color: #5dc1b9;
+        height: 80px;
     }
 
     .title-label {
         font-size: 32px;
         color: #ffffff;
+        padding: 10px;
     }
 
     .v-link a span {
@@ -348,19 +351,167 @@ $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
         text-decoration-line: none;
     }
 
-    .borderless-button{
+    .borderless-button {
         color: #ffffff;
-
     }
 
-    .footer-color-gray{
+    .button-social {
+        box-shadow: none;
+        background-image: none;
+        background-color: transparent;
+        color: white;
+        border: none;
+        font-size: 20px;
+    }
+
+    .button-social:hover {
+        box-shadow: none;
+        background-image: none;
+        background-color: transparent;
+        color: white;
+        border: none;
+        font-size: 20px;
+    }
+
+    .v-button-borderless-colored {
+        color: #FFFFFF;
+    }
+
+    .v-button-borderless-colored:hover {
+        color: #FFFFFF;
+    }
+
+    .footer-color-gray {
         background-color: #3b3f42;
         color: #ffffff;
     }
 
-    .login-layout{
+    .v-button-icon-align-top-pi {
+        background: #15870d;
+        border: none;
+        color: #FFFFFF;
+        text-align: center;
+    }
+
+    .v-button-icon-align-top-pi:hover {
+        background: #434343;
+        letter-spacing: 1px;
+        -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+        -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+        box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+        transition: all 0.4s ease 0s;
+    }
+
+    .v-button-icon-align-top-t {
+        background: #b51f1f;
+        border: none;
+        color: #FFFFFF;
+        text-align: center;
+    }
+
+    .v-button-icon-align-top-t:hover {
+        background: #434343;
+        letter-spacing: 1px;
+        -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+        -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+        box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+        transition: all 0.4s ease 0s;
+    }
+
+    .v-button-icon-align-top-h {
+        background: #ab6623;
+        border: none;
+        color: #FFFFFF;
+        text-align: center;
+    }
+
+    .v-button-icon-align-top-h:hover {
+        background: #434343;
+        letter-spacing: 1px;
+        -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+        -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+        box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+        transition: all 0.4s ease 0s;
+    }
+
+    .v-button-icon-align-top-i {
+        background: #0d7b54;
+        border: none;
+        color: #FFFFFF;
+        text-align: center;
+    }
+
+    .v-button-icon-align-top-i:hover {
+        background: #434343;
+        letter-spacing: 1px;
+        -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+        -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+        box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+        transition: all 0.4s ease 0s;
+    }
+
+    .v-button-icon-align-top-c {
+        background: #760f64;
+        border: none;
+        color: #FFFFFF;
+        text-align: center;
+    }
+
+    .v-button-icon-align-top-c:hover {
+        background: #434343;
+        letter-spacing: 1px;
+        -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+        -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+        box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+        transition: all 0.4s ease 0s;
+    }
+
+    .v-button-icon-align-top-m {
+        background: #b3b300;
+        border: none;
+        color: #FFFFFF;
+        text-align: center;
+    }
+
+    .v-button-icon-align-top-m:hover {
+        background: #434343;
+        letter-spacing: 1px;
+        -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+        -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+        box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+        transition: all 0.4s ease 0s;
+    }
+
+    .v-button-icon-align-top-ml {
+        background: #3b5998;
+        border: none;
+        color: #FFFFFF;
+        text-align: center;
+    }
+
+    .v-button-icon-align-top-ml:hover {
+        background: #434343;
+        letter-spacing: 1px;
+        -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+        -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+        box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+        transition: all 0.4s ease 0s;
+    }
+
+    .login-layout {
         background-image: url(https://raw.githubusercontent.com/evivar/images/master/wallpaper.jpg);
     }
+
+    .v-textarea {
+        width: 100%;
+    }
+
+    .card-like-button:hover {
+        background: red;
+        letter-spacing: 1px;
+        -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+        -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+        box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+        transition: all 0.4s ease 0s;
+    }
 }
-
-

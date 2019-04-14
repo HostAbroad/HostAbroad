@@ -24,7 +24,8 @@ public class Header extends Panel {
 		header.setStyleName("header-color-blue");
 
 		header.setWidth("100%");
-		header.setMargin(true);
+		header.setMargin(false);
+		header.setHeight(60, Unit.PIXELS);
 		header.setSpacing(false);
 		Label title = new Label("Host Abroad");
 		/*
@@ -32,21 +33,21 @@ public class Header extends Panel {
 		 */
 		title.setStyleName("title-label");
 		header.addComponent(title);
-		header.setComponentAlignment(title, Alignment.MIDDLE_LEFT);
+		header.setComponentAlignment(title, Alignment.TOP_LEFT);
 
 		GridLayout menu = new GridLayout(4, 1);
 
 		Button home = new Button("Home");
 		home.setStyleName("borderless-button");
-		home.setStyleName("v-button v-widget borderless v-button-borderless");
+		home.setStyleName("v-button v-widget borderless-colored v-button-borderless-colored");
 		home.addClickListener(event -> {
-			Page.getCurrent().setLocation("HostAbroad");
+			Page.getCurrent().setLocation("/");
 		});
 		menu.addComponent(home);
 
 		Button profile = new Button("My Profile");
 		profile.setStyleName("borderless-button");
-		profile.setStyleName("v-button v-widget borderless v-button-borderless");
+		profile.setStyleName("v-button v-widget borderless-colored v-button-borderless-colored");
 		profile.addClickListener(event -> {
 			Page.getCurrent().setLocation("my_profile");
 		});
@@ -54,7 +55,7 @@ public class Header extends Panel {
 
 		Button search = new Button("Search");
 		search.setStyleName("borderless-button");
-		search.setStyleName("v-button v-widget borderless v-button-borderless");
+		search.setStyleName("v-button v-widget borderless-colored v-button-borderless-colored");
 		search.addClickListener(event -> {
 			Page.getCurrent().setLocation("search");
 			});
@@ -62,7 +63,7 @@ public class Header extends Panel {
 
 		Button contact = new Button("Contact us");
 		contact.setStyleName("borderless-button");
-		contact.setStyleName("v-button v-widget borderless v-button-borderless");
+		contact.setStyleName("v-button v-widget borderless-colored v-button-borderless-colored");
 
 		contact.addClickListener(event -> {
 			JavaScript.getCurrent().execute("alert('Send us an email to hostabroad@outlook.es')");

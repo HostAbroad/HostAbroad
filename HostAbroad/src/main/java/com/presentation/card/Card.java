@@ -1,9 +1,10 @@
 package com.presentation.card;
 
 import java.io.File;
-import com.vaadin.icons.VaadinIcons;
+
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileResource;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Alignment;
@@ -48,7 +49,7 @@ public class Card extends Panel{
 	}
 	
 	private Label createNicknameLabel(String nick) {
-		Label nickname = new Label("<b> &emsp;&ensp;" + nick + "</b>");
+		Label nickname = new Label("<b> &nbsp;" + nick + "</b>");
 		nickname.setContentMode(ContentMode.HTML);
 		
 		return nickname;
@@ -64,9 +65,10 @@ public class Card extends Panel{
 		Image userIcon = new Image();
 		userIcon.setSource(new ExternalResource("https://raw.githubusercontent.com/evivar/images/master/cartas.jpg"));
 		imageNickNameLayout.addComponent(userIcon);
+		imageNickNameLayout.setComponentAlignment(userIcon, Alignment.MIDDLE_CENTER);
 		Label nicknameLabel = this.createNicknameLabel(nickname);
 		imageNickNameLayout.addComponent(nicknameLabel);
-		imageNickNameLayout.setComponentAlignment(nicknameLabel, Alignment.TOP_LEFT);
+		imageNickNameLayout.setComponentAlignment(nicknameLabel, Alignment.MIDDLE_CENTER);
 		imageNickNameLayout.setMargin(false);
 		
 		return imageNickNameLayout;
@@ -87,12 +89,13 @@ public class Card extends Panel{
 		// Put the content in it
 		area.setValue(description);
 		
-		VaadinIcons v = VaadinIcons.HEART;
-		Button button = new Button("", v);
+		Button like = new Button();
+		like.setStyleName("card-like-button");
+		like.setIcon(FontAwesome.HEART);
 		descriptionLayout.setWidth("500px");
-		descriptionLayout.addComponent(button);
+		descriptionLayout.addComponent(like);
 		descriptionLayout.addComponent(area);
-		descriptionLayout.setComponentAlignment(button, Alignment.TOP_RIGHT);
+		descriptionLayout.setComponentAlignment(like, Alignment.TOP_RIGHT);
 		
 		
 		return descriptionLayout;
