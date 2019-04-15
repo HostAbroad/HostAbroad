@@ -12,6 +12,7 @@ public class TUser {
 	private boolean traveler;
 	private String email;
 	private ArrayList<Integer> likes;
+	private ArrayList<Integer> matches;
 	
 	public TUser() {};
 	
@@ -43,7 +44,6 @@ public class TUser {
 		this.rating = rating;
 		this.description = description;
 		this.host = host;
-		this.traveler = traveler;
 	}
 	
 	public TUser(String nickname, double rating, boolean traveler, String description){
@@ -161,5 +161,13 @@ public class TUser {
 
 	public void setLikes(ArrayList<Integer> likes) {
 		this.likes = likes;
+	}
+	
+	public ArrayList<Integer> getMatches() {
+		return matches;
+	}
+
+	public void setMatches(ArrayList<Integer> matches) {
+		this.matches = matches;
 	}
 }
