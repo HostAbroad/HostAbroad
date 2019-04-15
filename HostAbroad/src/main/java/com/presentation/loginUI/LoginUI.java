@@ -18,6 +18,7 @@ import com.vaadin.server.VaadinService;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
@@ -102,6 +103,9 @@ public class LoginUI extends UI {
         pass.setIcon(VaadinIcons.LOCK); //Vaadin Icons for textfield
         form.addComponent(pass);
         form.setComponentAlignment(pass,Alignment.MIDDLE_CENTER);
+        
+        CheckBox rememberMe = new CheckBox("Remember me");
+        rememberMe.setId("checkBoxRememberMe");
 
         // Button allows specifying icon resource in constructor
         Button login = new Button("Login", VaadinIcons.CHECK);
@@ -109,9 +113,8 @@ public class LoginUI extends UI {
         login.addClickListener(event->{
             if(!email.getValue().equals("") && !pass.getValue().equals("")){
                 TUser tUser = new TUser(email.getValue(), pass.getValue());
-                Pair<Integer, Object> filtered = Controller.getInstance().action(CommandEnum.Commands.CommandLogin, tUser);
-                if(filtered.getLeft() == 1){
-                    LoginUI.this.getUI().getPage().setLocation("search");
+                if(AuthService.authenticate(tUser, rememberMe.getValue())){
+                    Page.getCurrent().setLocation("my_profile");
                 }
                 else {
                     Notification.show("Invalid credentials", Notification.Type.ERROR_MESSAGE);
@@ -119,8 +122,10 @@ public class LoginUI extends UI {
             }
 
         });
+        form.addComponent(rememberMe);
+        form.setComponentAlignment(rememberMe, Alignment.MIDDLE_CENTER);
         form.addComponent(login);
-        form.setComponentAlignment(login,Alignment.MIDDLE_CENTER);
+        form.setComponentAlignment(login, Alignment.MIDDLE_CENTER);
         form.setMargin(true);
         this.setContent(form);
         this.setSizeUndefined();

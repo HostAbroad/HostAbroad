@@ -104,4 +104,19 @@
     <url-pattern>/my_places/*</url-pattern>
   </servlet-mapping>
   
+  <display-name>LogOutBtnUI</display-name>
+  <servlet>
+    <servlet-name>LogOutBtnUI</servlet-name>
+    <servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
+    <init-param>
+      <param-name>UI</param-name>
+      <param-value>com.presentation.loginUI.LogOutButton</param-value>
+    </init-param>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>LogOutBtnUI</servlet-name>
+    <url-pattern>/log_out/*</url-pattern>
+  </servlet-mapping>
+  
 </web-app>
