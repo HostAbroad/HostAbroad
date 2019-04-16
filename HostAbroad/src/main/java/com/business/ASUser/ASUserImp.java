@@ -13,7 +13,7 @@ import com.business.businessObjects.Host;
 import com.business.businessObjects.Likes;
 import com.business.businessObjects.Place;
 import com.business.businessObjects.Traveler;
-import com.business.businessObjects.User;
+import com.business.businessObjects.UserHA;
 import com.business.transfers.THost;
 import com.business.transfers.TPlace;
 import com.business.transfers.TTraveler;
@@ -36,14 +36,14 @@ public class ASUserImp implements ASUser {
 			EntityTransaction tr = em.getTransaction();
 			tr.begin();
 
-			User user;
+			UserHA user;
 			try {
-				String query = "SELECT * FROM USER WHERE NICKNAME = ?1 OR EMAIL = ?2";
-				user = (User) em.createNativeQuery(query, User.class).setParameter(1, tUser.getNickname())
+				String query = "SELECT * FROM USERHA WHERE NICKNAME = ?1 OR EMAIL = ?2";
+				user = (UserHA) em.createNativeQuery(query, UserHA.class).setParameter(1, tUser.getNickname())
 						.setParameter(2, tUser.getEmail()).getSingleResult();
 
 			} catch (NoResultException e) {
-				user = new User(tUser.getNickname(), tUser.getFullName(), tUser.getEmail(),
+				user = new UserHA(tUser.getNickname(), tUser.getFullName(), tUser.getEmail(),
 						tUser.getPassword().hashCode());
 				em.persist(user);
 				result = true;
@@ -72,10 +72,10 @@ public class ASUserImp implements ASUser {
 			EntityTransaction tr = em.getTransaction();
 			tr.begin();
 
-			String consulta = "SELECT * FROM USER WHERE email = ?1 AND password = ?2";
-			User result;
+			String consulta = "SELECT * FROM USERHA WHERE email = ?1 AND password = ?2";
+			UserHA result;
 			try {
-				result = (User) em.createNativeQuery(consulta, User.class).setParameter(1, tUser.getEmail())
+				result = (UserHA) em.createNativeQuery(consulta, UserHA.class).setParameter(1, tUser.getEmail())
 						.setParameter(2, tUser.getPassword().hashCode()).getSingleResult();
 				logedUser = new TUser();
 
@@ -117,7 +117,7 @@ public class ASUserImp implements ASUser {
 		EntityTransaction t = em.getTransaction();
 		t.begin();
 
-		User user = em.find(User.class, tHost.getNickname());
+		UserHA user = em.find(UserHA.class, tHost.getNickname());
 
 		if (user != null) {
 			Host host;
@@ -166,7 +166,7 @@ public class ASUserImp implements ASUser {
 		EntityTransaction t = em.getTransaction();
 		t.begin();
 
-		User user = em.find(User.class, tTraveler.getNickname());
+		UserHA user = em.find(UserHA.class, tTraveler.getNickname());
 
 		if (user != null) {
 			Traveler traveler;
