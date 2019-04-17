@@ -1,6 +1,8 @@
 package com.presentation.card;
 
 import java.io.File;
+
+import com.vaadin.annotations.Theme;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileResource;
@@ -15,7 +17,7 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
 
-
+@Theme("mytheme")
 public class Card extends Panel{
 	public Card(String nickname, String description) {
 		//This is the horizontalLayout. It's used to locate the 2 inner VLayouts.
