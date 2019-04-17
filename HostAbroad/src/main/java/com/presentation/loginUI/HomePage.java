@@ -44,6 +44,7 @@ public class HomePage extends UI {
 		mainLayout.setComponentAlignment(grid, Alignment.MIDDLE_CENTER);
 		mainLayout.addComponent(new Label("&nbsp;", ContentMode.HTML));
 		Component bottom = createBottomPanel();
+		
 		mainLayout.addComponent(bottom);
 		mainLayout.setComponentAlignment(bottom, Alignment.MIDDLE_CENTER);
 		mainLayout.addComponent(new Label("&nbsp;", ContentMode.HTML));
