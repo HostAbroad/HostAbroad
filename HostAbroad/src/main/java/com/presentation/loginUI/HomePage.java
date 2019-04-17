@@ -41,7 +41,7 @@ public class HomePage extends UI {
 
 		mainPanel = new Panel();
 
-		GridLayout grid = new GridLayout(2, 3); // I use a grid layout because I will need 3 rows and 3 columns
+		GridLayout grid = new GridLayout(2, 4); // I use a grid layout because I will need 3 rows and 3 columns
 		// Locating the inner layouts
 		Component header = new Header();
 		mainLayout.addComponent(header);
@@ -49,13 +49,14 @@ public class HomePage extends UI {
 		
 
 		grid.addComponent(createLeftPartOfLogin(), 0, 0);
+		grid.addComponent(createRightPartOfLogin(), 1, 0);
 
 		Label separator = new Label("<hr />", ContentMode.HTML);
 		separator.setHeight(59, Unit.PIXELS);
 		separator.setWidthUndefined();
 
 		grid.addComponent(separator);
-		grid.addComponent(createCenterPartOfLogin(), 0, 2, 1, 2); // Buttons
+		grid.addComponent(createCenterPartOfLogin(), 0, 3, 1, 3);
 		grid.setSizeFull();
 		grid.setWidth("100%");
 
@@ -85,28 +86,6 @@ public class HomePage extends UI {
 		// -----------------------------------
 
 		return image;
-	}
-	
-	private HorizontalLayout splitScreen() {
-		HorizontalLayout mainLayout = new HorizontalLayout();
-		mainLayout.setSpacing(true);
-		mainLayout.setMargin(true);
-		mainLayout.setStyleName("homePage-main-layout");
-		
-		
-		VerticalLayout travelerLayout = new VerticalLayout();
-		travelerLayout.setSpacing(true);
-		travelerLayout.setStyleName("homePage-traveler-layout");
-		
-		
-		
-		VerticalLayout hostLayout = new VerticalLayout();
-		hostLayout.setSpacing(true);
-		hostLayout.setStyleName("homePage-host-layout");
-		
-		
-		
-		return mainLayout;
 	}
 
 	private Component createLeftPartOfLogin() { //
