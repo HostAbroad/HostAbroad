@@ -514,4 +514,40 @@ $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
         box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
         transition: all 0.4s ease 0s;
     }
+
+    .homePage-main-layout {
+        background: url(https://raw.githubusercontent.com/evivar/images/master/gray2.png);
+    }
+
+    .homePage-traveler-layout{
+        text-align: center;
+    }
+
+    .homePage-traveler-description{
+        text-align: center;
+    }
+
+    .homePage-host-description{
+        text-align: center;
+    }
+
+    .homePage-traveler-img {
+        border-radius: 50%;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .homePage-traveler-title {
+        font-size: 32px;
+        font-weight: bold;
+    }
+
+    .homePage-host-img {
+        border-radius: 50%;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .homePage-host-title {
+        font-size: 32px;
+        font-weight: bold;
+    }
 }

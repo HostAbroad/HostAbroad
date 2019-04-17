@@ -2,16 +2,17 @@ package com.presentation.myProfileUI;
 
 import java.util.ArrayList;
 
+import javax.servlet.annotation.WebServlet;
+
 import org.vaadin.easyuploads.UploadField;
 
 import com.business.enums.CountriesEnum;
 import com.business.enums.DurationOfStayEnum;
 import com.business.enums.InterestsEnum;
-import com.business.enums.KnowledgesEnum;
 import com.business.transfers.THost;
 import com.business.transfers.TTraveler;
 import com.business.transfers.TUser;
-import com.jarektoro.responsivelayout.ResponsiveLayout;
+import com.fo0.advancedtokenfield.main.AdvancedTokenField;
 import com.presentation.card.Card;
 import com.presentation.commands.CommandEnum.Commands;
 import com.presentation.commands.Pair;
@@ -19,6 +20,7 @@ import com.presentation.controller.Controller;
 import com.presentation.headerAndFooter.Footer;
 import com.presentation.headerAndFooter.Header;
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.Binder;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.data.validator.RegexpValidator;
@@ -28,6 +30,7 @@ import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinServlet;
 import com.vaadin.shared.Position;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -49,8 +52,6 @@ import com.vaadin.ui.VerticalLayout;
 @Theme("mytheme")
 @SuppressWarnings("deprecation")
 public class MyProfileUI extends UI {
-
-	private TabSheet tabs;
 
 	// Hay que pasarle un transfer usuario desde el LoginUI, y de ahi sacar todos
 	// los campos
@@ -340,10 +341,10 @@ public class MyProfileUI extends UI {
 		mainLayoutInterests.setSizeFull();
 		mainLayoutInterests.setSpacing(true);
 
-		CheckBoxGroup<KnowledgesEnum> knowledges = new CheckBoxGroup<>("Knowledges: ");
+		/*CheckBoxGroup<KnowledgesEnum> knowledges = new CheckBoxGroup<>("Knowledges: ");
 		knowledges.setItems(KnowledgesEnum.values());
 		knowledges.setId("knowledges");
-
+*/
 		CheckBoxGroup<CountriesEnum> countries = new CheckBoxGroup<>("Countries I want to visit: ");
 		countries.setItems(CountriesEnum.values());
 		countries.setId("countries");
@@ -357,8 +358,8 @@ public class MyProfileUI extends UI {
 
 		if (resultRead.getLeft() == 1) {
 
-			for (int i = 0; i < ((TTraveler) resultRead.getRight()).getListOfKnowledges().size(); i++)
-				knowledges.select(((TTraveler) resultRead.getRight()).getListOfKnowledges().get(i));
+			/*for (int i = 0; i < ((TTraveler) resultRead.getRight()).getListOfKnowledges().size(); i++)
+				knowledges.select(((TTraveler) resultRead.getRight()).getListOfKnowledges().get(i));*/
 
 			for (int i = 0; i < ((TTraveler) resultRead.getRight()).getListOfCountries().size(); i++)
 				countries.select(((TTraveler) resultRead.getRight()).getListOfCountries().get(i));
@@ -401,7 +402,11 @@ public class MyProfileUI extends UI {
 			 */
 		});
 
-		mainLayout.addComponent(knowledges, 0, 0);
+		AdvancedTokenField tfm = new AdvancedTokenField();
+		tfm.setCaption("Knowledges");
+		mainLayout.addComponent(tfm, 0, 0);
+		
+		//mainLayout.addComponent(knowledges, 0, 0);
 		mainLayout.addComponent(days, 1, 0);
 		mainLayout.addComponent(countries, 2, 0);
 		mainLayout.addComponent(saveButton, 3, 0);

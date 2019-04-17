@@ -2,10 +2,12 @@ package com.presentation.headerAndFooter;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.Page;
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.JavaScript;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 
@@ -15,7 +17,7 @@ public class Footer extends Panel {
 	public Footer() {
 		GridLayout footer = new GridLayout(3, 1);
 		
-		GridLayout social = new GridLayout(3, 1);
+		GridLayout social = new GridLayout(4, 1);
 		//social.setSpacing(true);
 		
 		footer.setStyleName("footer-color-gray");
@@ -45,6 +47,19 @@ public class Footer extends Panel {
 		instagram.setCaption("Instagram");
 		instagram.setStyleName("button-social");
 		social.addComponent(instagram);
+		
+		Button login = new Button();
+		login.setCaption("Log in/out");
+		login.addClickListener(event->{
+			if(Header.getLoged()) {
+				Header.setLoged(false);
+			}
+			else {
+				Header.setLoged(true);
+			}
+			Page.getCurrent().setLocation("HostAbroad");
+		});
+		social.addComponent(login);
 		
 		footer.addComponent(social);
 		footer.setComponentAlignment(social, Alignment.MIDDLE_CENTER);
