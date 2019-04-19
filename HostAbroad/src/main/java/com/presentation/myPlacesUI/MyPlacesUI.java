@@ -1,9 +1,8 @@
 package com.presentation.myPlacesUI;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,38 +89,44 @@ public class MyPlacesUI extends UI {
 		// listener for successful upload
 		class ImageReceiver implements Receiver, SucceededListener {
 
-            public File file;
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = -1978994458420453238L;
+
+			public File file;
             
-            //FTPClient ftp = new FTPClient();
+            FTPClient client = new FTPClient();
             
-            public OutputStream receiveUpload(String filename,
-                                              String mimeType) {
-                // Create upload stream
-            	OutputStream fos; // Stream to write to
-                try {
-                	/*ftp.connect("ftp://waws-prod-db3-087.ftp.azurewebsites.windows.net");
-                	ftp.login("HostAbroad\\HostAbroad", "Ftp12345");*/
-                    // Open the file for writing.
-                    file = new File(filename);
-                    fos = new FileOutputStream(file);
-                    FileInputStream fis = new FileInputStream(file);
-                    /*ftp.storeFile(filename, fis);
-                    ftp.logout();*/
-                } catch (IOException e) {
-                    new Notification("Could not open file<br/>",
-                                     e.getMessage(),
-                                     Notification.Type.ERROR_MESSAGE)
-                        .show(Page.getCurrent());
-                    return null;
-                }
-                return fos; // Return the output stream to write to
-            }
 
             public void uploadSucceeded(SucceededEvent event) {
                 // Show the uploaded file in the image viewer
                 image.setVisible(true);
                 image.setSource(new FileResource(file));
             }
+			@Override
+			public OutputStream receiveUpload(String filename, String mimeType) {
+				filename = file.toString();
+				// Read the file from resources folder.
+		        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		        try (InputStream is = classLoader.getResourceAsStream(filename)) {
+		            client.connect("087.ftp.azurewebsites.windows.net");
+		            client.login("HostAbroad\\HostAbroad", "Ftp12345");
+
+		            // Store file to server
+		            client.storeFile(filename, is);
+		            client.logout();
+		        } catch (IOException e) {
+		            e.printStackTrace();
+		        } finally {
+		            try {
+		                client.disconnect();
+		            } catch (IOException e) {
+		                e.printStackTrace();
+		            }
+		        }
+				return null;
+			}
         };
         ImageReceiver receiver = new ImageReceiver();
         

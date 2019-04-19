@@ -1,5 +1,6 @@
 package com.presentation.searchUI;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import com.business.transfers.TUser;
@@ -10,6 +11,7 @@ import com.presentation.controller.Controller;
 import com.presentation.headerAndFooter.Footer;
 import com.presentation.headerAndFooter.Header;
 import com.vaadin.annotations.Theme;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
 import com.vaadin.server.Page.Styles;
 import com.vaadin.server.VaadinRequest;
@@ -17,12 +19,9 @@ import com.vaadin.shared.Position;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.MenuBar;
-import com.vaadin.ui.MenuBar.Command;
-import com.vaadin.ui.MenuBar.MenuItem;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
@@ -57,33 +56,36 @@ public class SearchUI extends UI{
 		mainVertical.setMargin(false);
 		//secondary layout for the 2 parts
 		
-		secondaryLayout = new GridLayout(2, 1);
-		secondaryLayout.setSizeFull();
+		secondaryLayout = new GridLayout(3, 1);
+		secondaryLayout.setSizeUndefined();
 		
 		mainVertical.addComponentsAndExpand(secondaryLayout);
 		
 		
 		this.resultsLayout = new GridLayout();
-		resultsLayout.setSpacing(true);
-		this.resultsLayout.setSizeUndefined();
+		this.resultsLayout.setSizeFull();
+		this.resultsLayout.setWidthUndefined();
+		
 		
 		//search options layout
 		VerticalLayout searchOptionsLayout = new VerticalLayout();
 		searchOptionsLayout.setSizeFull();
+		searchOptionsLayout.setWidthUndefined();
 		searchOptionsLayout.addComponentsAndExpand(this.createSearchOptions());
-		searchOptionsLayout.setSizeUndefined();
 		searchOptionsLayout.setMargin(false);
 		
 		final Styles styles = Page.getCurrent().getStyles();
 		String css = ".layout-with-border {\n" 
-											+ "    border: 3px solid #FF6F61;\n" 
+											+ "    border: 2px solid #000000;\n" 
 											+ "    border-radius: 5px; \n"
+											+ "    box-shadow: 3px 5px 5px #b3b3b3; \n"
 											+ "}";
 		styles.add(css);
 		searchOptionsLayout.addStyleName("layout-with-border");
-		
 		secondaryLayout.addComponent(searchOptionsLayout);
-
+		Label gap = new Label();
+		gap.setWidth("15em");
+		secondaryLayout.addComponent(gap);
 		secondaryLayout.addComponent(resultsLayout);
 		//resultsLayout.setSizeFull();
 		mainVertical.addComponent(new Footer());
@@ -94,19 +96,22 @@ public class SearchUI extends UI{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private Panel createSearchOptions() {
 		Panel optionsPanel = new Panel();
-		optionsPanel.setHeight("100%");
-		optionsPanel.setWidth("20%");
+		optionsPanel.setSizeFull();
+		//optionsPanel.setWidth("20%");
 	
 		//checkbox
 		CheckBox hostCheckbox = new CheckBox("Host");
+		hostCheckbox.setIcon(FontAwesome.HOME);
 		hostCheckbox.setId("checkBoxHost");
 		CheckBox travelerCheckbox = new CheckBox("Traveler");
+		travelerCheckbox.setIcon(FontAwesome.PAPER_PLANE);
 		travelerCheckbox.setId("checkBoxtraveler");
 		//Button Accept
-		Button accept = new Button("Accept");
+		Button accept = new Button("Search");
+		accept.setIcon(FontAwesome.SEARCH);
 		accept.setId("acceptButton");
 		accept.addClickListener(event->{
-			SearchUI.this.secondaryLayout.removeComponent(1, 0);
+			SearchUI.this.secondaryLayout.removeComponent(2, 0);
 			if(hostCheckbox.getValue()) {
 				Pair<Integer, Object> filtered = Controller.getInstance().action(Commands.CommandSearchHost, null);
 				if(filtered.getLeft() == 0) {
@@ -118,7 +123,7 @@ public class SearchUI extends UI{
 				else {
 					SearchUI.this.results = (ArrayList)filtered.getRight();
 					resultsLayout = createResultPanel(results);
-					SearchUI.this.secondaryLayout.addComponent(resultsLayout,1,0);
+					SearchUI.this.secondaryLayout.addComponent(resultsLayout,2,0);
 					SearchUI.this.secondaryLayout.setComponentAlignment(resultsLayout, Alignment.TOP_CENTER);
 				}
 				
@@ -133,19 +138,22 @@ public class SearchUI extends UI{
 				else {
 					SearchUI.this.results = (ArrayList)filtered.getRight();
 					SearchUI.this.resultsLayout = createResultPanel(results);
-					SearchUI.this.secondaryLayout.addComponent(resultsLayout, 1, 0);
+					SearchUI.this.secondaryLayout.addComponent(resultsLayout, 2, 0);
 					SearchUI.this.secondaryLayout.setComponentAlignment(resultsLayout, Alignment.TOP_CENTER);
-					
+					File archivo = new File("D:\\Descargas Chrome\\paraimagenes-imagen.bin");
+					archivo.renameTo(new File("D:\\Descargas Chrome\\ARCHIVORENOMBRADOCONJAVA.jpeg"));
 				}
 			}
 		});
 		accept.setVisible(true);
 		
-		//
 		VerticalLayout v = new VerticalLayout();
-		v.addComponent(hostCheckbox);
-		v.addComponent(travelerCheckbox);
+		HorizontalLayout h = new HorizontalLayout();
+		h.addComponent(hostCheckbox);
+		h.addComponent(travelerCheckbox);
+		v.addComponent(h);
 		v.addComponent(accept);
+		v.setComponentAlignment(accept, Alignment.BOTTOM_CENTER);
 		
 		optionsPanel.setContent(v);
 		
@@ -153,8 +161,9 @@ public class SearchUI extends UI{
 	}
 
 	private GridLayout createResultPanel(ArrayList<TUser> users) {
-		GridLayout result = new GridLayout();
-		result.setMargin(false);
+		GridLayout result = new GridLayout(1, users.size());
+		result.setMargin(true);
+		result.setSpacing(true);
 		result.setSizeFull();
 		result.setStyleName("v-scrollable");
 		result.removeAllComponents();
