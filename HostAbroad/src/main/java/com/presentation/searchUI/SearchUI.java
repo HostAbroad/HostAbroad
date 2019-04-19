@@ -3,6 +3,7 @@ package com.presentation.searchUI;
 import java.io.File;
 import java.util.ArrayList;
 
+import com.business.enums.SearchEnum;
 import com.business.transfers.TUser;
 import com.presentation.card.Card;
 import com.presentation.commands.CommandEnum.Commands;
@@ -112,38 +113,27 @@ public class SearchUI extends UI{
 		accept.setId("acceptButton");
 		accept.addClickListener(event->{
 			SearchUI.this.secondaryLayout.removeComponent(2, 0);
-			if(hostCheckbox.getValue()) {
-				Pair<Integer, Object> filtered = Controller.getInstance().action(Commands.CommandSearchHost, null);
-				if(filtered.getLeft() == 0) {
-					Notification notif = new Notification( "There are no users matching your criteria.");
-					notif.setDelayMsec(10000);
-					notif.setPosition(Position.MIDDLE_CENTER);
-					notif.show(Page.getCurrent());
-				}
-				else {
-					SearchUI.this.results = (ArrayList)filtered.getRight();
-					resultsLayout = createResultPanel(results);
-					SearchUI.this.secondaryLayout.addComponent(resultsLayout,2,0);
-					SearchUI.this.secondaryLayout.setComponentAlignment(resultsLayout, Alignment.TOP_CENTER);
-				}
-				
-			}else if(travelerCheckbox.getValue()) {
-				Pair<Integer, Object> filtered = Controller.getInstance().action(Commands.CommandSearchTraveler, null);
-				if(filtered.getLeft() == 0) {
-					Notification notif = new Notification( "There are no users matching your criteria.");
-					notif.setDelayMsec(10000);
-					notif.setPosition(Position.MIDDLE_CENTER);
-					notif.show(Page.getCurrent());
-				}
-				else {
-					SearchUI.this.results = (ArrayList)filtered.getRight();
-					SearchUI.this.resultsLayout = createResultPanel(results);
-					SearchUI.this.secondaryLayout.addComponent(resultsLayout, 2, 0);
-					SearchUI.this.secondaryLayout.setComponentAlignment(resultsLayout, Alignment.TOP_CENTER);
-					File archivo = new File("D:\\Descargas Chrome\\paraimagenes-imagen.bin");
-					archivo.renameTo(new File("D:\\Descargas Chrome\\ARCHIVORENOMBRADOCONJAVA.jpeg"));
-				}
+			ArrayList<SearchEnum> selectedOptions = new ArrayList();
+			
+			if(hostCheckbox.getValue())
+				selectedOptions.add(SearchEnum.isHost);
+			if(travelerCheckbox.getValue())
+				selectedOptions.add(SearchEnum.isTraveler);
+
+			Pair<Integer, Object> filtered = Controller.getInstance().action(Commands.CommandSearch, selectedOptions);
+			if(filtered.getLeft() == 0) {
+				Notification notif = new Notification( "There are no users matching your criteria.");
+				notif.setDelayMsec(10000);
+				notif.setPosition(Position.MIDDLE_CENTER);
+				notif.show(Page.getCurrent());
 			}
+			else {
+				SearchUI.this.results = (ArrayList)filtered.getRight();
+				resultsLayout = createResultPanel(results);
+				SearchUI.this.secondaryLayout.addComponent(resultsLayout,2,0);
+				SearchUI.this.secondaryLayout.setComponentAlignment(resultsLayout, Alignment.TOP_CENTER);
+			}
+			
 		});
 		accept.setVisible(true);
 		

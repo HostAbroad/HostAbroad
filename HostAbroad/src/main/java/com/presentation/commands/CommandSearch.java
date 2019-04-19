@@ -13,10 +13,10 @@ public class CommandSearch extends Command{
 	public Pair<Integer, Object> execute(Object searchArray) {
 		int result;
 		ASSearch saSearch = ASFactory.getInstance().createASSearch();
-		ArrayList<TUser> hosts = saSearch.search((ArrayList<SearchEnum>)searchArray);
-		result = hosts.size() <= 0 ? 0 : 1;
+		ArrayList<TUser> res = saSearch.search((ArrayList<SearchEnum>)searchArray);
+		result = res.size() <= 0 ? 0 : 1;
 		
-		return new Pair<Integer,Object>(result,hosts);
+		return new Pair<Integer,Object>(result,res);
 	}
 
 }
