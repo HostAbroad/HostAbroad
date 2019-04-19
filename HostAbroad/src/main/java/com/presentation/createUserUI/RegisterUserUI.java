@@ -26,11 +26,11 @@ import com.vaadin.server.VaadinService;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.AbsoluteLayout;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
-import com.vaadin.ui.NativeButton;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.PasswordField;
@@ -83,14 +83,8 @@ public class RegisterUserUI extends UI {
 				"Should contains minimum eight characters, at least one uppercase letter, one lowercase letter and one number.",
 				"^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$")).bind("password");
 
-		NativeButton save = this.createSaveButton(binder, user);
+		Button save = this.createSaveButton(binder, user);
 
-		NativeButton reset = new NativeButton("reset");
-		reset.setId("resetBtn");
-		reset.addClickListener(event -> {
-			// clear fields by setting null
-			binder.readBean(null);
-		});
 
 		// Adding all fields
 		registerLayout.addComponent(fullName);
@@ -100,13 +94,12 @@ public class RegisterUserUI extends UI {
 
 		// A layout to put reset and save buttons in a line
 		HorizontalLayout saveAndResetLayout = new HorizontalLayout();
-		saveAndResetLayout.addComponent(reset);
 		saveAndResetLayout.addComponent(save);
 
 		registerLayout.addComponent(saveAndResetLayout);
 
 		Component panel = createPanel(registerLayout);
-		layout.addComponent(panel, "top: 138.0px; left: 500.0px;");
+		layout.addComponent(panel, "top: 25%; left: 41%;");
 		// The centered form
 		layout.setWidth("100%");
 		mainLayout.addComponent(new Header());
@@ -123,8 +116,8 @@ public class RegisterUserUI extends UI {
 		return textField;
 	}
 
-	private NativeButton createSaveButton(Binder<TUser> binder, TUser user) {
-		NativeButton save = new NativeButton("save");
+	private Button createSaveButton(Binder<TUser> binder, TUser user) {
+		Button save = new Button("save");
 		save.setId("saveBtn");
 		save.addClickListener(event -> {
 			if (binder.writeBeanIfValid(user)) {
@@ -176,14 +169,8 @@ public class RegisterUserUI extends UI {
 
 	private Panel createPanel(FormLayout form) {
 		Panel panel = new Panel();
-		final Page.Styles styles = Page.getCurrent().getStyles(); // I put a border to the panel
-		String css = ".layout-with-border {\n" + "    border: 3px solid #FF6F61;\n" + "    border-radius: 5px; \n"
-				+ "}";
-		styles.add(css);
-		panel.addStyleName("layout-with-border");
-//        panel.setWidth("650px");
-//        panel.setHeight("400px");
 		panel.setSizeUndefined();
+		panel.addStyleName("layout-with-border");
 		panel.setContent(form);
 
 		return panel;

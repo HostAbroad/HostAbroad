@@ -104,9 +104,33 @@
 		</dependency>
 
 		<dependency>
-		   <groupId>org.vaadin.blackbluegl</groupId>
-		   <artifactId>calendar-component</artifactId>
-		   <version>2.0-BETA4</version>
+			<groupId>org.vaadin.blackbluegl</groupId>
+			<artifactId>calendar-component</artifactId>
+			<version>2.0-BETA4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.vaadin.addon</groupId>
+			<artifactId>easyuploads</artifactId>
+			<version>9.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.jarektoro</groupId>
+			<artifactId>responsive-layout</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.vaadin.addons</groupId>
+			<artifactId>vaadin-textfield-multiline</artifactId>
+			<version>2.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fo0.advancedtokenfield</groupId>
+			<artifactId>AdvancedTokenField</artifactId>
+			<version>0.5.1</version>
 		</dependency>
 
 	</dependencies>
@@ -171,5 +195,5 @@
 				<version>2.2</version>
 			</plugin>
 		</plugins>
-	</build> 
+	</build>
 </project>
