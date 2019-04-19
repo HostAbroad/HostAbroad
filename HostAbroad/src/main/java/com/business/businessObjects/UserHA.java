@@ -11,7 +11,7 @@ import javax.persistence.Version;
 
 @Entity
 @Table
-public class User {
+public class UserHA {
 
     @Id
     private String nickname;
@@ -31,10 +31,10 @@ public class User {
     @OneToMany(mappedBy = "userSender")
 	private Collection<Likes> likes;
 
-    public User() {};
+    public UserHA() {};
     
     //full constructor
-    public User(String nickname, String fullName, String email, int password, 
+    public UserHA(String nickname, String fullName, String email, int password, 
 			double rating, String description, boolean host, boolean traveler, 
 			Host hostEntity, Traveler travelerEntity, Collection<Likes> likes) {
     this.nickname = nickname;
@@ -50,7 +50,7 @@ public class User {
     this.likes = likes;
     }
    
-    public User(String nickname, String fullName, String email, int password, 
+    public UserHA(String nickname, String fullName, String email, int password, 
 			double rating, String description, boolean host, boolean traveler, 
 			Host hostEntity, Traveler travelerEntity) {
     this.nickname = nickname;
@@ -65,7 +65,7 @@ public class User {
     this.travelerEntity = travelerEntity;
 }
 
-    public User(String nickname, String fullName, String email, int password, 
+    public UserHA(String nickname, String fullName, String email, int password, 
     		double rating, String description, boolean host, boolean traveler) {
         this.nickname = nickname;
         this.fullName = fullName;
@@ -77,7 +77,7 @@ public class User {
         this.traveler = traveler;
     }
 
-    public User(String nickname, double rating, String description, boolean host, 
+    public UserHA(String nickname, double rating, String description, boolean host, 
     		boolean traveler) {
         this.nickname = nickname;
         this.rating = rating;
@@ -86,7 +86,7 @@ public class User {
         this.traveler = traveler;
     }
     
-    public User(String nickname, String fullName, double rating, String description,
+    public UserHA(String nickname, String fullName, double rating, String description,
     		String email, int passwd, boolean host, boolean traveler) {
         this.nickname = nickname;
         this.fullName = fullName;
@@ -98,13 +98,13 @@ public class User {
         this.traveler = traveler;
     }
 
-    public User(String nickname, double rating, String description) {
+    public UserHA(String nickname, double rating, String description) {
         this.nickname = nickname;
         this.rating = rating;
         this.description = description;
     }
 
-    public User(String nickname, String fullName, String email, int password, 
+    public UserHA(String nickname, String fullName, String email, int password, 
     			double rating, String description, boolean host, boolean traveler, Host hostEntity) {
         this.nickname = nickname;
         this.fullName = fullName;
@@ -117,7 +117,7 @@ public class User {
         this.hostEntity = hostEntity;
     }
     
-    public User(String nickname, double rating, String description, boolean host, boolean traveler, String email,
+    public UserHA(String nickname, double rating, String description, boolean host, boolean traveler, String email,
             int password) {
     this.nickname = nickname;
     this.rating = rating;
@@ -128,7 +128,7 @@ public class User {
     this.password = password;
 }
     
-    public User(String nickname, String fullName, String email, int password) {
+    public UserHA(String nickname, String fullName, String email, int password) {
     	this.nickname = nickname;
     	this.fullName = fullName;
     	this.email = email;
