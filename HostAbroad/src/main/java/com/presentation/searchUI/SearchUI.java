@@ -147,7 +147,6 @@ public class SearchUI extends UI{
 		});
 		accept.setVisible(true);
 		
-		//
 		VerticalLayout v = new VerticalLayout();
 		HorizontalLayout h = new HorizontalLayout();
 		h.addComponent(hostCheckbox);

@@ -37,14 +37,10 @@ public class HomePage extends UI {
 		GridLayout grid = new GridLayout(1, 1); // I use a grid layout because I will need 3 rows and 3 columns
 		grid.setSpacing(true);
 
-		// grid.addComponent(createLeftPartOfLogin(), 0, 0);
-		// grid.addComponent(createRightPartOfLogin(), 1, 0);
 		Component mainPanel = splitPanel();
 		mainPanel.setSizeFull();
 		grid.addComponent(mainPanel, 0, 0);
 
-		// Unir el grid y el bottom con sus separadores en un mismo cocmponente y luego
-		// añadirlo al main para poder poner el scroll
 		mainLayout.addComponent(new Header());
 		mainLayout.addComponent(grid);
 		mainLayout.setComponentAlignment(grid, Alignment.MIDDLE_CENTER);
@@ -87,11 +83,9 @@ public class HomePage extends UI {
 		travelerLayout.addComponent(Ttitle);
 		travelerLayout.setComponentAlignment(Ttitle, Alignment.MIDDLE_CENTER);
 
-		Label Tdescription = new Label(
-				"<p>Traveling around the world is your passion? Are you "
+		Label Tdescription = new Label("<p>Traveling around the world is your passion? Are you "
 				+ "<br> ready for new adventures? Do you want to pay with"
-				+ "<br> your knowledge? Come and join us now, Traveler</p>",
-				ContentMode.HTML);
+				+ "<br> your knowledge? Come and join us now, Traveler</p>", ContentMode.HTML);
 		;
 		Tdescription.setStyleName("homePage-traveler-description");
 		travelerLayout.addComponent(Tdescription);
@@ -117,16 +111,14 @@ public class HomePage extends UI {
 		hostLayout.addComponent(title);
 		hostLayout.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
 
-		Label description = new Label(
-				"<p>Do you like meeting new people and learning about different" + 
-				" <br> cultures? Do you want to gain new knowledge? Join us as " + 
-				" <br> Host. Explore the world in the comfort of your home.</p>",
-				ContentMode.HTML);
+		Label description = new Label("<p>Do you like meeting new people and learning about different"
+				+ " <br> cultures? Do you want to gain new knowledge? Join us as "
+				+ " <br> Host. Explore the world in the comfort of your home.</p>", ContentMode.HTML);
 		;
 		description.setStyleName("homePage-host-description");
 		hostLayout.addComponent(description);
 		hostLayout.setComponentAlignment(description, Alignment.MIDDLE_CENTER);
-		
+
 		mainLayout.addComponent(travelerLayout, 0, 0);
 		mainLayout.addComponent(new Label("&nbsp; &nbsp; &nbsp;", ContentMode.HTML), 1, 0);
 		mainLayout.addComponent(hostLayout, 2, 0);
@@ -135,73 +127,13 @@ public class HomePage extends UI {
 		return mainLayout;
 	}
 
-	private Component createLeftPartOfLogin() { //
-		VerticalLayout Traveller = new VerticalLayout();
-		Label titulo = new Label("Traveler");
-		final Page.Styles styles = Page.getCurrent().getStyles();
-		String css = ".v-label-stylename {\n" + // This fragment allows you to configure the title font
-				"    font-size: 35px;\n" + "    font-weight: bold;\n" + "    line-height: normal;\n" + "}";
-		styles.add(css);
-		titulo.setStyleName("v-label-stylename");
-		Label description = new Label("Traveling around the world is your passion?\n" + "<br>\n"
-				+ "Are you ready for new adventures?\n" + "<br>\n" + "Do you want to pay with your knowledge?\n"
-				+ "<br>\n" + "Come and join us now, Traveler.", ContentMode.HTML);
-
-		Image img = new Image();
-		img.setSource(new ExternalResource("https://raw.githubusercontent.com/evivar/images/master/traveler.jpg"));
-		img.setWidth(400, Unit.PIXELS);
-
-		Traveller.addComponent(titulo);
-		Traveller.addComponent(description);
-		Traveller.addComponent(img);
-		Traveller.setComponentAlignment(titulo, Alignment.TOP_CENTER);
-		Traveller.setComponentAlignment(description, Alignment.MIDDLE_CENTER);
-		Traveller.setComponentAlignment(img, Alignment.BOTTOM_CENTER);
-		Traveller.setSizeFull();
-		Traveller.setWidth("100%");
-		Traveller.setHeightUndefined();
-		Traveller.setMargin(true);
-
-		return Traveller;
-
-	}
-
-	private Component createRightPartOfLogin() {
-		VerticalLayout Host = new VerticalLayout();
-		Host.setSizeFull();
-		Host.setHeightUndefined();
-		Host.setWidth("100%");
-		Host.setMargin(true);
-		Label title = new Label("Host");
-		final Page.Styles styles = Page.getCurrent().getStyles();
-		String css = ".v-label-stylename {\n" + "    font-size: 35px;\n" + "    font-weight: bold;\n"
-				+ "    line-height: normal;\n" + "}";
-		styles.add(css);
-		title.setStyleName("v-label-stylename");
-		Label description = new Label("Do you like meeting new people and learning " + "<br>\n"
-				+ "about different cultures?\n" + "<br>\n" + "Do you want to gain new knowledge?\n" + "<br>\n"
-				+ "Join us as Host. Explore the world in the comfort of your home.\n", ContentMode.HTML);
-
-		Image img = new Image();
-		img.setSource(new ExternalResource("https://raw.githubusercontent.com/evivar/images/master/host.jpg"));
-		img.setWidth(400, Unit.PIXELS);
-
-		Host.addComponent(title);
-		Host.addComponent(description);
-		Host.addComponent(img); // TODO LUEGO SE PONDRA ESTE METODO EN UNA CLASE AUXILIAR
-		Host.setComponentAlignment(title, Alignment.TOP_CENTER);
-		Host.setComponentAlignment(description, Alignment.MIDDLE_CENTER);
-		Host.setComponentAlignment(img, Alignment.BOTTOM_CENTER);
-
-		return Host;
-	}
-
 	private Component createBottomPanel() {
 		GridLayout panel = new GridLayout(3, 1);
 		panel.setSpacing(false);
 		Button join = new Button("Join us");
 		join.setIcon(FontAwesome.USER_PLUS);
-		join.setStyleName("v-button v-widget large v-button-large v-button v-widget icon-align-top v-button-icon-align-top");
+		join.setStyleName(
+				"v-button v-widget large v-button-large v-button v-widget icon-align-top v-button-icon-align-top");
 		join.setId("joinBtn");
 		join.addClickListener(event -> {
 			HomePage.this.getUI().getPage().setLocation("register");
@@ -209,10 +141,11 @@ public class HomePage extends UI {
 		panel.addComponent(join, 0, 0);
 
 		panel.addComponent(new Label("&nbsp; &nbsp; &nbsp;", ContentMode.HTML), 1, 0);
-		
+
 		Button login = new Button("Log in");
 		login.setIcon(FontAwesome.SIGN_IN);
-		login.setStyleName("v-button v-widget large v-button-large v-button v-widget icon-align-top v-button-icon-align-top");
+		login.setStyleName(
+				"v-button v-widget large v-button-large v-button v-widget icon-align-top v-button-icon-align-top");
 		login.setId("loginBtn");
 		login.addClickListener(event -> {
 			HomePage.this.getUI().getPage().setLocation("login");

@@ -257,8 +257,6 @@ public class MyProfileUI extends UI {
 		image.setComponentAlignment(changeImg, Alignment.MIDDLE_CENTER);
 		sections.addComponent(image, 0, 0);
 		
-
-
 		TextField username = new TextField("Username");
 		username.setValue(user.getNickname());
 		username.setId("ProfileUsername");
@@ -402,9 +400,9 @@ public class MyProfileUI extends UI {
 			 */
 		});
 
-		AdvancedTokenField tfm = new AdvancedTokenField();
+		/*AdvancedTokenField tfm = new AdvancedTokenField();
 		tfm.setCaption("Knowledges");
-		mainLayout.addComponent(tfm, 0, 0);
+		mainLayout.addComponent(tfm, 0, 0);*/
 		
 		//mainLayout.addComponent(knowledges, 0, 0);
 		mainLayout.addComponent(days, 1, 0);
