@@ -387,6 +387,7 @@ public class MyProfileUI extends UI {
 		Pair<Integer, Object> resultRead = Controller.getInstance().action(Commands.CommandReadTravelerInformation,
 				user);
 
+		
 		if (resultRead.getLeft() == 1) {
 
 			/*
