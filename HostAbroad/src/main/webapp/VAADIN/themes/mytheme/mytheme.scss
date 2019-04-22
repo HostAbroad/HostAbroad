@@ -519,21 +519,26 @@ $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
         background: url(https://raw.githubusercontent.com/evivar/images/master/gray2.png);
     }
 
-    .homePage-traveler-layout{
+    .homePage-traveler-layout {
         text-align: center;
     }
 
-    .homePage-traveler-description{
+    .homePage-traveler-description {
         text-align: center;
     }
 
-    .homePage-host-description{
+    .homePage-host-description {
         text-align: center;
     }
 
     .homePage-traveler-img {
         border-radius: 50%;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .homePage-traveler-img:hover {
+        transform: scale(1.1);
+        transition-duration: 1000ms;
     }
 
     .homePage-traveler-title {
@@ -546,8 +551,19 @@ $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 
+    .homePage-host-img:hover {
+        transform: scale(1.1);
+        transition-duration: 500ms;
+    }
+
     .homePage-host-title {
         font-size: 32px;
         font-weight: bold;
+    }
+
+    #loginBtn,
+    #joinBtn, #acceptButton, .changeImgBtn, #ProfileSave {
+        background: #5dc1b9;
+        border: none;
     }
 }

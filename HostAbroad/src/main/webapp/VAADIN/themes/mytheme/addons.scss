@@ -3,8 +3,11 @@
 
 /* Provided by font-awesome-label-1.1.4.jar */
 @import "../../../VAADIN/addons/font-awesome-4.2.0/css/_font-awesome.scss";
+/* Provided by searchdropdown-0.3.0.jar */
+@import "../../../VAADIN/addons/searchdropdown/searchdropdown.scss";
 
 /* Import and include this mixin into your project theme to include the addon themes */
 @mixin addons {
-	@include _font-awesome;
+    @include _font-awesome;
+    @include searchdropdown;
 }

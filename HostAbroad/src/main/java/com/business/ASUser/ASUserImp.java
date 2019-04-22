@@ -18,6 +18,7 @@ import com.business.transfers.THost;
 import com.business.transfers.TPlace;
 import com.business.transfers.TTraveler;
 import com.business.transfers.TUser;
+import com.vaadin.ui.Image;
 
 public class ASUserImp implements ASUser {
 
@@ -336,4 +337,6 @@ public class ASUserImp implements ASUser {
 		
 		return  sendersUser;
 	}
+	
+	
 }

@@ -1,8 +1,8 @@
 package com.presentation.myProfileUI;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
-
-import javax.servlet.annotation.WebServlet;
 
 import org.vaadin.easyuploads.UploadField;
 
@@ -13,6 +13,7 @@ import com.business.transfers.THost;
 import com.business.transfers.TTraveler;
 import com.business.transfers.TUser;
 import com.fo0.advancedtokenfield.main.AdvancedTokenField;
+import com.fo0.advancedtokenfield.model.Token;
 import com.presentation.card.Card;
 import com.presentation.commands.CommandEnum.Commands;
 import com.presentation.commands.Pair;
@@ -20,7 +21,6 @@ import com.presentation.controller.Controller;
 import com.presentation.headerAndFooter.Footer;
 import com.presentation.headerAndFooter.Header;
 import com.vaadin.annotations.Theme;
-import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.Binder;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.data.validator.RegexpValidator;
@@ -29,8 +29,8 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
+import com.vaadin.server.StreamResource;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinServlet;
 import com.vaadin.shared.Position;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -43,7 +43,6 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.RadioButtonGroup;
-import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
@@ -62,80 +61,80 @@ public class MyProfileUI extends UI {
 		ArrayList<Integer> likes = new ArrayList<Integer>();
 		likes.add(1);
 		likes.add(2);
-		
+
 		TUser myUser1 = new TUser("Prueba", "PruebaFull", "ivan@ucm.es", "1234", 5, "Im prueba", false, false, likes);
 		VerticalLayout superLayout = new VerticalLayout();
 		superLayout.setStyleName("v-scrollable");
 		superLayout.setSpacing(false);
 		superLayout.setMargin(false);
-		
+
 		GridLayout grid = new GridLayout(3, 1);
-		
+
 		Label gap = new Label();
 		gap.setWidth("3em");
 		grid.addComponent(gap, 1, 0);
-		
+
 		GridLayout menu = new GridLayout(1, 6);
-		
+
 		HorizontalLayout pages = new HorizontalLayout();
 		pages.setSizeFull();
 		pages.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 		Panel panel = new Panel();
 		panel.setSizeFull();
-		
+
 		Button personalInfo = new Button("Personal information", VaadinIcons.USER);
 		personalInfo.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-pi");
 		personalInfo.setHeight(80, Unit.PIXELS);
-		personalInfo.addClickListener(event ->{
+		personalInfo.addClickListener(event -> {
 			pages.removeAllComponents();
 			pages.addComponent(personalInfoForm(myUser1));
 			pages.setWidth("100%");
 		});
 		menu.addComponent(personalInfo);
-		
+
 		Button traveler = new Button("Traveler settings", VaadinIcons.PAPERPLANE);
 		traveler.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-t");
 		traveler.setWidth("100%");
 		traveler.setHeight(80, Unit.PIXELS);
-		traveler.addClickListener(event->{
+		traveler.addClickListener(event -> {
 			pages.removeAllComponents();
 			pages.addComponent(myProperties(myUser1));
 		});
 		menu.addComponent(traveler);
-		
+
 		Button host = new Button("Host settings", VaadinIcons.HOME);
 		host.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-h");
 		host.setWidth("100%");
 		host.setHeight(80, Unit.PIXELS);
 		menu.addComponent(host);
-		
+
 		Button interests = new Button("Interests", VaadinIcons.CALC_BOOK);
 		interests.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-i");
 		interests.setWidth("100%");
 		interests.setHeight(80, Unit.PIXELS);
-		interests.addClickListener(event->{
+		interests.addClickListener(event -> {
 			pages.removeAllComponents();
 			pages.addComponent(myInterests(myUser1));
 		});
 		menu.addComponent(interests);
-		
+
 		Button comments = new Button("Comments", VaadinIcons.CHAT);
 		comments.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-c");
 		comments.setWidth("100%");
 		comments.setHeight(80, Unit.PIXELS);
 		menu.addComponent(comments);
-		
+
 		Button msgs = new Button("Messages", VaadinIcons.ENVELOPES);
 		msgs.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-m");
 		msgs.setWidth("100%");
 		msgs.setHeight(80, Unit.PIXELS);
 		menu.addComponent(msgs);
-		
+
 		Button like = new Button("My likes", VaadinIcons.HEART);
 		like.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-ml");
 		like.setWidth("100%");
 		like.setHeight(80, Unit.PIXELS);
-		like.addClickListener(event->{
+		like.addClickListener(event -> {
 			pages.removeAllComponents();
 			pages.addComponent(myLikes(myUser1));
 		});
@@ -144,7 +143,7 @@ public class MyProfileUI extends UI {
 		grid.addComponent(menu);
 		grid.addComponent(pages, 2, 0);
 		grid.setComponentAlignment(pages, Alignment.TOP_CENTER);
-		
+
 		grid.setComponentAlignment(menu, Alignment.MIDDLE_CENTER);
 
 		superLayout.addComponent(new Header());
@@ -214,9 +213,8 @@ public class MyProfileUI extends UI {
 		return mainLayoutInterests;
 	}
 
-	
-	public GridLayout personalInfoForm( TUser user) {
-		
+	public GridLayout personalInfoForm(TUser user) {
+
 		GridLayout mainGrid = new GridLayout(1, 2);
 		mainGrid.setSpacing(true);
 		mainGrid.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
@@ -232,31 +230,64 @@ public class MyProfileUI extends UI {
 		fields.setSpacing(true);
 		fields.setMargin(true);
 		fields.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
-		
+
 		Binder<TUser> binder = new Binder<>(TUser.class);
-		
+
 		Image profileImg = new Image();
-		profileImg.setSource(new ExternalResource("https://raw.githubusercontent.com/evivar/images/master/User_Circle.png"));
+		profileImg.setSource(
+				new ExternalResource("https://raw.githubusercontent.com/evivar/images/master/User_Circle.png"));
+		profileImg.setHeight("200px");
+		profileImg.setWidth("200px");
 		profileImg.setId("ProfileImage");
-		
-		UploadField uploadField = new UploadField();
-		uploadField.setClearButtonVisible(false);
-		uploadField.setButtonCaption("Select image");
-		
+		image.addComponent(profileImg);
+
+		final UploadField uploadField = new UploadField();
+		uploadField.setAcceptFilter(".png");
+		uploadField.addListener(new Listener() {
+			@Override
+			public void componentEvent(Event event) {
+				Object value = uploadField.getValue();
+				final byte[] data = (byte[]) value;
+
+				StreamResource resource = new StreamResource(new StreamResource.StreamSource() {
+					@Override
+					public InputStream getStream() {
+						return new ByteArrayInputStream(data);
+					}
+				}, "filename.png");
+
+				profileImg.setSource(resource);
+			}
+		});
+
 		Button changeImg = new Button("Change image");
 		changeImg.setIcon(FontAwesome.UPLOAD);
+		changeImg.setStyleName("changeImgBtn");
 		changeImg.addClickListener(event -> {
-			Notification.show("File: " + uploadField.getLastFileName());
+			//Notification.show("File: " + uploadField.getLastFileName());
+			Object value = uploadField.getValue();
+			final byte[] data = (byte[]) value;
+
+			StreamResource resource = new StreamResource(new StreamResource.StreamSource() {
+				@Override
+				public InputStream getStream()
+				{
+					return new ByteArrayInputStream(data);
+				}
+			}, uploadField.getLastFileName());
+
+			profileImg.setSource(resource);
+			
+
 		});
 		changeImg.setId("ProfileChangeImg");
 
-		image.addComponent(profileImg);
 		image.addComponent(uploadField);
 		image.setComponentAlignment(uploadField, Alignment.MIDDLE_CENTER);
 		image.addComponent(changeImg);
 		image.setComponentAlignment(changeImg, Alignment.MIDDLE_CENTER);
 		sections.addComponent(image, 0, 0);
-		
+
 		TextField username = new TextField("Username");
 		username.setValue(user.getNickname());
 		username.setId("ProfileUsername");
@@ -318,20 +349,21 @@ public class MyProfileUI extends UI {
 		fields.addComponent(genderCB, 1, 1);
 		fields.addComponent(languageCB, 0, 2);
 		fields.addComponent(description, 0, 3, 2, 4);
-		
+
 		sections.addComponent(fields, 1, 0);
-		
+
 		mainGrid.addComponent(sections);
 		mainGrid.addComponent(save);
 		return mainGrid;
 	}
 
-	public HorizontalLayout myProperties(TUser user) {
+	public VerticalLayout myProperties(TUser user) {
 
 		Panel panel = new Panel();
 		panel.setWidth("100%");
 		panel.setId("panelProperties");
-		GridLayout mainLayout = new GridLayout(4, 1);
+		VerticalLayout layout = new VerticalLayout();
+		GridLayout mainLayout = new GridLayout(3, 1);
 		mainLayout.setId("mainLayout");
 		HorizontalLayout mainLayoutInterests = new HorizontalLayout();
 		mainLayoutInterests.setId("mainLayoutProperties");
@@ -339,10 +371,11 @@ public class MyProfileUI extends UI {
 		mainLayoutInterests.setSizeFull();
 		mainLayoutInterests.setSpacing(true);
 
-		/*CheckBoxGroup<KnowledgesEnum> knowledges = new CheckBoxGroup<>("Knowledges: ");
-		knowledges.setItems(KnowledgesEnum.values());
-		knowledges.setId("knowledges");
-*/
+		/*AdvancedTokenField knowledges = new AdvancedTokenField();
+		knowledges.setCaption("Knowledges");
+		knowledges.setIcon(FontAwesome.BOOK);
+		knowledges.setAllowNewTokens(true);*/
+		
 		CheckBoxGroup<CountriesEnum> countries = new CheckBoxGroup<>("Countries I want to visit: ");
 		countries.setItems(CountriesEnum.values());
 		countries.setId("countries");
@@ -356,8 +389,12 @@ public class MyProfileUI extends UI {
 
 		if (resultRead.getLeft() == 1) {
 
-			/*for (int i = 0; i < ((TTraveler) resultRead.getRight()).getListOfKnowledges().size(); i++)
-				knowledges.select(((TTraveler) resultRead.getRight()).getListOfKnowledges().get(i));*/
+			/*
+			 * for (int i = 0; i < ((TTraveler)
+			 * resultRead.getRight()).getListOfKnowledges().size(); i++)
+			 * knowledges.select(((TTraveler)
+			 * resultRead.getRight()).getListOfKnowledges().get(i));
+			 */
 
 			for (int i = 0; i < ((TTraveler) resultRead.getRight()).getListOfCountries().size(); i++)
 				countries.select(((TTraveler) resultRead.getRight()).getListOfCountries().get(i));
@@ -400,19 +437,19 @@ public class MyProfileUI extends UI {
 			 */
 		});
 
-		/*AdvancedTokenField tfm = new AdvancedTokenField();
-		tfm.setCaption("Knowledges");
-		mainLayout.addComponent(tfm, 0, 0);*/
 		
+
 		//mainLayout.addComponent(knowledges, 0, 0);
 		mainLayout.addComponent(days, 1, 0);
 		mainLayout.addComponent(countries, 2, 0);
-		mainLayout.addComponent(saveButton, 3, 0);
-		mainLayout.setComponentAlignment(saveButton, Alignment.MIDDLE_RIGHT);
+		layout.addComponent(mainLayout);
+		layout.addComponent(saveButton);
+		layout.setComponentAlignment(saveButton, Alignment.MIDDLE_CENTER);
 
 		mainLayoutInterests.addComponent(mainLayout);
+		layout.addComponent(mainLayoutInterests);
 
-		return mainLayoutInterests;
+		return layout;
 	}
 
 	private HorizontalLayout myLikes(TUser myUser) {
@@ -421,7 +458,6 @@ public class MyProfileUI extends UI {
 		mainLayout.setId("mainLayout");
 		mainLayout.setSizeFull();
 		mainLayout.setSpacing(true);
-		
 
 		// main helper
 		VerticalLayout mainVertical = new VerticalLayout();
