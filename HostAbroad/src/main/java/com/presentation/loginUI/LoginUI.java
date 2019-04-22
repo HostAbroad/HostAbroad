@@ -1,8 +1,6 @@
 package com.presentation.loginUI;
 
 
-import java.io.File;
-
 import com.business.transfers.TUser;
 import com.presentation.commands.CommandEnum;
 import com.presentation.commands.Pair;
@@ -12,22 +10,10 @@ import com.presentation.headerAndFooter.Header;
 import com.vaadin.annotations.Theme;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.FileResource;
-import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
-import com.vaadin.ui.AbsoluteLayout;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.CheckBox;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Image;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.PasswordField;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
+import java.io.File;
 
 @Theme("mytheme")
 public class LoginUI extends UI {
@@ -37,11 +23,12 @@ public class LoginUI extends UI {
         VerticalLayout mainLayout = new VerticalLayout();
         mainLayout.setMargin(false);
         mainLayout.setSpacing(false);
-        AbsoluteLayout layout = new AbsoluteLayout(); //Use absolute layout to be able to put the background image
+        VerticalLayout layout = new VerticalLayout(); //Use vertical layout to center the form
         layout.setStyleName("login-layout");
         //layout.addComponent(loadImage("wallpaper.jpg"));
         Component panel = createPanel();
-        layout.addComponent(panel,"top: 25%; left: 30%;"); //The centered form
+        layout.addComponent(panel); //The centered form
+        layout.setComponentAlignment(panel,Alignment.MIDDLE_CENTER);
         layout.setWidth("100%");
         mainLayout.addComponent(new Header());
         mainLayout.addComponentsAndExpand(layout);
@@ -69,13 +56,8 @@ public class LoginUI extends UI {
 
     private Component createPanel(){
         Panel panel = new Panel();
-        final Page.Styles styles = Page.getCurrent().getStyles(); //I put a border to the panel
-        String css = ".layout-with-border {\n" + "    border: 3px solid #FF6F61;\n" + "    border-radius: 5px; \n"
-                + "}";
-        styles.add(css);
-        panel.addStyleName("layout-with-border");
-        panel.setWidth("650px");
-        panel.setHeight("400px");
+        panel.setHeight("80%");
+        panel.setWidth("45%");
         panel.setContent(createForm());
 
         return panel;
@@ -83,16 +65,8 @@ public class LoginUI extends UI {
 
 
     private Component createForm(){
-        VerticalLayout form = new VerticalLayout();
-        Label title  = new Label("Sign in");
-        final Page.Styles styles = Page.getCurrent().getStyles();
-        String css = ".v-label-stylename {\n" +   //CSS Syle to Title "Sign in"
-                "    font-size: 35px;\n" +
-                "    line-height: normal;\n" +
-                "}";
-        styles.add(css);
-        title.setStyleName("v-label-stylename");
-        form.addComponent(title);
+	    HorizontalLayout hl = new HorizontalLayout();
+        FormLayout form = new FormLayout();
         TextField email = new TextField("Email");
         email.setId("emailTextField");
         email.setIcon(VaadinIcons.USER); //Vaadin Icons for texfield
@@ -103,13 +77,15 @@ public class LoginUI extends UI {
         pass.setIcon(VaadinIcons.LOCK); //Vaadin Icons for textfield
         form.addComponent(pass);
         form.setComponentAlignment(pass,Alignment.MIDDLE_CENTER);
-        
+
         CheckBox rememberMe = new CheckBox("Remember me");
         rememberMe.setId("checkBoxRememberMe");
 
         // Button allows specifying icon resource in constructor
-        Button login = new Button("Login", VaadinIcons.CHECK);
+        Button login = new Button("Log In", VaadinIcons.CHECK);
         login.setId("loginBtn");
+        login.setWidth("160px");
+        login.setStyleName("v-button-register");
         login.addClickListener(event->{
             if(!email.getValue().equals("") && !pass.getValue().equals("")){
                 TUser tUser = new TUser(email.getValue(), pass.getValue());
@@ -122,15 +98,26 @@ public class LoginUI extends UI {
             }
 
         });
+      
+        Button register = new Button("Register", VaadinIcons.SIGN_IN);
+        register.setId("registerBtn");
+        register.setWidth("160px");
+        register.setStyleName("v-button-register");
+        register.addClickListener(event->{
+            LoginUI.this.getUI().getPage().setLocation("register");
+        });
         form.addComponent(rememberMe);
         form.setComponentAlignment(rememberMe, Alignment.MIDDLE_CENTER);
         form.addComponent(login);
-        form.setComponentAlignment(login, Alignment.MIDDLE_CENTER);
-        form.setMargin(true);
-        this.setContent(form);
-        this.setSizeUndefined();
+        form.setComponentAlignment(login,Alignment.MIDDLE_CENTER);
+        form.addComponent(register);
+        form.setSizeUndefined();
+        hl.addComponent(form);
+        hl.setComponentAlignment(form,Alignment.MIDDLE_CENTER);
+        hl.setSizeFull();
+        this.setContent(hl);
         this.setSizeFull();
-        return form;
+        return hl;
     }
 
 }

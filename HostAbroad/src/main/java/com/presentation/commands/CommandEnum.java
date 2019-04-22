@@ -13,6 +13,7 @@ public class CommandEnum {
 		CommandReadTravelerInformation,
 		CommandEditTraveler,
 		CommandEditHost, 
-		CommandSendersLike
+		CommandSendersLike,
+		CommandSearch
 	}
 }

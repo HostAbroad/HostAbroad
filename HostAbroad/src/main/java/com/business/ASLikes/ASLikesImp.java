@@ -7,7 +7,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 
 import com.business.businessObjects.Likes;
-import com.business.businessObjects.User;
+import com.business.businessObjects.UserHA;
 import com.business.transfers.TLikes;
 
 public class ASLikesImp implements ASLikes{
@@ -23,13 +23,13 @@ public class ASLikesImp implements ASLikes{
 			tr.begin();
 
 			if(tLikes.getUserReceiver() != tLikes.getUserSender()) {
-				User userSender;
-				User userReceiver;
+				UserHA userSender;
+				UserHA userReceiver;
 				try {
-					String query = "SELECT * FROM USER WHERE NICKNAME = ?1";
-					userSender = (User)em.createNativeQuery(query, User.class)
+					String query = "SELECT * FROM USERHA WHERE NICKNAME = ?1";
+					userSender = (UserHA)em.createNativeQuery(query, UserHA.class)
 							.setParameter(1, tLikes.getUserSender()).getSingleResult();
-					userReceiver = (User)em.createNativeQuery(query, User.class)
+					userReceiver = (UserHA)em.createNativeQuery(query, UserHA.class)
 							.setParameter(1, tLikes.getUserReceiver()).getSingleResult();
 					
 					query = "SELECT * FROM LIKES WHERE (USERRECEIVER_NICKNAME = ?1 AND USERSENDER_NICKNAME = ?2) OR (USERRECEIVER_NICKNAME = ?2 AND USERSENDER_NICKNAME = ?1)  ";

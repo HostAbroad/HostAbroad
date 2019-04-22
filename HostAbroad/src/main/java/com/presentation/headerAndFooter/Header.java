@@ -18,13 +18,16 @@ import com.vaadin.ui.Panel;
 @Theme("mytheme")
 public class Header extends Panel {
 	
+	static boolean logedIn = false;
+	
 	public Header() {
 		HorizontalLayout header = new HorizontalLayout();
 
 		header.setStyleName("header-color-blue");
 
 		header.setWidth("100%");
-		header.setMargin(true);
+		header.setMargin(false);
+		header.setHeight(60, Unit.PIXELS);
 		header.setSpacing(false);
 		Label title = new Label("Host Abroad");
 		/*
@@ -32,42 +35,18 @@ public class Header extends Panel {
 		 */
 		title.setStyleName("title-label");
 		header.addComponent(title);
-		header.setComponentAlignment(title, Alignment.MIDDLE_LEFT);
+		header.setComponentAlignment(title, Alignment.TOP_LEFT);
 
-		GridLayout menu = new GridLayout(4, 1);
 
-		Button home = new Button("Home");
-		home.setStyleName("borderless-button");
-		home.setStyleName("v-button v-widget borderless v-button-borderless");
-		home.addClickListener(event -> {
-			Page.getCurrent().setLocation("HostAbroad");
-		});
-		menu.addComponent(home);
-
-		Button profile = new Button("My Profile");
-		profile.setStyleName("borderless-button");
-		profile.setStyleName("v-button v-widget borderless v-button-borderless");
-		profile.addClickListener(event -> {
-			Page.getCurrent().setLocation("my_profile");
-		});
-		menu.addComponent(profile);
-
-		Button search = new Button("Search");
-		search.setStyleName("borderless-button");
-		search.setStyleName("v-button v-widget borderless v-button-borderless");
-		search.addClickListener(event -> {
-			Page.getCurrent().setLocation("search");
-			});
-		menu.addComponent(search);
-
-		Button contact = new Button("Contact us");
-		contact.setStyleName("borderless-button");
-		contact.setStyleName("v-button v-widget borderless v-button-borderless");
-
-		contact.addClickListener(event -> {
-			JavaScript.getCurrent().execute("alert('Send us an email to hostabroad@outlook.es')");
-		});
-		menu.addComponent(contact);
+		GridLayout menu = new GridLayout(5, 1);
+		
+		if(logedIn) {
+			logedMenu(menu);
+		}
+		else {
+			notLogedMenu(menu);
+		}
+		
 
 		header.addComponent(menu);
 		header.setComponentAlignment(menu, Alignment.MIDDLE_RIGHT);
@@ -75,5 +54,100 @@ public class Header extends Panel {
 
 	}
 
+	private void logedMenu(GridLayout menu) {
+		Button home = new Button("Home");
+		home.setStyleName("borderless-button");
+		home.setStyleName("v-button v-widget borderless-colored v-button-borderless-colored");
+		home.addClickListener(event -> {
+			Page.getCurrent().setLocation("HostAbroad");
+		});
+		menu.addComponent(home);
+
+		Button profile = new Button("My Profile");
+		profile.setStyleName("borderless-button");
+		profile.setStyleName("v-button v-widget borderless-colored v-button-borderless-colored");
+		profile.addClickListener(event -> {
+			Page.getCurrent().setLocation("my_profile");
+		});
+		menu.addComponent(profile);
+
+		Button search = new Button("Search");
+		search.setStyleName("borderless-button");
+		search.setStyleName("v-button v-widget borderless-colored v-button-borderless-colored");
+		search.addClickListener(event -> {
+			Page.getCurrent().setLocation("search");
+			});
+		menu.addComponent(search);
+
+		Button contact = new Button("Contact us");
+		contact.setStyleName("borderless-button");
+		contact.setStyleName("v-button v-widget borderless-colored v-button-borderless-colored");
+
+		contact.addClickListener(event -> {
+			JavaScript.getCurrent().execute("alert('Send us an email to hostabroad@outlook.es')");
+		});
+		menu.addComponent(contact);
+		
+		Button logout = new Button("Log out");
+		logout.setStyleName("borderless-button");
+		logout.setStyleName("v-button v-widget borderless-colored v-button-borderless-colored");
+		logout.addClickListener(event -> {
+			setLoged(false);
+			Page.getCurrent().setLocation("HostAbroad");
+		});
+		menu.addComponent(logout);
+	}
+	
+	private void notLogedMenu(GridLayout menu) {
+		Button home = new Button("Home");
+		home.setStyleName("borderless-button");
+		home.setStyleName("v-button v-widget borderless-colored v-button-borderless-colored");
+		home.addClickListener(event -> {
+			Page.getCurrent().setLocation("HostAbroad");
+		});
+		menu.addComponent(home);
+
+		Button search = new Button("Search");
+		search.setStyleName("borderless-button");
+		search.setStyleName("v-button v-widget borderless-colored v-button-borderless-colored");
+		search.addClickListener(event -> {
+			Page.getCurrent().setLocation("search");
+			});
+		menu.addComponent(search);
+
+		Button contact = new Button("Contact us");
+		contact.setStyleName("borderless-button");
+		contact.setStyleName("v-button v-widget borderless-colored v-button-borderless-colored");
+
+		contact.addClickListener(event -> {
+			JavaScript.getCurrent().execute("alert('Send us an email to hostabroad@outlook.es')");
+		});
+		menu.addComponent(contact);
+		
+		Button register = new Button("Register");
+		register.setStyleName("borderless-button");
+		register.setStyleName("v-button v-widget borderless-colored v-button-borderless-colored");
+		register.addClickListener(event -> {
+			logedIn = false;
+			Page.getCurrent().setLocation("register");
+		});
+		menu.addComponent(register);
+		
+		Button login = new Button("Log in");
+		login.setStyleName("borderless-button");
+		login.setStyleName("v-button v-widget borderless-colored v-button-borderless-colored");
+		login.addClickListener(event -> {
+			Page.getCurrent().setLocation("login");
+		});
+		menu.addComponent(login);
+	}
+	
+	public static void setLoged(boolean state) {
+		logedIn = state;
+	}
+	
+	public static boolean getLoged() {
+		return logedIn;
+	}
 
 }

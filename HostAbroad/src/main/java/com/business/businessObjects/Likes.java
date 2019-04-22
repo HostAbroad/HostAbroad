@@ -18,38 +18,38 @@ public class Likes {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	@ManyToOne
-	private User userSender;
+	private UserHA userSender;
 	@ManyToOne
-	private User userReceiver;
+	private UserHA userReceiver;
 	@Version
 	private Integer version;
 
 	public Likes() {}
 
-	public Likes(int id, User userSender, User userReceiver) {
+	public Likes(int id, UserHA userSender, UserHA userReceiver) {
 		this.id = id;
 		this.userSender = userSender;
 		this.userReceiver = userReceiver;
 	}
 
-	public Likes(User userSender, User userReceiver) {
+	public Likes(UserHA userSender, UserHA userReceiver) {
 		this.userSender = userSender;
 		this.userReceiver = userReceiver;
 	}
 
-	public User getUserSender() {
+	public UserHA getUserSender() {
 		return userSender;
 	}
 
-	public void setUserSender(User userSender) {
+	public void setUserSender(UserHA userSender) {
 		this.userSender = userSender;
 	}
 
-	public User getUserReceiver() {
+	public UserHA getUserReceiver() {
 		return userReceiver;
 	}
 
-	public void setUserReceiver(User userReceiver) {
+	public void setUserReceiver(UserHA userReceiver) {
 		this.userReceiver = userReceiver;
 	}
 
