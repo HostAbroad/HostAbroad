@@ -498,8 +498,19 @@ $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
         transition: all 0.4s ease 0s;
     }
 
-    .login-layout {
-        background-image: url(https://raw.githubusercontent.com/evivar/images/master/wallpaper.jpg);
+    .v-button-register { //Register an login button
+        background: #5dc1b9;
+        border:none;
+        color: #FFFFFF;
+        text-align: center;
+    }
+
+    .login-layout{
+        background-image: url(https://raw.githubusercontent.com/OmegaSkyres/images/master/wallpaper.jpg);
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
     }
 
     .v-textarea {
