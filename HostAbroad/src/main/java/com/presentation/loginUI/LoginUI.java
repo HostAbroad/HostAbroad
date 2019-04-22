@@ -2,17 +2,16 @@ package com.presentation.loginUI;
 
 
 import com.business.transfers.TUser;
-import com.presentation.commands.CommandEnum;
-import com.presentation.commands.Pair;
-import com.presentation.controller.Controller;
 import com.presentation.headerAndFooter.Footer;
 import com.presentation.headerAndFooter.Header;
 import com.vaadin.annotations.Theme;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.FileResource;
+import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
 import com.vaadin.ui.*;
+
 import java.io.File;
 
 @Theme("mytheme")
@@ -56,7 +55,7 @@ public class LoginUI extends UI {
 
     private Component createPanel(){
         Panel panel = new Panel();
-        panel.setHeight("80%");
+        panel.setHeight("70%");
         panel.setWidth("45%");
         panel.setContent(createForm());
 
@@ -65,7 +64,9 @@ public class LoginUI extends UI {
 
 
     private Component createForm(){
-	    HorizontalLayout hl = new HorizontalLayout();
+	    VerticalLayout vl = new VerticalLayout();
+        HorizontalLayout hl = new HorizontalLayout();
+        HorizontalLayout buttons = new HorizontalLayout();
         FormLayout form = new FormLayout();
         TextField email = new TextField("Email");
         email.setId("emailTextField");
@@ -84,7 +85,7 @@ public class LoginUI extends UI {
         // Button allows specifying icon resource in constructor
         Button login = new Button("Log In", VaadinIcons.CHECK);
         login.setId("loginBtn");
-        login.setWidth("160px");
+        login.setWidth("120px");
         login.setStyleName("v-button-register");
         login.addClickListener(event->{
             if(!email.getValue().equals("") && !pass.getValue().equals("")){
@@ -98,22 +99,24 @@ public class LoginUI extends UI {
             }
 
         });
-      
+
         Button register = new Button("Register", VaadinIcons.SIGN_IN);
         register.setId("registerBtn");
-        register.setWidth("160px");
+        register.setWidth("120px");
         register.setStyleName("v-button-register");
         register.addClickListener(event->{
             LoginUI.this.getUI().getPage().setLocation("register");
         });
+        buttons.addComponents(register,login);
         form.addComponent(rememberMe);
         form.setComponentAlignment(rememberMe, Alignment.MIDDLE_CENTER);
-        form.addComponent(login);
-        form.setComponentAlignment(login,Alignment.MIDDLE_CENTER);
-        form.addComponent(register);
+        form.addComponent(buttons);
         form.setSizeUndefined();
-        hl.addComponent(form);
-        hl.setComponentAlignment(form,Alignment.MIDDLE_CENTER);
+        vl.addComponents(form,buttons);
+        vl.setComponentAlignment(form,Alignment.MIDDLE_CENTER);
+        vl.setComponentAlignment(buttons,Alignment.MIDDLE_CENTER);
+        hl.addComponent(vl);
+        hl.setComponentAlignment(vl,Alignment.MIDDLE_CENTER);
         hl.setSizeFull();
         this.setContent(hl);
         this.setSizeFull();
