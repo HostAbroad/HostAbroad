@@ -389,7 +389,6 @@ public class MyProfileUI extends UI {
 
 		
 		if (resultRead.getLeft() == 1) {
-
 			/*
 			 * for (int i = 0; i < ((TTraveler)
 			 * resultRead.getRight()).getListOfKnowledges().size(); i++)
