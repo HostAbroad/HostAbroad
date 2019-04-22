@@ -13,7 +13,6 @@ import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
 import com.vaadin.ui.*;
-
 import java.io.File;
 
 @Theme("mytheme")
@@ -78,6 +77,7 @@ public class LoginUI extends UI {
         pass.setIcon(VaadinIcons.LOCK); //Vaadin Icons for textfield
         form.addComponent(pass);
         form.setComponentAlignment(pass,Alignment.MIDDLE_CENTER);
+
         CheckBox rememberMe = new CheckBox("Remember me");
         rememberMe.setId("checkBoxRememberMe");
 
@@ -89,9 +89,8 @@ public class LoginUI extends UI {
         login.addClickListener(event->{
             if(!email.getValue().equals("") && !pass.getValue().equals("")){
                 TUser tUser = new TUser(email.getValue(), pass.getValue());
-                Pair<Integer, Object> filtered = Controller.getInstance().action(CommandEnum.Commands.CommandLogin, tUser);
-                if(filtered.getLeft() == 1){
-                    LoginUI.this.getUI().getPage().setLocation("search");
+                if(AuthService.authenticate(tUser, rememberMe.getValue())){
+                    Page.getCurrent().setLocation("my_profile");
                 }
                 else {
                     Notification.show("Invalid credentials", Notification.Type.ERROR_MESSAGE);
@@ -99,6 +98,7 @@ public class LoginUI extends UI {
             }
 
         });
+      
         Button register = new Button("Register", VaadinIcons.SIGN_IN);
         register.setId("registerBtn");
         register.setWidth("160px");
