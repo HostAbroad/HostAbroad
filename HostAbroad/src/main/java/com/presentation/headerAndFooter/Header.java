@@ -1,12 +1,7 @@
 package com.presentation.headerAndFooter;
 
-import java.awt.Container;
-
-import com.presentation.loginUI.HomePage;
 import com.vaadin.annotations.Theme;
-import com.vaadin.flow.component.Component;
 import com.vaadin.server.Page;
-import com.vaadin.server.Page.Styles;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.GridLayout;
@@ -55,21 +50,8 @@ public class Header extends Panel {
 	}
 
 	private void logedMenu(GridLayout menu) {
-		Button home = new Button("Home");
-		home.setStyleName("borderless-button");
-		home.setStyleName("v-button v-widget borderless-colored v-button-borderless-colored");
-		home.addClickListener(event -> {
-			Page.getCurrent().setLocation("HostAbroad");
-		});
-		menu.addComponent(home);
-
-		Button profile = new Button("My Profile");
-		profile.setStyleName("borderless-button");
-		profile.setStyleName("v-button v-widget borderless-colored v-button-borderless-colored");
-		profile.addClickListener(event -> {
-			Page.getCurrent().setLocation("my_profile");
-		});
-		menu.addComponent(profile);
+		menu.addComponent(createHome());
+		menu.addComponent(createMyProfile());
 
 		Button search = new Button("Search");
 		search.setStyleName("borderless-button");
@@ -148,6 +130,28 @@ public class Header extends Panel {
 	
 	public static boolean getLoged() {
 		return logedIn;
+	}
+	
+	private Button createHome() {
+		Button home = new Button("Home");
+		home.setStyleName("borderless-button");
+		home.setStyleName("v-button v-widget borderless-colored v-button-borderless-colored");
+		home.addClickListener(event -> {
+			Page.getCurrent().setLocation("HostAbroad");
+		});
+		
+		return home;
+	}
+
+	private Button createMyProfile() {
+		Button profile = new Button("My Profile");
+		profile.setStyleName("borderless-button");
+		profile.setStyleName("v-button v-widget borderless-colored v-button-borderless-colored");
+		profile.addClickListener(event -> {
+			Page.getCurrent().setLocation("my_profile");
+		});
+		
+		return profile;
 	}
 
 }
