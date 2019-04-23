@@ -19,38 +19,38 @@ public class Matches {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	@ManyToOne
-	private User userOne;
+	private UserHA userOne;
 	@ManyToOne
-	private User userTwo;
+	private UserHA userTwo;
 	@Version
 	private Integer version;
 
 	public Matches() {}
 
-	public Matches(int id, User userOne, User userTwo) {
+	public Matches(int id, UserHA userOne, UserHA userTwo) {
 		this.id = id;
 		this.userOne = userOne;
 		this.userTwo = userTwo;
 	}
 
-	public Matches(User userOne, User userTwo) {
+	public Matches(UserHA userOne, UserHA userTwo) {
 		this.userOne = userOne;
 		this.userTwo = userTwo;
 	}
 
-	public User getUserOne() {
+	public UserHA getUserOne() {
 		return userOne;
 	}
 
-	public void setUserOne(User userOne) {
+	public void setUserOne(UserHA userOne) {
 		this.userOne = userOne;
 	}
 
-	public User getUserTwo() {
+	public UserHA getUserTwo() {
 		return userTwo;
 	}
 
-	public void setUserTwo(User userTwo) {
+	public void setUserTwo(UserHA userTwo) {
 		this.userTwo = userTwo;
 	}
 

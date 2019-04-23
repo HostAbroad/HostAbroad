@@ -23,11 +23,12 @@ public class ASFactoryImp extends ASFactory {
 	public ASLikes createASLikes() {
 		return new ASLikesImp();
 	}
-	
+
 	@Override
 	public ASMatches createASMatches() {
 		return new ASMatchesImp();
 	}
+	
 	
 
 }

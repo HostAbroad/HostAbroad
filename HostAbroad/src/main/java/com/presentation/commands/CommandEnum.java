@@ -14,6 +14,7 @@ public class CommandEnum {
 		CommandEditTraveler,
 		CommandEditHost, 
 		CommandSendersLike,
+		CommandSearch,
 		CommandAcceptLike,
 		CommandDeclineLike
 	}

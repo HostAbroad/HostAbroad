@@ -8,7 +8,7 @@ import javax.persistence.Persistence;
 
 import com.business.businessObjects.Likes;
 import com.business.businessObjects.Matches;
-import com.business.businessObjects.User;
+import com.business.businessObjects.UserHA;
 import com.business.transfers.TMatches;
 
 public class ASMatchesImp implements ASMatches {
@@ -25,13 +25,13 @@ public class ASMatchesImp implements ASMatches {
 			EntityTransaction tr = em.getTransaction();
 			tr.begin();
 
-			User userOne; //Usuario 1 es el que acepta el Like (que es el UserReceiver de Likes)
-			User userTwo; //Usuario 2 es el que envió el like
+			UserHA userOne; //Usuario 1 es el que acepta el Like (que es el UserReceiver de Likes)
+			UserHA userTwo; //Usuario 2 es el que envió el like
 			try {
 				String query = "SELECT * FROM USER WHERE NICKNAME = ?1";
-				userOne = (User)em.createNativeQuery(query, User.class)
+				userOne = (UserHA)em.createNativeQuery(query, UserHA.class)
 						.setParameter(1, tMatches.getUserOne()).getSingleResult();
-				userTwo = (User)em.createNativeQuery(query, User.class)
+				userTwo = (UserHA)em.createNativeQuery(query, UserHA.class)
 						.setParameter(1, tMatches.getUserTwo()).getSingleResult();
 				
 				query = "SELECT * FROM MATCHES WHERE (USERONE_NICKNAME = ?1 AND USERTWO_NICKNAME = ?2) OR (USERONE_NICKNAME = ?2 AND USERTWO_NICKNAME = ?1)  ";
@@ -79,13 +79,13 @@ public class ASMatchesImp implements ASMatches {
 			EntityTransaction tr = em.getTransaction();
 			tr.begin();
 
-			User userOne; //Usuario 1 es el que declina el Like (que es el UserReceiver de Likes)
-			User userTwo; //Usuario 2 es el que envió el like
+			UserHA userOne; //Usuario 1 es el que declina el Like (que es el UserReceiver de Likes)
+			UserHA userTwo; //Usuario 2 es el que envió el like
 			try {
 				String query = "SELECT * FROM USER WHERE NICKNAME = ?1";
-				userOne = (User)em.createNativeQuery(query, User.class)
+				userOne = (UserHA)em.createNativeQuery(query, UserHA.class)
 						.setParameter(1, tMatches.getUserOne()).getSingleResult();
-				userTwo = (User)em.createNativeQuery(query, User.class)
+				userTwo = (UserHA)em.createNativeQuery(query, UserHA.class)
 						.setParameter(1, tMatches.getUserTwo()).getSingleResult();
 				
 				userOne.getLikes().remove(new Likes(userTwo, userOne)); //Aqui se borra el Like del usuario que lo recibio y que ahora ha aceptado
