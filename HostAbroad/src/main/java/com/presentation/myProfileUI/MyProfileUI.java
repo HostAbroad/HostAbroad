@@ -63,7 +63,7 @@ public class MyProfileUI extends UI {
 		likes.add(1);
 		likes.add(2);
 
-		TUser myUser1 = new TUser("Prueba", "PruebaFull", "ivan@ucm.es", "1234", 5, "Im prueba", false, false, likes);
+		TUser myUser1 = new TUser("Prueba", "PruebaFull", "ivan@ucm.es", "1234", 5, "Im prueba", false, true, likes);
 		VerticalLayout superLayout = new VerticalLayout();
 		superLayout.setStyleName("v-scrollable");
 		superLayout.setSpacing(false);
@@ -153,7 +153,7 @@ public class MyProfileUI extends UI {
 		personalInfo.click();
 		this.setContent(superLayout);
 	}
-	
+
 	public GridLayout personalInfoForm(TUser user) {
 
 		GridLayout mainGrid = new GridLayout(1, 2);
@@ -265,16 +265,16 @@ public class MyProfileUI extends UI {
 		mainGrid.addComponent(save);
 		return mainGrid;
 	}
-	
+
 	public GridLayout travelerInfo(TUser user) {
-		
-		GridLayout mainGrid = new GridLayout(1,1);
+
+		GridLayout mainGrid = new GridLayout(1, 1);
 		mainGrid.setSpacing(true);
 		mainGrid.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 		mainGrid.setSizeFull();
 		mainGrid.setHeight("100%");
 		mainGrid.setWidth("100%");
-		
+
 		GridLayout info = new GridLayout(3, 2);
 		info.setSpacing(true);
 		info.setMargin(true);
@@ -282,7 +282,7 @@ public class MyProfileUI extends UI {
 		info.setHeight("100%");
 		info.setSizeFull();
 		info.setStyleName("v-scrollable");
-		
+
 		AdvancedTokenField knowledges = new AdvancedTokenField();
 		knowledges.setCaption("Knowledges");
 		knowledges.setIcon(FontAwesome.BOOK);
@@ -293,7 +293,7 @@ public class MyProfileUI extends UI {
 		KnowledgesTokens tokens = new KnowledgesTokens();
 		knowledges.addTokensToInputField(tokens.getTokens());
 		info.addComponent(knowledges, 0, 0);
-		
+
 		AdvancedTokenField countries = new AdvancedTokenField();
 		countries.setCaption("Countries I want to visit");
 		countries.setIcon(FontAwesome.GLOBE);
@@ -304,14 +304,14 @@ public class MyProfileUI extends UI {
 		CountriesTokens country = new CountriesTokens();
 		countries.addTokensToInputField(country.getTokens());
 		info.addComponent(countries, 1, 0);
-		
+
 		VerticalLayout stay = new VerticalLayout();
 		stay.setWidth("100%");
 		stay.setSizeFull();
-		//stay.setSizeUndefined();
+		// stay.setSizeUndefined();
 		Slider days = new Slider("Maximum stay: ", 0, 4);
 		days.setOrientation(SliderOrientation.HORIZONTAL);
-		//days.setSizeFull();
+		// days.setSizeFull();
 		days.setWidth("100%");
 		stay.addComponentsAndExpand(days);
 		Label dias = new Label("0 days");
@@ -332,9 +332,9 @@ public class MyProfileUI extends UI {
 			}
 		});
 		info.addComponent(stay, 2, 0);
-		
+
 		mainGrid.addComponent(info, 0, 0);
-		
+
 		Button saveButton = new Button("Save");
 		saveButton.setId("saveButton");
 		saveButton.addClickListener(event -> {
@@ -366,32 +366,25 @@ public class MyProfileUI extends UI {
 			 */
 		});
 		info.addComponent(saveButton, 1, 1);
-		
+
 		Pair<Integer, Object> resultRead = Controller.getInstance().action(Commands.CommandReadTravelerInformation,
 				user);
 
 		if (resultRead.getLeft() == 1) {
 
-			/*
-			 * for (int i = 0; i < ((TTraveler)
-			 * resultRead.getRight()).getListOfKnowledges().size(); i++)
-			 * knowledges.select(((TTraveler)
-			 * resultRead.getRight()).getListOfKnowledges().get(i));
-			 * 
-			 * for (int i = 0; i < ((TTraveler)
-			 * resultRead.getRight()).getListOfCountries().size(); i++)
-			 * countries.select(((TTraveler)
-			 * resultRead.getRight()).getListOfCountries().get(i));
-			 * 
-			 * if (((TTraveler) resultRead.getRight()).getDurationOfStay() != null)
-			 * days.setSelectedItem(((TTraveler)
-			 * resultRead.getRight()).getDurationOfStay());
-			 */
+			for (int i = 0; i < ((TTraveler) resultRead.getRight()).getListOfKnowledges().size(); i++)
+				knowledges.addToken( new Token(((TTraveler) resultRead.getRight()).getListOfKnowledges().get(i).name()));
+
+			for (int i = 0; i < ((TTraveler) resultRead.getRight()).getListOfCountries().size(); i++)
+				countries.addToken(new Token(((TTraveler) resultRead.getRight()).getListOfCountries().get(i).name()));
+
+			if (((TTraveler) resultRead.getRight()).getDurationOfStay() != null)
+				days.setValue(((TTraveler) resultRead.getRight()).getDurationOfStay().ordinal() + 0.0);
 
 		}
 
 		TTraveler tTraveler = new TTraveler();
-
+		
 		return mainGrid;
 	}
 
@@ -454,10 +447,6 @@ public class MyProfileUI extends UI {
 
 		return mainLayoutInterests;
 	}
-
-	
-
-	
 
 	private HorizontalLayout myLikes(TUser myUser) {
 
