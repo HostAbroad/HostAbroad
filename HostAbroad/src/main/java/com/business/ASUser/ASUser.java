@@ -24,4 +24,6 @@ public interface ASUser {
 	public abstract TTraveler readTravelerInformation(TUser user);
 	
 	public abstract ArrayList<TUser> SendersLike(TUser tUser);
+	
+	public abstract boolean modifyBasicInformation(TUser tUser);
 }

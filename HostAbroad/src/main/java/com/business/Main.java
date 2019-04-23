@@ -2,28 +2,32 @@ package com.business;
 
 import java.util.ArrayList;
 
-import com.business.ASLikes.ASLikesImp;
-import com.business.ASSearch.ASSearchImp;
-import com.business.ASUser.ASUserImp;
-import com.business.enums.InterestsEnum;
-import com.business.enums.SearchEnum;
-import com.business.transfers.THost;
-import com.business.transfers.TUser;
-import com.presentation.commands.CommandSearch;
-
 public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		ASUserImp asUser = new ASUserImp();
-		ASLikesImp asLikes = new ASLikesImp();
+		//ASUserImp asUser = new ASUserImp();
+		//ASLikesImp asLikes = new ASLikesImp();
 		//asUser.createUser(new TUser("Roni", "Veronika Yanova", "veronikayankova3@gmail.com", "roniponi"));
 		
 		//asUser.editTravelerInformation(new TTraveler("prueba", null, null, null));
 		//TUser u = asUser.loginUser(new TUser("saninazer@gmail.com", "Sanii12"));
 		//asUser.addPlace(new TPlace("asd", "asd", null, "", FamilyUnit.Fam1, "sani"));
 		//ArrayList<InterestsEnum> interests = new ArrayList<InterestsEnum>();
+
+		//interests.add(InterestsEnum.Int1);
+		//asUser.editHostInformation(new THost("sani", interests));
+		//System.out.println(asUser.readHostInformation(new TUser("sani", 10, "", true)).getNickname());;
+		//asLikes.sendLike(new TLikes("sani", "Roni"));
+		
+		//for modify basic info
+		//TUser tuser = new TUser("sani", "Gasan", "gasan@gasan.gasan", "I am Gasan", "photo.jpg");// positive
+		//TUser tuser2 = new TUser("sani", "Gasan2", "roni@roni.roni", "I am Gasan", "photo.jpg");// negative
+		//TUser tuser3 = new TUser("sani", "sani", "sani@sani.sani", "I am Sani", "photo.jpg");// positive
+		//Pair<Integer,Object> result = Controller.getInstance().action(Commands.CommandModifyBasicInformation, tuser3);
+		//System.out.println("Is edited: " + result.getRight());
+
 		//interests.add(InterestsEnum.Animals);
 		//asUser.editHostInformation(new THost("Roni", interests));
 		//System.out.println(asUser.readHostInformation(new TUser("sani", 10, "", true)).getNickname());;

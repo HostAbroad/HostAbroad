@@ -2,7 +2,7 @@ package com.presentation.commands;
 
 public class CommandEnum {
 
-	//Clase enum para hacer seleccion dinámica de comando con todos los que usaremos 
+	//This is the enum that we are using for the dynamic loading
 	public enum Commands {
 	    CommandSearchHost,
 	    CommandSearchTraveler,
@@ -12,8 +12,9 @@ public class CommandEnum {
 		CommandReadHostInformation,
 		CommandReadTravelerInformation,
 		CommandEditTraveler,
-		CommandEditHost, 
+		CommandEditHost,
 		CommandSendersLike,
+		CommandModifyBasicInformation,
 		CommandSearch
 	}
 }
