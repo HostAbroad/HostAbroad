@@ -1,33 +1,17 @@
 package com.presentation.myPlacesUI;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.net.ftp.FTPClient;
 
 import com.vaadin.server.FileResource;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
 import com.vaadin.shared.Position;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Image;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.Upload;
-import com.vaadin.ui.Upload.Receiver;
-import com.vaadin.ui.Upload.SucceededEvent;
-import com.vaadin.ui.Upload.SucceededListener;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.shared.ui.slider.SliderOrientation;
+import com.vaadin.ui.*;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyPlacesUI extends UI {
 
@@ -37,30 +21,59 @@ public class MyPlacesUI extends UI {
 
 		VerticalLayout secondaryLayout = new VerticalLayout();
 		
-		GridLayout grid = new GridLayout(2, 2);
-		grid.setSpacing(true);
 
 
-		
+
+		/*
 		Upload upload = new Upload("Add an image", configureReciever());
 		upload.setImmediateMode(false);
 		upload.setButtonCaption("Upload");
-		
+		*/
 		
 		TextArea description = new TextArea("Description");
 		description.setWordWrap(false);
 		description.setId("PlaceDescription");
-		grid.addComponent(description, 0, 0);
+		secondaryLayout.addComponent(description);
 
-		ComboBox<String> duration = new ComboBox<>("How long can I host");
-		initDuration(duration);
-		duration.setId("PlaceDuration");
-		grid.addComponent(duration, 1, 0);
+        // Create a horizontal slider
+        Slider duration = new Slider("Duration: ", 0, 7);
+        duration.setOrientation(SliderOrientation.HORIZONTAL);
+        duration.setWidth("200px");
+        Label dias = new Label("Days");
+        duration.addValueChangeListener(event -> {
+            if(duration.getValue() == 1.0) {
+                dias.setValue("1 days");
+            }
+            else if(duration.getValue() == 2.0) {
+                dias.setValue("2 days");
+            }
+            else if(duration.getValue() == 3.0) {
+                dias.setValue("3 days");
+            }
+            else if(duration.getValue() == 4.0) {
+                dias.setValue("4 days");
+            }
+            else if(duration.getValue() == 5.0) {
+                dias.setValue("5 days");
+            }
+            else if(duration.getValue() == 6.0) {
+                dias.setValue("6 days");
+            }
+            else if(duration.getValue() == 7.0) {
+                dias.setValue("1 Week");
+            }
+        });
+        secondaryLayout.addComponent(dias);
+        secondaryLayout.setComponentAlignment(dias,Alignment.TOP_CENTER);
+        secondaryLayout.addComponent(duration);
+        secondaryLayout.setComponentAlignment(duration,Alignment.TOP_CENTER);
 
-		ComboBox<String> country = new ComboBox<>("I live");
+
+
+		ComboBox<String> country = new ComboBox<>("I live with");
 		country.setItems("My house", "Sahara", "Bulgaria", "Mars");
 		country.setId("PlaceCountry");
-		grid.addComponent(country, 0, 1);
+		secondaryLayout.addComponent(country);
 
 		Button save = new Button("Save");
 		save.addClickListener(event->{
@@ -73,70 +86,16 @@ public class MyPlacesUI extends UI {
 		save.setId("PlaceSave");
 		
 		
-		mainLayout.addComponent(upload);
-		secondaryLayout.addComponent(grid);
+		//mainLayout.addComponent(upload);
 		secondaryLayout.addComponent(save);
 		secondaryLayout.setComponentAlignment(save, Alignment.MIDDLE_CENTER);
 		mainLayout.addComponent(secondaryLayout);
 		this.setContent(mainLayout);
 	}
 
-	private Receiver configureReciever() {
-		// Show uploaded file in this placeholder
-		Image image = new Image("Uploaded Image");
 
-		// Implement both receiver that saves upload in a file and
-		// listener for successful upload
-		class ImageReceiver implements Receiver, SucceededListener {
 
-            /**
-			 * 
-			 */
-			private static final long serialVersionUID = -1978994458420453238L;
 
-			public File file;
-            
-            FTPClient client = new FTPClient();
-            
-
-            public void uploadSucceeded(SucceededEvent event) {
-                // Show the uploaded file in the image viewer
-                image.setVisible(true);
-                image.setSource(new FileResource(file));
-            }
-			@Override
-			public OutputStream receiveUpload(String filename, String mimeType) {
-				filename = file.toString();
-				// Read the file from resources folder.
-		        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-		        try (InputStream is = classLoader.getResourceAsStream(filename)) {
-		            client.connect("087.ftp.azurewebsites.windows.net");
-		            client.login("HostAbroad\\HostAbroad", "Ftp12345");
-
-		            // Store file to server
-		            client.storeFile(filename, is);
-		            client.logout();
-		        } catch (IOException e) {
-		            e.printStackTrace();
-		        } finally {
-		            try {
-		                client.disconnect();
-		            } catch (IOException e) {
-		                e.printStackTrace();
-		            }
-		        }
-				return null;
-			}
-        };
-        ImageReceiver receiver = new ImageReceiver();
-        
-        
-		// Create the upload with a caption and set receiver later
-		Upload upload = new Upload("Upload Image Here", receiver);
-		upload.addSucceededListener(receiver);
-		return receiver;
-	}
-	
 	private Image loadImage(String url) {
 		//reading the image
 		//-----------------------------------
@@ -163,3 +122,4 @@ public class MyPlacesUI extends UI {
 	}
 
 }
+
