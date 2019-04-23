@@ -32,5 +32,12 @@
 	<classpathentry kind="lib" path="commons-net-3.6-sources.jar"/>
 	<classpathentry kind="lib" path="commons-net-3.6.jar"/>
 	<classpathentry kind="lib" path="commons-net-examples-3.6.jar"/>
+	<classpathentry kind="src" output="target/classes" path="target/generated-resources/gwt">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="ignore_optional_problems" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
