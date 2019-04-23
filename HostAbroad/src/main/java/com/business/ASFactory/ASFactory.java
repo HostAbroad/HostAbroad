@@ -1,6 +1,7 @@
 package com.business.ASFactory;
 
 import com.business.ASLikes.ASLikes;
+import com.business.ASMatches.ASMatches;
 import com.business.ASSearch.ASSearch;
 import com.business.ASUser.ASUser;
 
@@ -20,5 +21,7 @@ public abstract class ASFactory {
 	public abstract ASUser createASUser();
 	
 	public abstract ASLikes createASLikes();
+	
+	public abstract ASMatches createASMatches();
 
 }
