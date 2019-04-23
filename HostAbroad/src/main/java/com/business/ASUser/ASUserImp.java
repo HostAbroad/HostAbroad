@@ -12,10 +12,12 @@ import javax.persistence.Query;
 import com.business.businessObjects.Host;
 import com.business.businessObjects.Likes;
 import com.business.businessObjects.Place;
+import com.business.businessObjects.Rating;
 import com.business.businessObjects.Traveler;
 import com.business.businessObjects.UserHA;
 import com.business.transfers.THost;
 import com.business.transfers.TPlace;
+import com.business.transfers.TRating;
 import com.business.transfers.TTraveler;
 import com.business.transfers.TUser;
 
@@ -335,5 +337,63 @@ public class ASUserImp implements ASUser {
 		
 		
 		return  sendersUser;
+	}
+	
+	@Override
+	public boolean rateUser(TRating tRating) {
+
+		boolean result = false; //Devolverá false si ha habido algún error o si ese Sender ya ha valorado a Receiver
+		
+		try {
+			
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
+			EntityManager em = emf.createEntityManager();
+			EntityTransaction tr = em.getTransaction();
+			tr.begin();
+
+			UserHA userOne; // Usuario 1 es el que envia valoracion
+			UserHA userTwo; // Usuario 2 es el que la recibe
+
+			try {
+				
+				String query = "SELECT * FROM USERHA WHERE NICKNAME = ?1";
+				userOne = (UserHA) em.createNativeQuery(query, UserHA.class).setParameter(1, tRating.getUserSender())
+						.getSingleResult();
+				userTwo = (UserHA) em.createNativeQuery(query, UserHA.class).setParameter(1, tRating.getUserReceiver())
+						.getSingleResult();
+
+				query = "SELECT * FROM RATING WHERE USERRECEIVER_NICKNAME = ?1 AND USERSENDER_NICKNAME = ?2";
+				Rating rating;
+				
+				try {
+
+					rating = (Rating) em.createNativeQuery(query, Rating.class)
+							.setParameter(1, tRating.getUserReceiver()).setParameter(2, tRating.getUserSender())
+							.getSingleResult();
+
+				} catch (Exception e) {
+
+					rating = new Rating(userOne, userTwo, tRating.getRate());
+					em.persist(rating);
+
+					userTwo.getRates().add(rating);
+					userTwo.setRating(userTwo.calculateRating()); // Vuelve a calcular la valoracion total para
+																	// actualizarla
+
+					em.persist(userTwo);
+					result = true;
+
+				}
+			} catch (NoResultException e) {}
+
+			tr.commit();
+			em.close();
+			emf.close();
+			
+		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		
+		return result;
 	}
 }
