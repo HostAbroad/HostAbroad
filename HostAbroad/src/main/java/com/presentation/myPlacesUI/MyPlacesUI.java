@@ -3,6 +3,9 @@ package com.presentation.myPlacesUI;
 
 import com.business.enums.FamilyUnit;
 import com.business.transfers.TPlace;
+import com.presentation.headerAndFooter.Footer;
+import com.presentation.headerAndFooter.Header;
+import com.vaadin.annotations.Theme;
 import com.vaadin.server.*;
 import com.vaadin.shared.ui.slider.SliderOrientation;
 import com.vaadin.ui.*;
@@ -12,18 +15,22 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+@Theme("mytheme")
 public class MyPlacesUI extends UI {
 
 	@Override
 	protected void init(VaadinRequest request) {
 		VerticalLayout superLayout = new VerticalLayout();
+		superLayout.setMargin(false);
+		superLayout.setSpacing(false);
 		HorizontalLayout mainLayout = new HorizontalLayout();
 		mainLayout.setStyleName("v-scrollable");
-		mainLayout.setSpacing(false);
-		mainLayout.setMargin(false);
+		mainLayout.setSizeFull();
 
-		VerticalLayout secondaryLayout = new VerticalLayout();
-		VerticalLayout sliderLayout	= new VerticalLayout();
+
+		GridLayout secondaryLayout = new GridLayout(2,6);
+		secondaryLayout.setMargin(true);
+		secondaryLayout.setSpacing(true);
 
 		Image placeImg = new Image();
 		placeImg.setSource(new ExternalResource("https://raw.githubusercontent.com/OmegaSkyres/images/master/null.png"));
@@ -42,10 +49,13 @@ public class MyPlacesUI extends UI {
 		
 		TextArea description = new TextArea("Description");
 		description.setWordWrap(false);
+		description.setHeight("90%");
+		description.setWidth("150%");
 		description.setId("PlaceDescription");
 
 		TextField address = new TextField("Address");
 		address.setId("PlaceAddress");
+		address.setWidth("150%");
 
 
 
@@ -74,20 +84,19 @@ public class MyPlacesUI extends UI {
 					days.setValue("More than a month");
 				}
         });
-        sliderLayout.addComponent(days);
-        sliderLayout.addComponent(duration);
-
-
 
 		ComboBox<String> unitfamily = new ComboBox<>("I live with");
 		unitfamily.setItems("Single", "With friends", "With family");
-		unitfamily.setId("UnitFamily");
+		unitfamily.setTextInputAllowed(false);
+		unitfamily.setId("unitFamily");
 
 
 		Button save = new Button("Save", FontAwesome.SAVE);
+		save.setId("saveButton");
+		save.setStyleName("v-button-register");
 		save.addClickListener(event->{
 			FamilyUnit familyUnit;
-			if(unitfamily.getValue() == "ALone"){
+			if(unitfamily.getValue() == "Alone"){
 				familyUnit = FamilyUnit.Alone;
 			}
 			else if(unitfamily.getValue() == "With family"){
@@ -107,17 +116,18 @@ public class MyPlacesUI extends UI {
 		save.setId("PlaceSave");
 		
 
-		secondaryLayout.addComponent(placeImg);
-		secondaryLayout.addComponent(uploadField);
-		secondaryLayout.addComponent(description);
-		secondaryLayout.addComponent(address);
-		secondaryLayout.addComponent(unitfamily);
-		secondaryLayout.addComponent(save);
+		secondaryLayout.addComponent(placeImg,0,0);
+		secondaryLayout.addComponent(uploadField,0,1);
+		secondaryLayout.addComponent(days,0,2);
+		secondaryLayout.addComponent(duration,0,3);
+		secondaryLayout.addComponent(unitfamily,0,4);
+		secondaryLayout.addComponent(save,0,5);
+		secondaryLayout.addComponent(description,1,0);
+		secondaryLayout.addComponent(address,1,1);
 		mainLayout.addComponent(secondaryLayout);
-		mainLayout.addComponent(sliderLayout);
-		//superLayout.addComponent(new Header());
-		superLayout.addComponent(mainLayout);
-		//superLayout.addComponent(new Footer());
+		superLayout.addComponent(new Header());
+		superLayout.addComponentsAndExpand(mainLayout);
+		superLayout.addComponent(new Footer());
 		this.setContent(superLayout);
 	}
 
