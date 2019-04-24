@@ -54,6 +54,7 @@ public class UserHA {
     this.matches = matches;
     }
     
+
     public UserHA(String nickname, String fullName, String email, int password, 
 			double rating, String description, boolean host, boolean traveler, 
 			Host hostEntity, Traveler travelerEntity, Collection<Likes> likes) {
@@ -251,6 +252,7 @@ public class UserHA {
     public Collection<Likes> getLikes(){
     	return likes;
     }
+
     
     public void setMatches(Collection<Matches> matches) {
     	this.matches = matches;

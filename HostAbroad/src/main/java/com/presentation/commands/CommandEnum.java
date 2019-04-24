@@ -17,5 +17,6 @@ public class CommandEnum {
 		CommandSearch,
 		CommandAcceptLike,
 		CommandDeclineLike
+
 	}
 }

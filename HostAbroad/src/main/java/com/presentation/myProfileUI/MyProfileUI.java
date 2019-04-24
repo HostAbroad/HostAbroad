@@ -2,13 +2,17 @@ package com.presentation.myProfileUI;
 
 import java.util.ArrayList;
 
+import javax.servlet.annotation.WebServlet;
+
+import org.vaadin.easyuploads.UploadField;
+
 import com.business.enums.CountriesEnum;
 import com.business.enums.DurationOfStayEnum;
 import com.business.enums.InterestsEnum;
-import com.business.enums.KnowledgesEnum;
 import com.business.transfers.THost;
 import com.business.transfers.TTraveler;
 import com.business.transfers.TUser;
+import com.fo0.advancedtokenfield.main.AdvancedTokenField;
 import com.presentation.card.Card;
 import com.presentation.commands.CommandEnum.Commands;
 import com.presentation.commands.Pair;
@@ -16,20 +20,22 @@ import com.presentation.controller.Controller;
 import com.presentation.headerAndFooter.Footer;
 import com.presentation.headerAndFooter.Header;
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.Binder;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinServlet;
 import com.vaadin.shared.Position;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBoxGroup;
 import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
@@ -44,9 +50,8 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 @Theme("mytheme")
+@SuppressWarnings("deprecation")
 public class MyProfileUI extends UI {
-
-	private TabSheet tabs;
 
 	// Hay que pasarle un transfer usuario desde el LoginUI, y de ahi sacar todos
 	// los campos
@@ -54,63 +59,98 @@ public class MyProfileUI extends UI {
 	protected void init(VaadinRequest request) {
 
 		TUser myUser = new TUser("Prueba", "PruebaFull", "ivan@ucm.es", "1234", 5, "Im prueba", false, false);
-		VerticalLayout superLayout = new VerticalLayout();
-		superLayout.setSpacing(false);
-		superLayout.setMargin(false);
-
-		//Para probar que funciona añadir en la bbdd los likes con sus ID. Hay que poner en receivedUser el
-		//mismo nombre que ponemos en este transfer
-				
 		ArrayList<Integer> likes = new ArrayList<Integer>();
 		likes.add(1);
 		likes.add(2);
 		
 		TUser myUser1 = new TUser("Prueba", "PruebaFull", "ivan@ucm.es", "1234", 5, "Im prueba", false, false, likes);
+		VerticalLayout superLayout = new VerticalLayout();
+		superLayout.setStyleName("v-scrollable");
+		superLayout.setSpacing(false);
+		superLayout.setMargin(false);
 		
-
-		HorizontalLayout mainLayout = new HorizontalLayout();
-		mainLayout.setSizeFull();
-		mainLayout.setId("mainLayout");
-		VerticalLayout mainVertical = new VerticalLayout();
-		mainVertical.setId("mainVertical");
+		GridLayout grid = new GridLayout(3, 1);
+		
+		Label gap = new Label();
+		gap.setWidth("3em");
+		grid.addComponent(gap, 1, 0);
+		
+		GridLayout menu = new GridLayout(1, 6);
+		
+		HorizontalLayout pages = new HorizontalLayout();
+		pages.setSizeFull();
+		pages.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 		Panel panel = new Panel();
 		panel.setSizeFull();
-		panel.setContent(mainVertical);
-		panel.setId("panel");
-		mainLayout.addComponent(panel);
+		
+		Button personalInfo = new Button("Personal information", VaadinIcons.USER);
+		personalInfo.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-pi");
+		personalInfo.setHeight(80, Unit.PIXELS);
+		personalInfo.addClickListener(event ->{
+			pages.removeAllComponents();
+			pages.addComponent(personalInfoForm(myUser1));
+			pages.setWidth("100%");
+		});
+		menu.addComponent(personalInfo);
+		
+		Button traveler = new Button("Traveler settings", VaadinIcons.PAPERPLANE);
+		traveler.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-t");
+		traveler.setWidth("100%");
+		traveler.setHeight(80, Unit.PIXELS);
+		traveler.addClickListener(event->{
+			pages.removeAllComponents();
+			pages.addComponent(myProperties(myUser1));
+		});
+		menu.addComponent(traveler);
+		
+		Button host = new Button("Host settings", VaadinIcons.HOME);
+		host.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-h");
+		host.setWidth("100%");
+		host.setHeight(80, Unit.PIXELS);
+		menu.addComponent(host);
+		
+		Button interests = new Button("Interests", VaadinIcons.CALC_BOOK);
+		interests.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-i");
+		interests.setWidth("100%");
+		interests.setHeight(80, Unit.PIXELS);
+		interests.addClickListener(event->{
+			pages.removeAllComponents();
+			pages.addComponent(myInterests(myUser1));
+		});
+		menu.addComponent(interests);
+		
+		Button comments = new Button("Comments", VaadinIcons.CHAT);
+		comments.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-c");
+		comments.setWidth("100%");
+		comments.setHeight(80, Unit.PIXELS);
+		menu.addComponent(comments);
+		
+		Button msgs = new Button("Messages", VaadinIcons.ENVELOPES);
+		msgs.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-m");
+		msgs.setWidth("100%");
+		msgs.setHeight(80, Unit.PIXELS);
+		menu.addComponent(msgs);
+		
+		Button like = new Button("My likes", VaadinIcons.HEART);
+		like.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-ml");
+		like.setWidth("100%");
+		like.setHeight(80, Unit.PIXELS);
+		like.addClickListener(event->{
+			pages.removeAllComponents();
+			pages.addComponent(myLikes(myUser1));
+		});
+		menu.addComponent(like);
 
-		this.tabs = new TabSheet();
-		tabs.setStyleName("v-tabsheet v-widget centered-tabs v-tabsheet-centered-tabs equal-width-tabs v-tabsheet-equal-width-tabs padded-tabbar v-tabsheet-padded-tabbar v-has-width");
-		mainVertical.addComponent(tabs);
-		tabs.setId("tab");
-
-		HorizontalLayout personalInfoTab = new HorizontalLayout();
-		personalInfoForm(personalInfoTab, myUser1);
-		tabs.addTab(personalInfoTab, "Personal Information", VaadinIcons.USER);
-
-		HorizontalLayout propertiesTab = new HorizontalLayout();
-		propertiesTab = myProperties(myUser1);
-		tabs.addTab(propertiesTab, "My Properties", VaadinIcons.COGS);
-
-		HorizontalLayout interestsTab = new HorizontalLayout();
-		interestsTab = myInterests(myUser1);
-		tabs.addTab(interestsTab, "Interests", VaadinIcons.CALC_BOOK);
-
-		HorizontalLayout commentsTab = new HorizontalLayout();
-		tabs.addTab(commentsTab, "Comments", VaadinIcons.ENVELOPE);
-
-		HorizontalLayout messagesTab = new HorizontalLayout();
-		tabs.addTab(messagesTab, "Messages", VaadinIcons.CHAT);
-
-		HorizontalLayout myLikesTab = new HorizontalLayout();
-		myLikesTab = myLikes(myUser1);
-		myLikesTab.setId("myLikesTab");
-		tabs.addTab(myLikesTab, "My Likes", VaadinIcons.HEART);
+		grid.addComponent(menu);
+		grid.addComponent(pages, 2, 0);
+		grid.setComponentAlignment(pages, Alignment.TOP_CENTER);
+		
+		grid.setComponentAlignment(menu, Alignment.MIDDLE_CENTER);
 
 		superLayout.addComponent(new Header());
-		superLayout.addComponentsAndExpand(panel);
+		superLayout.addComponentsAndExpand(grid);
 		superLayout.addComponent(new Footer());
-
+		personalInfo.click();
 		this.setContent(superLayout);
 	}
 
@@ -122,6 +162,7 @@ public class MyProfileUI extends UI {
 		mainLayout.setId("mainLayout");
 		HorizontalLayout mainLayoutInterests = new HorizontalLayout();
 		mainLayoutInterests.setId("mainLayoutInterests");
+		mainLayoutInterests.setStyleName("v-scrollable");
 		mainLayoutInterests.setSizeFull();
 		mainLayoutInterests.setSpacing(true);
 
@@ -173,36 +214,49 @@ public class MyProfileUI extends UI {
 		return mainLayoutInterests;
 	}
 
-	public void personalInfoForm(HorizontalLayout layout, TUser user) {
-		Panel panel = new Panel();
-		panel.setWidth("100%");
+	
+	public GridLayout personalInfoForm( TUser user) {
+		
+		GridLayout mainGrid = new GridLayout(1, 2);
+		mainGrid.setSpacing(true);
+		mainGrid.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+		GridLayout sections = new GridLayout(2, 1);
+		sections.setSpacing(true);
+		sections.setMargin(true);
+		sections.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+		VerticalLayout image = new VerticalLayout();
+		image.setSpacing(true);
+		image.setMargin(true);
+		image.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+		GridLayout fields = new GridLayout(3, 5);
+		fields.setSpacing(true);
+		fields.setMargin(true);
+		fields.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+		
 		Binder<TUser> binder = new Binder<>(TUser.class);
-		HorizontalLayout mainLayout = new HorizontalLayout();
-		mainLayout.setSizeFull();
-		mainLayout.setSpacing(true);
-
-		VerticalLayout imageAndDescription = new VerticalLayout();
-		imageAndDescription.setWidth("300px");
-		imageAndDescription.setSpacing(true);
-
+		
 		Image profileImg = new Image();
 		profileImg.setSource(new ExternalResource("https://raw.githubusercontent.com/evivar/images/master/User_Circle.png"));
 		profileImg.setId("ProfileImage");
+		
+		UploadField uploadField = new UploadField();
+		uploadField.setClearButtonVisible(false);
+		uploadField.setButtonCaption("Select image");
+		
+		Button changeImg = new Button("Change image");
+		changeImg.setIcon(FontAwesome.UPLOAD);
+		changeImg.addClickListener(event -> {
+			Notification.show("File: " + uploadField.getLastFileName());
+		});
+		changeImg.setId("ProfileChangeImg");
 
-		TextArea description = new TextArea("Description");
-		description.setWordWrap(true);
-		description.setValue(user.getDescription());
-		description.setId("ProfileDescription");
-
-		imageAndDescription.addComponent(profileImg);
-
-		imageAndDescription.addComponent(description);
-		imageAndDescription.setComponentAlignment(description, Alignment.MIDDLE_CENTER);
-
-		FormLayout personalInfo = new FormLayout();
-		personalInfo.setSizeFull();
-		personalInfo.setSpacing(true);
-
+		image.addComponent(profileImg);
+		image.addComponent(uploadField);
+		image.setComponentAlignment(uploadField, Alignment.MIDDLE_CENTER);
+		image.addComponent(changeImg);
+		image.setComponentAlignment(changeImg, Alignment.MIDDLE_CENTER);
+		sections.addComponent(image, 0, 0);
+		
 		TextField username = new TextField("Username");
 		username.setValue(user.getNickname());
 		username.setId("ProfileUsername");
@@ -235,6 +289,7 @@ public class MyProfileUI extends UI {
 		languageCB.setId("ProfileLanguages");
 
 		Button save = new Button("Save");
+		save.setIcon(FontAwesome.SAVE);
 		save.addClickListener(event -> {
 			if (binder.isValid()) {
 				Notification notif = new Notification("Changes saved!");
@@ -251,12 +306,24 @@ public class MyProfileUI extends UI {
 		});
 		save.setId("ProfileSave");
 
-		personalInfo.addComponents(fullName, username, email, genderCB, languageCB, save);
-		personalInfo.setComponentAlignment(save, Alignment.BOTTOM_RIGHT);
+		TextArea description = new TextArea("Description");
+		description.setWordWrap(true);
+		description.setValue(user.getDescription());
+		description.setStyleName("v-textarea v-widget v-textarea-prompt");
+		description.setId("ProfileDescription");
 
-		mainLayout.addComponent(imageAndDescription);
-		mainLayout.addComponent(personalInfo);
-		layout.addComponent(mainLayout);
+		fields.addComponent(fullName, 0, 0);
+		fields.addComponent(username, 1, 0);
+		fields.addComponent(email, 0, 1);
+		fields.addComponent(genderCB, 1, 1);
+		fields.addComponent(languageCB, 0, 2);
+		fields.addComponent(description, 0, 3, 2, 4);
+		
+		sections.addComponent(fields, 1, 0);
+		
+		mainGrid.addComponent(sections);
+		mainGrid.addComponent(save);
+		return mainGrid;
 	}
 
 	public HorizontalLayout myProperties(TUser user) {
@@ -268,13 +335,14 @@ public class MyProfileUI extends UI {
 		mainLayout.setId("mainLayout");
 		HorizontalLayout mainLayoutInterests = new HorizontalLayout();
 		mainLayoutInterests.setId("mainLayoutProperties");
+		mainLayoutInterests.setStyleName("v-scrollable");
 		mainLayoutInterests.setSizeFull();
 		mainLayoutInterests.setSpacing(true);
 
-		CheckBoxGroup<KnowledgesEnum> knowledges = new CheckBoxGroup<>("Knowledges: ");
+		/*CheckBoxGroup<KnowledgesEnum> knowledges = new CheckBoxGroup<>("Knowledges: ");
 		knowledges.setItems(KnowledgesEnum.values());
 		knowledges.setId("knowledges");
-
+*/
 		CheckBoxGroup<CountriesEnum> countries = new CheckBoxGroup<>("Countries I want to visit: ");
 		countries.setItems(CountriesEnum.values());
 		countries.setId("countries");
@@ -288,8 +356,8 @@ public class MyProfileUI extends UI {
 
 		if (resultRead.getLeft() == 1) {
 
-			for (int i = 0; i < ((TTraveler) resultRead.getRight()).getListOfKnowledges().size(); i++)
-				knowledges.select(((TTraveler) resultRead.getRight()).getListOfKnowledges().get(i));
+			/*for (int i = 0; i < ((TTraveler) resultRead.getRight()).getListOfKnowledges().size(); i++)
+				knowledges.select(((TTraveler) resultRead.getRight()).getListOfKnowledges().get(i));*/
 
 			for (int i = 0; i < ((TTraveler) resultRead.getRight()).getListOfCountries().size(); i++)
 				countries.select(((TTraveler) resultRead.getRight()).getListOfCountries().get(i));
@@ -332,7 +400,11 @@ public class MyProfileUI extends UI {
 			 */
 		});
 
-		mainLayout.addComponent(knowledges, 0, 0);
+		/*AdvancedTokenField tfm = new AdvancedTokenField();
+		tfm.setCaption("Knowledges");
+		mainLayout.addComponent(tfm, 0, 0);*/
+		
+		//mainLayout.addComponent(knowledges, 0, 0);
 		mainLayout.addComponent(days, 1, 0);
 		mainLayout.addComponent(countries, 2, 0);
 		mainLayout.addComponent(saveButton, 3, 0);
@@ -343,12 +415,13 @@ public class MyProfileUI extends UI {
 		return mainLayoutInterests;
 	}
 
-	@SuppressWarnings("unchecked")
 	private HorizontalLayout myLikes(TUser myUser) {
 
 		HorizontalLayout mainLayout = new HorizontalLayout();
 		mainLayout.setId("mainLayout");
 		mainLayout.setSizeFull();
+		mainLayout.setSpacing(true);
+		
 
 		// main helper
 		VerticalLayout mainVertical = new VerticalLayout();

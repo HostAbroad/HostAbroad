@@ -25,18 +25,7 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ValueChangeMode;
-import com.vaadin.ui.AbsoluteLayout;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Image;
-import com.vaadin.ui.NativeButton;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.PasswordField;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 
 @Theme("mytheme")
 public class RegisterUserUI extends UI {
@@ -46,15 +35,15 @@ public class RegisterUserUI extends UI {
 		VerticalLayout mainLayout = new VerticalLayout();
 		mainLayout.setMargin(false);
 		mainLayout.setSpacing(false);
-		AbsoluteLayout layout = new AbsoluteLayout(); // Using absolute layout to be able to put the background image
-		layout.addComponent(loadImage("wallpaper.jpg"));
-
+		VerticalLayout layout = new VerticalLayout(); // Using absolute layout to be able to put the background image
+		layout.setStyleName("login-layout");
 		// Creating the form
 		FormLayout registerLayout = new FormLayout();
 		Binder<TUser> binder = new Binder<>(TUser.class);
 
 		// The user that we are going to create
 		TUser user = new TUser();
+
 
 		// Create fields
 		TextField fullName = this.createTextField("Full name", VaadinIcons.USER);
@@ -83,30 +72,25 @@ public class RegisterUserUI extends UI {
 				"Should contains minimum eight characters, at least one uppercase letter, one lowercase letter and one number.",
 				"^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$")).bind("password");
 
-		NativeButton save = this.createSaveButton(binder, user);
-
-		NativeButton reset = new NativeButton("reset");
-		reset.setId("resetBtn");
-		reset.addClickListener(event -> {
-			// clear fields by setting null
-			binder.readBean(null);
-		});
+		Button save = this.createSaveButton(binder, user);
+		save.setIcon(VaadinIcons.SIGN_IN);
+		save.setStyleName("v-button-register");
 
 		// Adding all fields
 		registerLayout.addComponent(fullName);
 		registerLayout.addComponent(nickname);
 		registerLayout.addComponent(email);
 		registerLayout.addComponent(password);
+		registerLayout.addComponent(save);
+		registerLayout.setComponentAlignment(save,Alignment.MIDDLE_CENTER);
+
 
 		// A layout to put reset and save buttons in a line
-		HorizontalLayout saveAndResetLayout = new HorizontalLayout();
-		saveAndResetLayout.addComponent(reset);
-		saveAndResetLayout.addComponent(save);
-
-		registerLayout.addComponent(saveAndResetLayout);
+		registerLayout.setMargin(true);
 
 		Component panel = createPanel(registerLayout);
-		layout.addComponent(panel, "top: 138.0px; left: 500.0px;");
+		layout.addComponent(panel);
+		layout.setComponentAlignment(panel,Alignment.MIDDLE_CENTER);
 		// The centered form
 		layout.setWidth("100%");
 		mainLayout.addComponent(new Header());
@@ -123,8 +107,9 @@ public class RegisterUserUI extends UI {
 		return textField;
 	}
 
-	private NativeButton createSaveButton(Binder<TUser> binder, TUser user) {
-		NativeButton save = new NativeButton("save");
+	private Button createSaveButton(Binder<TUser> binder, TUser user) {
+		Button save = new Button("Join");
+		save.setWidth("160px");
 		save.setId("saveBtn");
 		save.addClickListener(event -> {
 			if (binder.writeBeanIfValid(user)) {
@@ -135,12 +120,9 @@ public class RegisterUserUI extends UI {
 					notif.setDelayMsec(10000);
 					notif.setPosition(Position.MIDDLE_CENTER);
 					notif.show(Page.getCurrent());
-					Page.getCurrent().setLocation("my_profile");
+					Page.getCurrent().setLocation("login");
 				} else {
-					Notification notif = new Notification("User with this email or nickname abready exists.");
-					notif.setDelayMsec(10000);
-					notif.setPosition(Position.MIDDLE_CENTER);
-					notif.show(Page.getCurrent());
+					Notification.show("User with this email or nickname abready exists.", Notification.Type.ERROR_MESSAGE);
 				}
 
 			} else {
@@ -149,17 +131,14 @@ public class RegisterUserUI extends UI {
 						.filter(BindingValidationStatus::isError).map(BindingValidationStatus::getMessage)
 						.map(Optional::get).distinct().collect(Collectors.joining(", "));
 
-				Notification notif = new Notification("Please fill all of the fields correctly. Then click save.");
-				notif.setDelayMsec(10000);
-				notif.setPosition(Position.MIDDLE_CENTER);
-				notif.show(Page.getCurrent());
+				Notification.show("Please fill all of the fields correctly. Then click Join.", Notification.Type.ERROR_MESSAGE);
 			}
 		});
 		return save;
 	}
 
 	private Image loadImage(String url) { // This method load all images. We should put it in a separate class in the
-											// future.
+		// future.
 		// reading the image
 		// -----------------------------------
 		String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
@@ -175,17 +154,16 @@ public class RegisterUserUI extends UI {
 	}
 
 	private Panel createPanel(FormLayout form) {
+		HorizontalLayout hl = new HorizontalLayout();
+		form.setSizeUndefined();
 		Panel panel = new Panel();
-		final Page.Styles styles = Page.getCurrent().getStyles(); // I put a border to the panel
-		String css = ".layout-with-border {\n" + "    border: 3px solid #FF6F61;\n" + "    border-radius: 5px; \n"
-				+ "}";
-		styles.add(css);
-		panel.addStyleName("layout-with-border");
-//        panel.setWidth("650px");
-//        panel.setHeight("400px");
-		panel.setSizeUndefined();
-		panel.setContent(form);
-
+		panel.setHeight("80%");
+		panel.setWidth("40%");
+		hl.addComponent(form);
+		hl.setComponentAlignment(form,Alignment.MIDDLE_CENTER);
+		hl.setMargin(true);
+		hl.setSizeFull();
+		panel.setContent(hl);
 		return panel;
 	}
 }

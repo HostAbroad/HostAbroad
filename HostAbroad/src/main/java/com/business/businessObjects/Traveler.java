@@ -24,14 +24,14 @@ public class Traveler{
 	@Version
 	private int version;
 	@OneToOne 
-	private User user;
+	private UserHA user;
 	private ArrayList<CountriesEnum> listOfCountries;
 	private ArrayList<KnowledgesEnum> listOfKnowledges;
 	private DurationOfStayEnum durationOfStay;
 
 	public Traveler() {};
 
-	public Traveler(int id, int version, User user, ArrayList<CountriesEnum> listOfCountries, 
+	public Traveler(int id, int version, UserHA user, ArrayList<CountriesEnum> listOfCountries, 
 			ArrayList<KnowledgesEnum> listOfKnowledges, DurationOfStayEnum durationOfStay) {
 		this.id = id;
 		this.version = version;
@@ -41,7 +41,7 @@ public class Traveler{
 		this.durationOfStay = durationOfStay;
 	}
 
-	public Traveler(int id, User user, ArrayList<CountriesEnum> listOfCountries, 
+	public Traveler(int id, UserHA user, ArrayList<CountriesEnum> listOfCountries, 
 			ArrayList<KnowledgesEnum> listOfKnowledges, DurationOfStayEnum durationOfStay) {
 		this.id = id;
 		this.user = user;
@@ -50,7 +50,7 @@ public class Traveler{
 		this.durationOfStay = durationOfStay;
 	}
 	
-	public Traveler(User user, ArrayList<CountriesEnum> listOfCountries, 
+	public Traveler(UserHA user, ArrayList<CountriesEnum> listOfCountries, 
 			ArrayList<KnowledgesEnum> listOfKnowledges, DurationOfStayEnum durationOfStay) {
 		this.user = user;
 		this.listOfCountries = listOfCountries;
@@ -74,11 +74,11 @@ public class Traveler{
 		this.version = version;
 	}
 
-	public User getUser() {
+	public UserHA getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(UserHA user) {
 		this.user = user;
 	}
 

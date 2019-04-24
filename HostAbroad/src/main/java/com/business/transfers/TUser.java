@@ -13,6 +13,7 @@ public class TUser implements Serializable {
 	private boolean traveler;
 	private String email;
 	private ArrayList<Integer> likes;
+
 	private ArrayList<Integer> matches;
 
 	public TUser() {
@@ -32,6 +33,7 @@ public class TUser implements Serializable {
 	}
 
 	public TUser(String nickname, String fullName, String email, String password, double rating, String description,
+
 			boolean host, boolean traveler, ArrayList<Integer> likes) {
 		this.nickname = nickname;
 		this.fullName = fullName;
