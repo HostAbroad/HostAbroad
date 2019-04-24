@@ -14,10 +14,26 @@ public class TUser implements Serializable {
 	private String email;
 	private ArrayList<Integer> likes;
 
+	private ArrayList<Integer> matches;
+
 	public TUser() {
 	};
+	
+	public TUser(String nickname, String fullName, String email, String password, double rating, String description, boolean host, boolean traveler, ArrayList<Integer> likes, ArrayList<Integer> matches){
+		this.nickname = nickname;
+		this.fullName = fullName;
+		this.email = email;
+		this.password = password;
+		this.rating = rating;
+		this.description = description;
+		this.host = host;
+		this.setTraveler(traveler);
+		this.likes = likes;
+		this.matches = matches;
+	}
 
 	public TUser(String nickname, String fullName, String email, String password, double rating, String description,
+
 			boolean host, boolean traveler, ArrayList<Integer> likes) {
 		this.nickname = nickname;
 		this.fullName = fullName;
@@ -164,5 +180,13 @@ public class TUser implements Serializable {
 
 	public void setLikes(ArrayList<Integer> likes) {
 		this.likes = likes;
+	}
+	
+	public ArrayList<Integer> getMatches() {
+		return matches;
+	}
+
+	public void setMatches(ArrayList<Integer> matches) {
+		this.matches = matches;
 	}
 }
