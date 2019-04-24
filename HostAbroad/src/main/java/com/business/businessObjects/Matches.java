@@ -19,43 +19,43 @@ public class Matches {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	@ManyToOne
-	private UserHA userOne;
+	private UserHA userSender;
 	@ManyToOne
-	private UserHA userTwo;
+	private UserHA userReceiver;
 	@Version
 	private Integer version;
 
 	public Matches() {}
 
-	public Matches(int id, UserHA userOne, UserHA userTwo) {
+	public Matches(int id, UserHA userSender, UserHA userReceiver) {
 		this.id = id;
-		this.userOne = userOne;
-		this.userTwo = userTwo;
+		this.userSender = userSender;
+		this.userReceiver = userReceiver;
 	}
 
-	public Matches(UserHA userOne, UserHA userTwo) {
-		this.userOne = userOne;
-		this.userTwo = userTwo;
+	public Matches(UserHA userSender, UserHA userReceiver) {
+		this.userSender = userSender;
+		this.userReceiver = userReceiver;
 	}
 
-	public UserHA getUserOne() {
-		return userOne;
+	public UserHA getUserSender() {
+		return userSender;
 	}
 
-	public void setUserOne(UserHA userOne) {
-		this.userOne = userOne;
+	public void setUserSender(UserHA userSender) {
+		this.userSender = userSender;
 	}
 
-	public UserHA getUserTwo() {
-		return userTwo;
+	public UserHA getUserReceiver() {
+		return userReceiver;
 	}
 
-	public void setUserTwo(UserHA userTwo) {
-		this.userTwo = userTwo;
+	public void setUserReceiver(UserHA userReceiver) {
+		this.userReceiver = userReceiver;
 	}
 
 	public TMatches toTransfer() {
-		return new TMatches(this.userOne.getNickname(), this.userTwo.getNickname());
+		return new TMatches(this.userSender.getNickname(), this.userReceiver.getNickname());
 	}
 	
 	public void setVersion(Integer version) {

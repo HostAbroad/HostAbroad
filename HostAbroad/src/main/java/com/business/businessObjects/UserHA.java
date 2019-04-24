@@ -30,7 +30,7 @@ public class UserHA {
 	private Traveler travelerEntity;
     @OneToMany(mappedBy = "userSender")
 	private Collection<Likes> likes;
-    @OneToMany(mappedBy = "userOne")
+    @OneToMany(mappedBy = "userSender")
 	private Collection<Matches> matches;
 
     public UserHA() {};

@@ -2,29 +2,29 @@ package com.business.transfers;
 
 public class TMatches {
 
-	private String userOne;
-	private String userTwo;
+	private String userSender;
+	private String userReceiver;
 
 	public TMatches() {}
 
-	public TMatches(String userOne, String userTwo) {
-		this.userOne = userOne;
-		this.userTwo = userTwo;
+	public TMatches(String userSender, String userReceiver) {
+		this.userSender = userSender;
+		this.userReceiver = userReceiver;
 	}
 
-	public String getUserOne() {
-		return userOne;
+	public String getUserSender() {
+		return userSender;
 	}
 
-	public void setUserOne(String userOne) {
-		this.userOne = userOne;
+	public void setUserOne(String userSender) {
+		this.userSender = userSender;
 	}
 
-	public String getUserTwo() {
-		return userTwo;
+	public String getUserReceiver() {
+		return userReceiver;
 	}
 
-	public void setUserTwo(String userTwo) {
-		this.userTwo = userTwo;
+	public void setUserReceiver(String userReceiver) {
+		this.userReceiver = userReceiver;
 	}
 }
