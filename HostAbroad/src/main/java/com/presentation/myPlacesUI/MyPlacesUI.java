@@ -1,13 +1,12 @@
 package com.presentation.myPlacesUI;
 
 
-import com.vaadin.server.FileResource;
-import com.vaadin.server.Page;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinService;
-import com.vaadin.shared.Position;
+import com.business.enums.FamilyUnit;
+import com.business.transfers.TPlace;
+import com.vaadin.server.*;
 import com.vaadin.shared.ui.slider.SliderOrientation;
 import com.vaadin.ui.*;
+import org.vaadin.easyuploads.UploadField;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -17,80 +16,109 @@ public class MyPlacesUI extends UI {
 
 	@Override
 	protected void init(VaadinRequest request) {
+		VerticalLayout superLayout = new VerticalLayout();
 		HorizontalLayout mainLayout = new HorizontalLayout();
+		mainLayout.setStyleName("v-scrollable");
+		mainLayout.setSpacing(false);
+		mainLayout.setMargin(false);
 
 		VerticalLayout secondaryLayout = new VerticalLayout();
-		
+		VerticalLayout sliderLayout	= new VerticalLayout();
 
+		Image placeImg = new Image();
+		placeImg.setSource(new ExternalResource("https://raw.githubusercontent.com/OmegaSkyres/images/master/null.png"));
+		placeImg.setId("PlaceImage");
 
+		UploadField uploadField = new UploadField();
+		uploadField.setClearButtonVisible(false);
+		uploadField.setButtonCaption("Select image");
 
-		/*
-		Upload upload = new Upload("Add an image", configureReciever());
-		upload.setImmediateMode(false);
-		upload.setButtonCaption("Upload");
-		*/
+		Button changeImg = new Button("Change image");
+		changeImg.setIcon(FontAwesome.UPLOAD);
+		changeImg.addClickListener(event -> {
+			Notification.show("File: " + uploadField.getLastFileName());
+		});
+		changeImg.setId("PlaceChangeImg");
 		
 		TextArea description = new TextArea("Description");
 		description.setWordWrap(false);
 		description.setId("PlaceDescription");
-		secondaryLayout.addComponent(description);
+
+		TextField address = new TextField("Address");
+		address.setId("PlaceAddress");
+
+
 
         // Create a horizontal slider
-        Slider duration = new Slider("Duration: ", 0, 7);
+        Slider duration = new Slider("Duration: ", 0, 4);
         duration.setOrientation(SliderOrientation.HORIZONTAL);
         duration.setWidth("200px");
-        Label dias = new Label("Days");
+        Label days = new Label("Days");
         duration.addValueChangeListener(event -> {
-            if(duration.getValue() == 1.0) {
-                dias.setValue("1 days");
-            }
-            else if(duration.getValue() == 2.0) {
-                dias.setValue("2 days");
-            }
-            else if(duration.getValue() == 3.0) {
-                dias.setValue("3 days");
-            }
-            else if(duration.getValue() == 4.0) {
-                dias.setValue("4 days");
-            }
-            else if(duration.getValue() == 5.0) {
-                dias.setValue("5 days");
-            }
-            else if(duration.getValue() == 6.0) {
-                dias.setValue("6 days");
-            }
-            else if(duration.getValue() == 7.0) {
-                dias.setValue("1 Week");
-            }
+            if(duration.getValue() == 0.0) {
+					days.setValue("Days");
+				}
+				else if(duration.getValue() == 1.0) {
+					days.setValue("1 Day - 6 Days");
+				}
+				else if(duration.getValue() == 2.0) {
+					days.setValue("1 Week - 2 Weeks");
+				}
+				else if(duration.getValue() == 3.0) {
+					days.setValue("2 Weeks - 4 Weeks");
+				}
+				else if(duration.getValue() == 4.0) {
+					days.setValue("1 Month or more");
+				}
+				else if(duration.getValue() == 5.0) {
+					days.setValue("More than a month");
+				}
         });
-        secondaryLayout.addComponent(dias);
-        secondaryLayout.setComponentAlignment(dias,Alignment.TOP_CENTER);
-        secondaryLayout.addComponent(duration);
-        secondaryLayout.setComponentAlignment(duration,Alignment.TOP_CENTER);
+        sliderLayout.addComponent(days);
+        sliderLayout.addComponent(duration);
 
 
 
-		ComboBox<String> country = new ComboBox<>("I live with");
-		country.setItems("My house", "Sahara", "Bulgaria", "Mars");
-		country.setId("PlaceCountry");
-		secondaryLayout.addComponent(country);
+		ComboBox<String> unitfamily = new ComboBox<>("I live with");
+		unitfamily.setItems("Single", "With friends", "With family");
+		unitfamily.setId("UnitFamily");
 
-		Button save = new Button("Save");
+
+		Button save = new Button("Save", FontAwesome.SAVE);
 		save.addClickListener(event->{
-				Notification notif = new Notification( "In construction.");
-				notif.setDelayMsec(2000);
-				notif.setPosition(Position.MIDDLE_CENTER);
-				notif.show(Page.getCurrent());
+			FamilyUnit familyUnit;
+			if(unitfamily.getValue() == "ALone"){
+				familyUnit = FamilyUnit.Alone;
+			}
+			else if(unitfamily.getValue() == "With family"){
+				familyUnit = FamilyUnit.Family;
+			}
+			else{
+				familyUnit = FamilyUnit.Friends;
+			}
+				if(address.getValue().length() > 0 && address.getValue().length() < 50){
+					TPlace tPlace = new TPlace(address.getValue(),description.getValue(),null,null,familyUnit,"Roberto");
+				}
+				else if (address.getValue().length() > 50 || address.getValue().length() < 1){
+					Notification.show("Invalid Address", Notification.Type.ERROR_MESSAGE);
+				}
 			
 		});
 		save.setId("PlaceSave");
 		
-		
-		//mainLayout.addComponent(upload);
+
+		secondaryLayout.addComponent(placeImg);
+		secondaryLayout.addComponent(uploadField);
+		secondaryLayout.addComponent(description);
+		secondaryLayout.addComponent(address);
+		secondaryLayout.addComponent(unitfamily);
 		secondaryLayout.addComponent(save);
-		secondaryLayout.setComponentAlignment(save, Alignment.MIDDLE_CENTER);
 		mainLayout.addComponent(secondaryLayout);
-		this.setContent(mainLayout);
+		mainLayout.addComponent(sliderLayout);
+		//superLayout.addComponent(new Header());
+		superLayout.addComponent(mainLayout);
+		//superLayout.addComponent(new Footer());
+		this.setContent(superLayout);
 	}
 
 
