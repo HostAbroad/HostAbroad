@@ -377,7 +377,7 @@ public class ASUserImp implements ASUser {
 					em.persist(rating);
 
 					userReceiver.addRate(rating);
-					userReceiver.setRating(userReceiver.calculateRating()); // Vuelve a calcular la valoracion total para
+					userReceiver.updateRating(); // Vuelve a calcular la valoracion total para
 																	// actualizarla
 
 					em.persist(userReceiver);

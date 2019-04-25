@@ -272,5 +272,9 @@ public class UserHA {
     public void addRate(Rating rating) {
     	this.rates.add(rating);
     }
+    
+    public void updateRating() {
+    	this.setRating(this.calculateRating());
+    }
 }
 
