@@ -9,6 +9,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.business.transfers.TUser;
+
 @Entity
 @Table
 public class UserHA {
@@ -30,6 +32,7 @@ public class UserHA {
 	private Traveler travelerEntity;
     @OneToMany(mappedBy = "userSender")
 	private Collection<Likes> likes;
+    private byte[] foto;
 
     public UserHA() {};
     
@@ -128,11 +131,12 @@ public class UserHA {
     this.password = password;
 }
     
-    public UserHA(String nickname, String fullName, String email, int password) {
+    public UserHA(String nickname, String fullName, String email, int password, byte[] foto) {
     	this.nickname = nickname;
     	this.fullName = fullName;
     	this.email = email;
     	this.password = password;
+    	this.foto = foto;
     }
 
     public void setNickname(String nickname) {
@@ -231,5 +235,17 @@ public class UserHA {
     public Collection<Likes> getLikes(){
     	return likes;
     }
+
+	public byte[] getFoto() {
+		return foto;
+	}
+
+	public void setFoto(byte[] foto) {
+		this.foto = foto;
+	}
+
+	public TUser toTransfer() {
+		return new TUser(this.nickname, this.fullName, this.email, this.foto);
+	}
 }
 

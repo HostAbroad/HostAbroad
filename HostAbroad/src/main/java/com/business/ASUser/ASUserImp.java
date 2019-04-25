@@ -44,7 +44,7 @@ public class ASUserImp implements ASUser {
 
 			} catch (NoResultException e) {
 				user = new UserHA(tUser.getNickname(), tUser.getFullName(), tUser.getEmail(),
-						tUser.getPassword().hashCode());
+						tUser.getPassword().hashCode(), tUser.getFoto());
 				em.persist(user);
 				result = true;
 			}
@@ -321,7 +321,7 @@ public class ASUserImp implements ASUser {
 				}
 			
 				tUserSender = new TUser(like.getUserSender().getNickname(), like.getUserSender().getRating(),
-						like.getUserSender().getDescription());
+						like.getUserSender().getDescription(), like.getUserSender().getFoto());
 				
 				sendersUser.add(tUserSender);
 				
@@ -335,5 +335,53 @@ public class ASUserImp implements ASUser {
 		
 		
 		return  sendersUser;
+	}
+	
+	@Override
+	public TUser readUserInformation(TUser user) {
+
+		TUser tUser = null;
+		EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("HostAbroad");
+		EntityManager em = emfactory.createEntityManager();
+		EntityTransaction t = em.getTransaction();
+		t.begin();
+		
+		String query = "SELECT * FROM USERHA WHERE EMAIL = ?1";
+		try {
+			UserHA userBD = (UserHA)em.createNativeQuery(query, UserHA.class)
+					.setParameter(1, user.getEmail()).getSingleResult();
+			tUser = userBD.toTransfer();	
+		}catch(NoResultException e) {}
+		
+		em.getTransaction().commit();
+        em.close();
+ 		emfactory.close();
+		return tUser;
+	}
+
+	@Override
+	public boolean saveImage(TUser user) {
+		
+		boolean result = false;
+		EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("HostAbroad");
+		EntityManager em = emfactory.createEntityManager();
+		EntityTransaction t = em.getTransaction();
+		t.begin();
+		
+		String query = "SELECT * FROM USERHA WHERE EMAIL = ?1";
+		try {
+			UserHA userBD = (UserHA)em.createNativeQuery(query, UserHA.class)
+					.setParameter(1, user.getEmail()).getSingleResult();
+			userBD.setFoto(user.getFoto());
+			em.persist(userBD);
+			result = true;
+			
+		}catch(NoResultException e) {}
+		
+		em.getTransaction().commit();
+        em.close();
+ 		emfactory.close();
+ 		
+		return result;
 	}
 }

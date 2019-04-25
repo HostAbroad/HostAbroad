@@ -12,6 +12,7 @@ public class TUser implements Serializable {
 	private boolean host;
 	private boolean traveler;
 	private String email;
+	private byte[] foto;
 	private ArrayList<Integer> likes;
 
 	public TUser() {
@@ -57,15 +58,31 @@ public class TUser implements Serializable {
 		this.traveler = traveler;
 	}
 
-	public TUser(String nickname, double rating, String description) {
+	public TUser(String nickname, double rating, String description, byte[] foto) {
 		this.nickname = nickname;
 		this.rating = rating;
 		this.description = description;
+		this.foto = foto;
 	}
+	public TUser(String nickname, String fullName, String email, byte[] foto) {
+		this.nickname = nickname;
+		this.fullName = fullName;
+		this.email = email;
+		this.foto = foto;
+	}
+	
+	public TUser(byte[] foto) {
+		this.foto = foto;
+	}
+	
 
 	public TUser(String email, String password) {
 		this.email = email;
 		this.password = password;
+	}
+	
+	public TUser(String email) {
+		this.email = email;
 	}
 
 	public TUser(String nickname, double rating, String description, boolean host, boolean traveler, String email,
@@ -164,5 +181,13 @@ public class TUser implements Serializable {
 
 	public void setLikes(ArrayList<Integer> likes) {
 		this.likes = likes;
+	}
+
+	public byte[] getFoto() {
+		return foto;
+	}
+
+	public void setFoto(byte[] foto) {
+		this.foto = foto;
 	}
 }

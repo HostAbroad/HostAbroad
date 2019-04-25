@@ -1,8 +1,15 @@
 package com.presentation.myProfileUI;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.annotation.WebServlet;
+import java.awt.image.*;
+import java.io.*;
+import javax.imageio.*;
+import javax.swing.*;
+import java.text.DateFormat;
+import java.nio.file.Files;
 
 import org.vaadin.easyuploads.UploadField;
 
@@ -19,6 +26,7 @@ import com.presentation.commands.Pair;
 import com.presentation.controller.Controller;
 import com.presentation.headerAndFooter.Footer;
 import com.presentation.headerAndFooter.Header;
+import com.presentation.loginUI.AuthService;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.Binder;
@@ -31,6 +39,9 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.server.StreamResource;
+import com.vaadin.server.StreamResource.StreamSource;
+import com.vaadin.server.Resource;
 import com.vaadin.shared.Position;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -88,7 +99,12 @@ public class MyProfileUI extends UI {
 		personalInfo.setHeight(80, Unit.PIXELS);
 		personalInfo.addClickListener(event ->{
 			pages.removeAllComponents();
-			pages.addComponent(personalInfoForm(myUser1));
+			try {
+				pages.addComponent(personalInfoForm(myUser1));
+			} catch (IOException e) {
+				
+				e.printStackTrace();
+			}
 			pages.setWidth("100%");
 		});
 		menu.addComponent(personalInfo);
@@ -215,7 +231,10 @@ public class MyProfileUI extends UI {
 	}
 
 	
-	public GridLayout personalInfoForm( TUser user) {
+	public GridLayout personalInfoForm( TUser user) throws IOException {
+		
+		TUser transfer = new TUser(AuthService.getAuthenticatedEmail());
+		Pair<Integer,Object> result = Controller.getInstance().action(Commands.CommandReadUser,transfer);
 		
 		GridLayout mainGrid = new GridLayout(1, 2);
 		mainGrid.setSpacing(true);
@@ -234,7 +253,36 @@ public class MyProfileUI extends UI {
 		fields.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 		
 		Binder<TUser> binder = new Binder<>(TUser.class);
+        /*StreamResource sR = new StreamResource(new StreamSource() {
+        	@Override
+            public InputStream getStream() {
+        		byte[] bi = ((TUser)result.getRight()).getFoto();
+        		String text = "Date: " + DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.MEDIUM).format(new Date());
+        		BufferedImage imagen = null;
+        		InputStream in = new ByteArrayInputStream(bi);
+        		try {
+					imagen = ImageIO.read(in);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+        		imagen.getGraphics().drawChars(text.toCharArray(), 0,
+                        text.length(), 10, 20);
+
+                try {
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    ImageIO.write(imagen, "png", bos);
+                    return new ByteArrayInputStream(bos.toByteArray());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+        },"profileImage.png");
+        
 		
+        Image profileImg = new Image("", sR);
+		
+		*/
 		Image profileImg = new Image();
 		profileImg.setSource(new ExternalResource("https://raw.githubusercontent.com/evivar/images/master/User_Circle.png"));
 		profileImg.setId("ProfileImage");
@@ -246,7 +294,17 @@ public class MyProfileUI extends UI {
 		Button changeImg = new Button("Change image");
 		changeImg.setIcon(FontAwesome.UPLOAD);
 		changeImg.addClickListener(event -> {
-			Notification.show("File: " + uploadField.getLastFileName());
+
+			if(uploadField.getLastFileName()  != null) {
+					byte[] foto = uploadField.getLastFileName().getBytes();
+					
+						TUser photo = new TUser(foto);
+						photo.setEmail(((TUser)result.getRight()).getEmail());
+						Controller.getInstance().action(Commands.CommandSaveImage, photo);
+					
+					
+			}
+			
 		});
 		changeImg.setId("ProfileChangeImg");
 
@@ -258,7 +316,7 @@ public class MyProfileUI extends UI {
 		sections.addComponent(image, 0, 0);
 		
 		TextField username = new TextField("Username");
-		username.setValue(user.getNickname());
+		username.setValue(((TUser)result.getRight()).getNickname());
 		username.setId("ProfileUsername");
 
 		binder.forField(username)
@@ -267,7 +325,7 @@ public class MyProfileUI extends UI {
 				.bind("nickname");
 
 		TextField fullName = new TextField("Full name");
-		fullName.setValue(user.getFullName());
+		fullName.setValue(((TUser)result.getRight()).getFullName());
 		fullName.setId("ProfileFullName");
 
 		binder.forField(fullName)
@@ -275,7 +333,7 @@ public class MyProfileUI extends UI {
 				.bind("fullName");
 
 		TextField email = new TextField("E-Mail");
-		email.setValue(user.getEmail());
+		email.setValue(((TUser)result.getRight()).getEmail());
 		email.setId("ProfileEmail");
 
 		binder.forField(email).withValidator(new EmailValidator("Invalid e-mail address {0}.")).bind("email");

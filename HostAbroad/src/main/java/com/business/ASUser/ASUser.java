@@ -24,4 +24,8 @@ public interface ASUser {
 	public abstract TTraveler readTravelerInformation(TUser user);
 	
 	public abstract ArrayList<TUser> SendersLike(TUser tUser);
+
+	public abstract TUser readUserInformation(TUser user);
+
+	public abstract boolean saveImage(TUser tUser);
 }
