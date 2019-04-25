@@ -13,7 +13,7 @@ public class CommandRateUser extends Command {
         boolean rated = saUser.rateUser((TRating)transfer);
         result = rated ? 1 : 0; //Si se ha valorado result es 1, sino 0
 
-        return new Pair<>(result, transfer);
+        return new Pair<>(result, rated);
 	}
 
 }

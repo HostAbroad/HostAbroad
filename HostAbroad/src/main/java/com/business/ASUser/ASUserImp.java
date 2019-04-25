@@ -295,7 +295,7 @@ public class ASUserImp implements ASUser {
 		return traveler;
 	}
 	
-	public ArrayList<TUser> SendersLike(TUser tUser) {
+	public ArrayList<TUser> sendersLike(TUser tUser) {
 		
 		 ArrayList<TUser> sendersUser = new ArrayList<TUser>();
 		
@@ -351,15 +351,15 @@ public class ASUserImp implements ASUser {
 			EntityTransaction tr = em.getTransaction();
 			tr.begin();
 
-			UserHA userOne; // Usuario 1 es el que envia valoracion
-			UserHA userTwo; // Usuario 2 es el que la recibe
+			UserHA userSender; // Usuario 1 es el que envia valoracion
+			UserHA userReceiver; // Usuario 2 es el que la recibe
 
 			try {
 				
 				String query = "SELECT * FROM USERHA WHERE NICKNAME = ?1";
-				userOne = (UserHA) em.createNativeQuery(query, UserHA.class).setParameter(1, tRating.getUserSender())
+				userSender = (UserHA) em.createNativeQuery(query, UserHA.class).setParameter(1, tRating.getUserSender())
 						.getSingleResult();
-				userTwo = (UserHA) em.createNativeQuery(query, UserHA.class).setParameter(1, tRating.getUserReceiver())
+				userReceiver = (UserHA) em.createNativeQuery(query, UserHA.class).setParameter(1, tRating.getUserReceiver())
 						.getSingleResult();
 
 				query = "SELECT * FROM RATING WHERE USERRECEIVER_NICKNAME = ?1 AND USERSENDER_NICKNAME = ?2";
@@ -373,14 +373,14 @@ public class ASUserImp implements ASUser {
 
 				} catch (Exception e) {
 
-					rating = new Rating(userOne, userTwo, tRating.getRate());
+					rating = new Rating(userSender, userReceiver, tRating.getRate());
 					em.persist(rating);
 
-					userTwo.getRates().add(rating);
-					userTwo.setRating(userTwo.calculateRating()); // Vuelve a calcular la valoracion total para
+					userReceiver.addRate(rating);
+					userReceiver.setRating(userReceiver.calculateRating()); // Vuelve a calcular la valoracion total para
 																	// actualizarla
 
-					em.persist(userTwo);
+					em.persist(userReceiver);
 					result = true;
 
 				}

@@ -268,5 +268,9 @@ public class UserHA {
     public Collection<Rating> getRates(){
     	return rates;
     }
+    
+    public void addRate(Rating rating) {
+    	this.rates.add(rating);
+    }
 }
 
