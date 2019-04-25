@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.business.transfers.THost;
 import com.business.transfers.TPlace;
+import com.business.transfers.TRating;
 import com.business.transfers.TTraveler;
 import com.business.transfers.TUser;
 
@@ -23,5 +24,7 @@ public interface ASUser {
 	
 	public abstract TTraveler readTravelerInformation(TUser user);
 	
-	public abstract ArrayList<TUser> SendersLike(TUser tUser);
+	public abstract ArrayList<TUser> sendersLike(TUser tUser);
+
+	public abstract boolean rateUser(TRating tRating);
 }
