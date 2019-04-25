@@ -24,6 +24,7 @@ public class MyPlacesUI extends UI {
 		superLayout.setMargin(false);
 		superLayout.setSpacing(false);
 		HorizontalLayout mainLayout = new HorizontalLayout();
+		HorizontalLayout buttons = new HorizontalLayout();
 		mainLayout.setStyleName("v-scrollable");
 		mainLayout.setSizeFull();
 
@@ -113,15 +114,24 @@ public class MyPlacesUI extends UI {
 				}
 			
 		});
-		save.setId("PlaceSave");
-		
+		Button refuse = new Button("Refuse",FontAwesome.ERASER);
+		refuse.setId("refuseButton");
+		refuse.setStyleName("v-button-register");
+		refuse.addClickListener(event->{
+		duration.setValue(0.0);
+		unitfamily.setValue("");
+		description.setValue("");
+		address.setValue("");
+		Notification.show("Changes rejected", Notification.Type.WARNING_MESSAGE);
+		});
 
+		buttons.addComponents(save,refuse);
 		secondaryLayout.addComponent(placeImg,0,0);
 		secondaryLayout.addComponent(uploadField,0,1);
 		secondaryLayout.addComponent(days,0,2);
 		secondaryLayout.addComponent(duration,0,3);
 		secondaryLayout.addComponent(unitfamily,0,4);
-		secondaryLayout.addComponent(save,0,5);
+		secondaryLayout.addComponent(buttons,0,5);
 		secondaryLayout.addComponent(description,1,0);
 		secondaryLayout.addComponent(address,1,1);
 		mainLayout.addComponent(secondaryLayout);
