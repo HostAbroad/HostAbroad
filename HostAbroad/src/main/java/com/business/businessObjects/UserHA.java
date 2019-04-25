@@ -32,10 +32,32 @@ public class UserHA {
 	private Collection<Likes> likes;
     @OneToMany(mappedBy = "userSender")
 	private Collection<Rating> rates;
+    @OneToMany(mappedBy = "userSender")
+	private Collection<Matches> matches;
+
 
     public UserHA() {};
     
     //full constructor
+    
+    public UserHA(String nickname, String fullName, String email, int password, 
+			double rating, String description, boolean host, boolean traveler, 
+			Host hostEntity, Traveler travelerEntity, Collection<Likes> likes, Collection<Matches> matches) {
+    this.nickname = nickname;
+    this.fullName = fullName;
+    this.rating = rating;
+    this.description = description;
+    this.host = host;
+    this.traveler = traveler;
+    this.email = email;
+    this.password = password;
+    this.hostEntity = hostEntity;
+    this.travelerEntity = travelerEntity;
+    this.likes = likes;
+    this.matches = matches;
+    }
+    
+
     public UserHA(String nickname, String fullName, String email, int password, 
 			double rating, String description, boolean host, boolean traveler, 
 			Host hostEntity, Traveler travelerEntity, Collection<Likes> likes, Collection<Rating> rates) {
@@ -260,6 +282,7 @@ public class UserHA {
     public Collection<Likes> getLikes(){
     	return likes;
     }
+
     
     public void setRates(Collection<Rating> rates) {
     	this.rates = rates;
@@ -275,6 +298,15 @@ public class UserHA {
     
     public void updateRating() {
     	this.setRating(this.calculateRating());
+
+      
+    public void setMatches(Collection<Matches> matches) {
+    	this.matches = matches;
+    }
+    
+    public Collection<Matches> getMatches(){
+    	return matches;
+
     }
 }
 
