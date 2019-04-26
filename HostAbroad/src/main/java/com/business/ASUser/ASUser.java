@@ -24,6 +24,8 @@ public interface ASUser {
 	
 	public abstract TTraveler readTravelerInformation(TUser user);
 	
+	public abstract TUser readUserNickName(TUser user);
+	
 	public abstract ArrayList<TUser> sendersLike(TUser tUser);
 
 	public abstract boolean rateUser(TRating tRating);

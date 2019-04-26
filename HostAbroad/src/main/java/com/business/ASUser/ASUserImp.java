@@ -396,4 +396,27 @@ public class ASUserImp implements ASUser {
 		
 		return result;
 	}
+
+	@Override
+	public TUser readUserNickName(TUser user) {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
+		EntityManager em = emf.createEntityManager();
+		
+		String queryStr = "SELECT NICKNAME FROM USERHA WHERE EMAIL = ?1";
+		Query query = em.createNativeQuery(queryStr, UserHA.class);
+		query.setParameter(1, user.getEmail());
+		TUser nickname = null;
+		try {
+			UserHA userNick = (UserHA)query.getSingleResult();
+			nickname = userNick.toTransfer();
+		}
+		catch (NoResultException ex) {
+			System.out.println(ex.getMessage());
+		}
+		
+		em.close();
+		emf.close();
+		
+		return nickname;
+	}
 }

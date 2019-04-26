@@ -2,16 +2,23 @@ package com.business.transfers;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+
+import com.business.businessObjects.Host;
+import com.business.businessObjects.Likes;
+import com.business.businessObjects.Matches;
+import com.business.businessObjects.Rating;
+import com.business.businessObjects.Traveler;
 
 public class TUser implements Serializable {
 	private String nickname;
 	private String fullName;
 	private String password;
-	private double rating;
+	private String email;
 	private String description;
+	private double rating;
 	private boolean host;
 	private boolean traveler;
-	private String email;
 	private ArrayList<Integer> likes;
 	private ArrayList<Integer> rates;
 
@@ -20,7 +27,6 @@ public class TUser implements Serializable {
 	public TUser() {
 	};
 	
-
 	public TUser(String nickname, String fullName, String email, String password, double rating, String description, boolean host, boolean traveler, ArrayList<Integer> likes, ArrayList<Integer> rates, ArrayList<Integer> matches){
 
 		this.nickname = nickname;
@@ -30,7 +36,7 @@ public class TUser implements Serializable {
 		this.rating = rating;
 		this.description = description;
 		this.host = host;
-		this.setTraveler(traveler);
+		this.traveler = traveler;
 		this.likes = likes;
 		this.rates = rates;
 		this.matches = matches;
@@ -46,7 +52,7 @@ public class TUser implements Serializable {
 		this.rating = rating;
 		this.description = description;
 		this.host = host;
-		this.setTraveler(traveler);
+		this.traveler = traveler;
 		this.likes = likes;
 	}
 
@@ -67,7 +73,6 @@ public class TUser implements Serializable {
 		this.rating = rating;
 		this.description = description;
 		this.host = host;
-		this.traveler = traveler;
 	}
 
 	public TUser(String nickname, double rating, boolean traveler, String description) {
