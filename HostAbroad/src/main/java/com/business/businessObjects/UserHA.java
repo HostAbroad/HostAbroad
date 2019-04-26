@@ -1,5 +1,6 @@
 package com.business.businessObjects;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Entity;
@@ -8,6 +9,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
+import com.business.transfers.TUser;
 
 @Entity
 @Table
@@ -42,7 +45,7 @@ public class UserHA {
     
     public UserHA(String nickname, String fullName, String email, int password, 
 			double rating, String description, boolean host, boolean traveler, 
-			Host hostEntity, Traveler travelerEntity, Collection<Likes> likes, Collection<Matches> matches) {
+			Host hostEntity, Traveler travelerEntity, Collection<Likes> likes, Collection<Matches> matches,Collection<Rating> rate) {
     this.nickname = nickname;
     this.fullName = fullName;
     this.rating = rating;
@@ -55,6 +58,7 @@ public class UserHA {
     this.travelerEntity = travelerEntity;
     this.likes = likes;
     this.matches = matches;
+    this.rates = rate;
     }
     
 
@@ -298,7 +302,7 @@ public class UserHA {
     
     public void updateRating() {
     	this.setRating(this.calculateRating());
-
+    }
       
     public void setMatches(Collection<Matches> matches) {
     	this.matches = matches;
@@ -306,7 +310,11 @@ public class UserHA {
     
     public Collection<Matches> getMatches(){
     	return matches;
-
+    }
+    
+    public TUser toTransfer() {
+    	return new TUser(this.nickname, this.fullName, this.email, 
+    			((Integer)this.password).toString(), this.rating, this.description, this.host, this.traveler);
     }
 }
 

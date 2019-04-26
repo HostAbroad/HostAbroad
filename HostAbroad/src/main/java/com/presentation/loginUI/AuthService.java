@@ -21,6 +21,7 @@ public class AuthService {
 	private static final String EMAIL_ATTRIBUTE = "email";
 	private static final String COOKIE_REMEMBERME_NAME = "remember-me";
 	private static final String COOKIE_SESSION_NAME = "session";
+	private static final String COOKIE_NICKNAME_NAME = "nickname";
 	public static final int COOKIE_MAX_AGE_DAYS = 30;
 
     private static Map<String, String> remembered = new HashMap<>();
@@ -41,8 +42,12 @@ public class AuthService {
             else {
             	rememberUserSession(email);
             }
-           // VaadinSession.getCurrent().setAttribute(EMAIL_ATTRIBUTE, email);
-            //Page.getCurrent().reload();
+            Pair<Integer, Object> userNickPair = Controller.getInstance().action(Commands.CommandReadUserNickName, userLogged);
+            if(userNickPair.getLeft() == 1) {
+            	 rememberNickName(((TUser)userNickPair.getRight()).getNickname());
+            	 System.out.println("PRINTING IN AUTHSESSION");
+            	 System.out.println(((TUser)userNickPair.getRight()).getNickname());
+            }
         }
 
         return isLogged == 1 ? true : false;
@@ -77,6 +82,15 @@ public class AuthService {
         return (String)VaadinSession.getCurrent().getAttribute(EMAIL_ATTRIBUTE);
     }
 	
+	public static String getUserNickName() {
+		Optional<Cookie> cookieUserNick = getCookie(COOKIE_NICKNAME_NAME);
+		String userNickName = "";
+		if(cookieUserNick.isPresent()) {
+			userNickName = remembered.get(cookieUserNick.get().getValue());
+		}
+		return userNickName;
+	}
+	
 	public static boolean isRememberedUser() {
         Optional<Cookie> cookie = getCookie(COOKIE_REMEMBERME_NAME);
         return cookie.isPresent() && remembered.containsKey(cookie.get().getValue());
@@ -87,9 +101,15 @@ public class AuthService {
         return cookie.isPresent() && remembered.containsKey(cookie.get().getValue());
 	}
 	
+	public static boolean isUserNickOpen() {
+		Optional<Cookie> cookie = getCookie(COOKIE_NICKNAME_NAME);
+        return cookie.isPresent() && remembered.containsKey(cookie.get().getValue());
+	}
+	
 	private static void removeRememberedUser() {
         Optional<Cookie> cookieRemember = getCookie(COOKIE_REMEMBERME_NAME);
         Optional<Cookie> cookieSession = getCookie(COOKIE_SESSION_NAME);
+        Optional<Cookie> cookieUserNick = getCookie(COOKIE_NICKNAME_NAME);
         
         if (cookieRemember.isPresent()) {
             remembered.remove(cookieRemember.get().getValue());
@@ -99,11 +119,15 @@ public class AuthService {
         	remembered.remove(cookieSession.get().getValue());
             saveCookie(COOKIE_SESSION_NAME, "",0);
         }
+        if(cookieUserNick.isPresent()) {
+        	remembered.remove(cookieUserNick.get().getValue());
+        	saveCookie(COOKIE_NICKNAME_NAME, "", 0);
+        }
     }
 	
-	private static void rememberUser(String username) {
+	private static void rememberUser(String email) {
         String randomKey = new BigInteger(130, random).toString(32);
-        remembered.put(randomKey, username);
+        remembered.put(randomKey, email);
         saveCookie(COOKIE_REMEMBERME_NAME,randomKey, 60 * 60 * 24 * COOKIE_MAX_AGE_DAYS);
     }
 	
@@ -112,6 +136,12 @@ public class AuthService {
         remembered.put(randomKey, email);
         //The session is for 24 hours
         saveCookie(COOKIE_SESSION_NAME,randomKey, 60 * 60 * 24);
+    }
+	
+	private static void rememberNickName(String username) {
+        String randomKey = new BigInteger(130, random).toString(32);
+        remembered.put(randomKey, username);
+        saveCookie(COOKIE_NICKNAME_NAME,randomKey, 60 * 60 * 24 * COOKIE_MAX_AGE_DAYS);
     }
 
     private static void saveCookie(String cookieName, String value, int age) {
