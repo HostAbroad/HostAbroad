@@ -61,7 +61,7 @@ public class MyPlacesUI extends UI {
 
 
         // Create a horizontal slider
-        Slider duration = new Slider("Duration: ", 0, 4);
+        Slider duration = new Slider("Maximum duration of stay: ", 0, 4);
         duration.setOrientation(SliderOrientation.HORIZONTAL);
         duration.setWidth("200px");
         Label days = new Label("Days");
@@ -128,8 +128,8 @@ public class MyPlacesUI extends UI {
 		buttons.addComponents(save,refuse);
 		secondaryLayout.addComponent(placeImg,0,0);
 		secondaryLayout.addComponent(uploadField,0,1);
-		secondaryLayout.addComponent(days,0,2);
-		secondaryLayout.addComponent(duration,0,3);
+		secondaryLayout.addComponent(duration,0,2);
+		secondaryLayout.addComponent(days,0,3);
 		secondaryLayout.addComponent(unitfamily,0,4);
 		secondaryLayout.addComponent(buttons,0,5);
 		secondaryLayout.addComponent(description,1,0);
