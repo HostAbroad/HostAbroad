@@ -192,7 +192,8 @@ public class TUser implements Serializable {
 
 	public void setRates(ArrayList<Integer> rates) {
 		this.rates = rates;
-
+	}
+	
 	public ArrayList<Integer> getMatches() {
 		return matches;
 	}
