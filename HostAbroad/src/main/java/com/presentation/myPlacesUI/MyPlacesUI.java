@@ -37,6 +37,7 @@ public class MyPlacesUI extends UI {
 		placeImg.setId("PlaceImage");
 
 		UploadField uploadField = new UploadField();
+		uploadField.setId("uploadField");
 		uploadField.setClearButtonVisible(false);
 		uploadField.setButtonCaption("Select image");
 
@@ -61,6 +62,7 @@ public class MyPlacesUI extends UI {
 
         // Create a horizontal slider
         Slider duration = new Slider("Maximum duration of stay: ", 0, 4);
+        duration.setId("slider");
         duration.setOrientation(SliderOrientation.HORIZONTAL);
         duration.setWidth("200px");
         Label days = new Label("Days");
