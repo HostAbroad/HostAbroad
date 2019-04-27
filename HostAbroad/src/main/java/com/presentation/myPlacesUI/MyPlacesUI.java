@@ -24,7 +24,6 @@ public class MyPlacesUI extends UI {
 		superLayout.setMargin(false);
 		superLayout.setSpacing(false);
 		HorizontalLayout mainLayout = new HorizontalLayout();
-		HorizontalLayout buttons = new HorizontalLayout();
 		mainLayout.setStyleName("v-scrollable");
 		mainLayout.setSizeFull();
 
@@ -97,10 +96,10 @@ public class MyPlacesUI extends UI {
 		save.setStyleName("v-button-register");
 		save.addClickListener(event->{
 			FamilyUnit familyUnit;
-			if(unitfamily.getValue() == "Alone"){
+			if(unitfamily.getValue().equals("Alone")){
 				familyUnit = FamilyUnit.Alone;
 			}
-			else if(unitfamily.getValue() == "With family"){
+			else if(unitfamily.getValue().equals("With family")){
 				familyUnit = FamilyUnit.Family;
 			}
 			else{
@@ -108,32 +107,22 @@ public class MyPlacesUI extends UI {
 			}
 				if(address.getValue().length() > 0 && address.getValue().length() < 50){
 					TPlace tPlace = new TPlace(address.getValue(),description.getValue(),null,null,familyUnit,"Roberto");
+					//Deberia haber un comando que te permitiera modificar el lugar
 				}
-				else if (address.getValue().length() > 50 || address.getValue().length() < 1){
+				else {
 					Notification.show("Invalid Address", Notification.Type.ERROR_MESSAGE);
 				}
 			
 		});
-		Button refuse = new Button("Refuse",FontAwesome.ERASER);
-		refuse.setId("refuseButton");
-		refuse.setStyleName("v-button-register");
-		refuse.addClickListener(event->{
-		duration.setValue(0.0);
-		unitfamily.setValue("");
-		description.setValue("");
-		address.setValue("");
-		Notification.show("Changes rejected", Notification.Type.WARNING_MESSAGE);
-		});
 
-		buttons.addComponents(save,refuse);
 		secondaryLayout.addComponent(placeImg,0,0);
 		secondaryLayout.addComponent(uploadField,0,1);
 		secondaryLayout.addComponent(duration,0,2);
 		secondaryLayout.addComponent(days,0,3);
 		secondaryLayout.addComponent(unitfamily,0,4);
-		secondaryLayout.addComponent(buttons,0,5);
+		secondaryLayout.addComponent(save,0,5);
 		secondaryLayout.addComponent(description,1,0);
-		secondaryLayout.addComponent(address,1,1);
+		secondaryLayout.addComponent(address,1,2);
 		mainLayout.addComponent(secondaryLayout);
 		superLayout.addComponent(new Header());
 		superLayout.addComponentsAndExpand(mainLayout);
