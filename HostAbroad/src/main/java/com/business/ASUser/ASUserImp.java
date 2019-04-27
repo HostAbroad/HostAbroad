@@ -370,7 +370,7 @@ public class ASUserImp implements ASUser {
 			user.setFullName(tUser.getFullName());
 			user.setEmail(newEmail);
 			user.setDescription(tUser.getDescription());
-			user.setPhoto(tUser.getPhoto());
+			//user.setPhoto(tUser.getPhoto());
 			em.persist(user);
 		}
 		
@@ -378,6 +378,7 @@ public class ASUserImp implements ASUser {
 		em.close();
 		emf.close();
 		return isEditPossible;
+	}
 	
 	@Override
 	public boolean rateUser(TRating tRating) {

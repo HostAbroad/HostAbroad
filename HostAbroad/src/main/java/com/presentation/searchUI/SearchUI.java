@@ -159,7 +159,7 @@ public class SearchUI extends UI{
 		result.removeAllComponents();
 		int counter = 1;
 		for(TUser u: users) {
-			Card card = new Card(u.getNickname(), u.getDescription());
+			Card card = new Card(u.getNickname(), u.getDescription(), u.getRating(), true);
 			card.setId("card" + counter++);
 			result.addComponent(card);
 			result.setComponentAlignment(card, Alignment.TOP_CENTER);

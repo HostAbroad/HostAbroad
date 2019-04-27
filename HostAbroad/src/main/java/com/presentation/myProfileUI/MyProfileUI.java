@@ -2,9 +2,8 @@ package com.presentation.myProfileUI;
 
 import java.util.ArrayList;
 
-import javax.servlet.annotation.WebServlet;
-
 import org.vaadin.easyuploads.UploadField;
+import org.vaadin.teemu.ratingstars.RatingStars;
 
 import com.business.enums.CountriesEnum;
 import com.business.enums.DurationOfStayEnum;
@@ -12,7 +11,6 @@ import com.business.enums.InterestsEnum;
 import com.business.transfers.THost;
 import com.business.transfers.TTraveler;
 import com.business.transfers.TUser;
-import com.fo0.advancedtokenfield.main.AdvancedTokenField;
 import com.presentation.card.Card;
 import com.presentation.commands.CommandEnum.Commands;
 import com.presentation.commands.Pair;
@@ -20,7 +18,6 @@ import com.presentation.controller.Controller;
 import com.presentation.headerAndFooter.Footer;
 import com.presentation.headerAndFooter.Header;
 import com.vaadin.annotations.Theme;
-import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.Binder;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.data.validator.RegexpValidator;
@@ -30,7 +27,6 @@ import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinServlet;
 import com.vaadin.shared.Position;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -43,7 +39,6 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.RadioButtonGroup;
-import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
@@ -287,7 +282,14 @@ public class MyProfileUI extends UI {
 		ComboBox<String> languageCB = new ComboBox<>("Language");
 		languageCB.setItems("Spanish", "Saharawi");
 		languageCB.setId("ProfileLanguages");
-
+		
+		RatingStars stars = new RatingStars();
+		stars.setCaption("Rating");
+		stars.setMaxValue(5);
+		stars.setReadOnly(true);
+		stars.setValue(user.getRating());
+		stars.setWidth("100%");
+		
 		Button save = new Button("Save");
 		save.setIcon(FontAwesome.SAVE);
 		save.addClickListener(event -> {
@@ -317,6 +319,7 @@ public class MyProfileUI extends UI {
 		fields.addComponent(email, 0, 1);
 		fields.addComponent(genderCB, 1, 1);
 		fields.addComponent(languageCB, 0, 2);
+		fields.addComponent(stars, 1, 2);
 		fields.addComponent(description, 0, 3, 2, 4);
 		
 		sections.addComponent(fields, 1, 0);
@@ -458,7 +461,7 @@ public class MyProfileUI extends UI {
 		resultLayout.setId("resultLayout");
 		int counter = 1;
 		for (TUser u : users) {
-			Card card = new Card(u.getNickname(), u.getDescription());
+			Card card = new Card(u.getNickname(), u.getDescription(), u.getRating(), true);
 			card.setId("card" + counter++);
 			resultLayout.addComponent(card);
 			resultLayout.setComponentAlignment(card, Alignment.TOP_LEFT);

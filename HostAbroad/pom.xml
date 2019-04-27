@@ -133,6 +133,12 @@
 			<version>0.5.1</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.vaadin.addons</groupId>
+			<artifactId>ratingstars</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -193,6 +199,25 @@
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.2</version>
+			</plugin>
+			<!-- Vaadin maven plugin for client-side compilation -->
+			<plugin>
+				<groupId>com.vaadin</groupId>
+				<artifactId>vaadin-maven-plugin</artifactId>
+				<version>${vaadin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>update-widgetset</goal>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<!-- The widgetset compilation mode (local / fetch from CDN / CDN only). 
+						The allowed values are "local", "fetch" and "cdn". -->
+					<widgetsetMode>local</widgetsetMode>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

@@ -2,6 +2,8 @@ package com.presentation.card;
 
 import java.io.File;
 
+import org.vaadin.teemu.ratingstars.RatingStars;
+
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.FontAwesome;
@@ -18,13 +20,21 @@ import com.vaadin.ui.VerticalLayout;
 
 
 public class Card extends Panel{
-	public Card(String nickname, String description) {
+	
+	private RatingStars stars;
+	
+	public Card(String nickname, String description, Double rate, Boolean enabled) {
+		stars = new RatingStars();
+		stars.setValue(rate);
+		stars.setReadOnly(enabled);
+		
 		//This is the horizontalLayout. It's used to locate the 2 inner VLayouts.
 		HorizontalLayout horizontalLayout = new HorizontalLayout();
 		
 		//Locating the inner layouts
 		horizontalLayout.addComponent(createLeftPartOfCard(nickname));
 		horizontalLayout.addComponent(createRightPartOfCard(description));
+		
 		
 		this.setContent(horizontalLayout);
 		this.setSizeUndefined();
@@ -73,6 +83,8 @@ public class Card extends Panel{
 		
 		return imageNickNameLayout;
 	}
+	
+	
 
 	/** private VerticalLayout createRightPartOfCard(String description) 
 	 *  Creates inner layout for the right part of the panel(containing user description)
@@ -98,7 +110,14 @@ public class Card extends Panel{
 		descriptionLayout.setComponentAlignment(like, Alignment.TOP_RIGHT);
 		
 		
+		stars.setCaption("Rating: ");
+		stars.setMaxValue(5);
+		
+		descriptionLayout.addComponent(stars);
+		descriptionLayout.setComponentAlignment(stars, Alignment.BOTTOM_RIGHT);
+		
 		return descriptionLayout;
 	}
+	
 
 }
