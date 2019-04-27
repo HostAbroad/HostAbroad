@@ -36,6 +36,10 @@ public class Likes {
 		this.userSender = userSender;
 		this.userReceiver = userReceiver;
 	}
+	
+	public Integer getId() {
+		return id;
+	}
 
 	public UserHA getUserSender() {
 		return userSender;

@@ -1,6 +1,7 @@
 package com.business.ASUser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -11,6 +12,7 @@ import javax.persistence.Query;
 
 import com.business.businessObjects.Host;
 import com.business.businessObjects.Likes;
+import com.business.businessObjects.Matches;
 import com.business.businessObjects.Place;
 import com.business.businessObjects.Rating;
 import com.business.businessObjects.Traveler;
@@ -297,7 +299,7 @@ public class ASUserImp implements ASUser {
 	
 	public ArrayList<TUser> sendersLike(TUser tUser) {
 		
-		 ArrayList<TUser> sendersUser = new ArrayList<TUser>();
+		 ArrayList<TUser> sendersUser = new ArrayList<TUser>(); //usuarios que nos han enviado like
 		
 	
 		try {
@@ -306,7 +308,7 @@ public class ASUserImp implements ASUser {
 			EntityTransaction tr = em.getTransaction();
 			tr.begin();
 			
-			TUser tUserSender;
+			TUser tUserSender; //El que nos ha enviado el like
 			for(Integer id : tUser.getLikes()) {
 				
 				String consulta = "SELECT * FROM LIKES WHERE id = ?1";
@@ -418,5 +420,125 @@ public class ASUserImp implements ASUser {
 		emf.close();
 		
 		return nickname;
+	}
+	
+	@Override
+	public TUser readUser(TUser tUser) {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
+		EntityManager em = emf.createEntityManager();
+		
+		String queryStr = "SELECT * FROM USERHA WHERE NICKNAME = ?1";
+		Query query = em.createNativeQuery(queryStr, UserHA.class);
+		query.setParameter(1, tUser.getNickname());
+		TUser user = null;
+		UserHA userNick = null;
+		try {
+			userNick = (UserHA)query.getSingleResult();
+		}
+		catch (NoResultException ex) {
+			System.out.println(ex.getMessage());
+		}
+		
+		queryStr = "SELECT * FROM LIKES WHERE USERRECEIVER_NICKNAME = ?1";
+		query = em.createNativeQuery(queryStr, Likes.class);
+		query.setParameter(1, tUser.getNickname());
+		
+		try {
+			ArrayList<Likes> likes = new ArrayList<Likes>();
+			List<Likes> likesList = query.getResultList();
+			while(!likesList.isEmpty()) {
+				likes.add(likesList.get(0));
+				likesList.remove(0);
+			}
+			userNick.setLikes(likes);
+		}
+		catch (NoResultException ex) {
+			System.out.println(ex.getMessage());
+		}
+		
+		queryStr = "SELECT * FROM RATING WHERE USERRECEIVER_NICKNAME = ?1";
+		query = em.createNativeQuery(queryStr, Rating.class);
+		query.setParameter(1, tUser.getNickname());
+		
+		try {
+			ArrayList<Rating> rates = new ArrayList<Rating>();
+			List<Rating> ratesList = query.getResultList();
+			while(!ratesList.isEmpty()) {
+				rates.add(ratesList.get(0));
+				ratesList.remove(0);
+			}
+			userNick.setRates(rates);
+		}
+		catch (NoResultException ex) {
+			System.out.println(ex.getMessage());
+		}
+		
+		queryStr = "SELECT * FROM MATCHES WHERE USERRECEIVER_NICKNAME = ?1 OR USERSENDER_NICKNAME = ?1";
+		query = em.createNativeQuery(queryStr, Matches.class);
+		query.setParameter(1, tUser.getNickname());
+		
+		try {
+			ArrayList<Matches> matches = new ArrayList<Matches>();
+			List<Matches> matchesList = query.getResultList();
+			while(!matchesList.isEmpty()) {
+				matches.add(matchesList.get(0));
+				matchesList.remove(0);
+			}
+			userNick.setMatches(matches);
+		}
+		catch (NoResultException ex) {
+			System.out.println(ex.getMessage());
+		}
+		
+		user = userNick.toTransfer();
+		
+		em.close();
+		emf.close();
+		
+		return user;
+	}
+
+	@Override
+	public ArrayList<TUser> readMyMatches(TUser tUser) {
+		 ArrayList<TUser> myMatches = new ArrayList<TUser>();
+			
+			
+			try {
+				EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
+				EntityManager em = emf.createEntityManager();
+				EntityTransaction tr = em.getTransaction();
+				tr.begin();
+				
+				TUser tUserSender;
+				for(Integer id : tUser.getMatches()) {
+					
+					String consulta = "SELECT * FROM MATCHES WHERE id = ?1";
+					Query query = em.createNativeQuery(consulta, Matches.class);
+					query.setParameter(1, id);
+		
+					Matches matches = null;
+					
+					try {
+						matches = (Matches) query.getSingleResult();
+					}
+					catch (NoResultException ex) {
+						System.out.println(ex.getMessage());
+					}
+				
+					tUserSender = new TUser(matches.getUserSender().getNickname(), matches.getUserSender().getRating(),
+							matches.getUserSender().getDescription());
+					
+					myMatches.add(tUserSender);
+					
+				}
+				em.close();
+				emf.close();
+			}
+			catch (Exception ex) {
+				System.out.println(ex.getMessage());
+			}		
+			
+			
+			return myMatches;
 	}
 }

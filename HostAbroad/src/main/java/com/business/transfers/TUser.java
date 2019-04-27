@@ -118,6 +118,11 @@ public class TUser implements Serializable {
 		this.email = email;
 		this.password = password;
 	}
+	
+	public TUser(String nickname) {
+		this.nickname = nickname;
+		
+	}
 
 	public void setNickname(String nickname) {
 		this.nickname = nickname;

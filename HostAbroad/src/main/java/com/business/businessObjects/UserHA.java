@@ -313,8 +313,19 @@ public class UserHA {
     }
     
     public TUser toTransfer() {
+    	
+    	ArrayList<Integer> myLikes = new ArrayList<Integer>();
+    	for(Likes l : this.getLikes())
+    		myLikes.add(l.getId());
+    	ArrayList<Integer> myRates = new ArrayList<Integer>();
+    	for(Rating r : this.getRates())
+    		myRates.add(r.getId());
+    	ArrayList<Integer> myMatches = new ArrayList<Integer>();
+    	for(Matches m : this.getMatches())
+    		myLikes.add(m.getId());
+    	
     	return new TUser(this.nickname, this.fullName, this.email, 
-    			((Integer)this.password).toString(), this.rating, this.description, this.host, this.traveler);
+    			((Integer)this.password).toString(), this.rating, this.description, this.host, this.traveler, myLikes, myRates, myMatches);
     }
 }
 

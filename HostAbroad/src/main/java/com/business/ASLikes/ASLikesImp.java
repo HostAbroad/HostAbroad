@@ -22,7 +22,7 @@ public class ASLikesImp implements ASLikes{
 			EntityTransaction tr = em.getTransaction();
 			tr.begin();
 
-			if(tLikes.getUserReceiver() != tLikes.getUserSender()) {
+			if(!tLikes.getUserReceiver().equals(tLikes.getUserSender())) {
 				UserHA userSender;
 				UserHA userReceiver;
 				try {

@@ -29,4 +29,8 @@ public interface ASUser {
 	public abstract ArrayList<TUser> sendersLike(TUser tUser);
 
 	public abstract boolean rateUser(TRating tRating);
+
+	public abstract ArrayList<TUser> readMyMatches(TUser transfer);
+
+	public TUser readUser(TUser user);
 }

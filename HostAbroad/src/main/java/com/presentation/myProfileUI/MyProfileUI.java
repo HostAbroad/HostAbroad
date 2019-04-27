@@ -19,6 +19,7 @@ import com.presentation.commands.Pair;
 import com.presentation.controller.Controller;
 import com.presentation.headerAndFooter.Footer;
 import com.presentation.headerAndFooter.Header;
+import com.presentation.loginUI.AuthService;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.Binder;
@@ -58,12 +59,10 @@ public class MyProfileUI extends UI {
 	@Override
 	protected void init(VaadinRequest request) {
 
-		TUser myUser = new TUser("Prueba", "PruebaFull", "ivan@ucm.es", "1234", 5, "Im prueba", false, false);
-		ArrayList<Integer> likes = new ArrayList<Integer>();
-		likes.add(1);
-		likes.add(2);
+		Pair<Integer,Object> userLoged = Controller.getInstance().action(Commands.CommandReadUser, new TUser(AuthService.getUserNickName()));
+		TUser myUser = (TUser)userLoged.getRight();
 		
-		TUser myUser1 = new TUser("Prueba", "PruebaFull", "ivan@ucm.es", "1234", 5, "Im prueba", false, false, likes);
+		
 		VerticalLayout superLayout = new VerticalLayout();
 		superLayout.setStyleName("v-scrollable");
 		superLayout.setSpacing(false);
@@ -85,10 +84,10 @@ public class MyProfileUI extends UI {
 		
 		Button personalInfo = new Button("Personal information", VaadinIcons.USER);
 		personalInfo.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-pi");
-		personalInfo.setHeight(80, Unit.PIXELS);
+		personalInfo.setHeight(75, Unit.PIXELS);
 		personalInfo.addClickListener(event ->{
 			pages.removeAllComponents();
-			pages.addComponent(personalInfoForm(myUser1));
+			pages.addComponent(personalInfoForm(myUser));
 			pages.setWidth("100%");
 		});
 		menu.addComponent(personalInfo);
@@ -96,50 +95,60 @@ public class MyProfileUI extends UI {
 		Button traveler = new Button("Traveler settings", VaadinIcons.PAPERPLANE);
 		traveler.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-t");
 		traveler.setWidth("100%");
-		traveler.setHeight(80, Unit.PIXELS);
+		traveler.setHeight(75, Unit.PIXELS);
 		traveler.addClickListener(event->{
 			pages.removeAllComponents();
-			pages.addComponent(myProperties(myUser1));
+			pages.addComponent(myProperties(myUser));
 		});
 		menu.addComponent(traveler);
 		
 		Button host = new Button("Host settings", VaadinIcons.HOME);
 		host.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-h");
 		host.setWidth("100%");
-		host.setHeight(80, Unit.PIXELS);
+		host.setHeight(75, Unit.PIXELS);
 		menu.addComponent(host);
 		
 		Button interests = new Button("Interests", VaadinIcons.CALC_BOOK);
 		interests.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-i");
 		interests.setWidth("100%");
-		interests.setHeight(80, Unit.PIXELS);
+		interests.setHeight(75, Unit.PIXELS);
 		interests.addClickListener(event->{
 			pages.removeAllComponents();
-			pages.addComponent(myInterests(myUser1));
+			pages.addComponent(myInterests(myUser));
 		});
 		menu.addComponent(interests);
 		
 		Button comments = new Button("Comments", VaadinIcons.CHAT);
 		comments.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-c");
 		comments.setWidth("100%");
-		comments.setHeight(80, Unit.PIXELS);
+		comments.setHeight(75, Unit.PIXELS);
 		menu.addComponent(comments);
 		
 		Button msgs = new Button("Messages", VaadinIcons.ENVELOPES);
 		msgs.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-m");
 		msgs.setWidth("100%");
-		msgs.setHeight(80, Unit.PIXELS);
+		msgs.setHeight(75, Unit.PIXELS);
 		menu.addComponent(msgs);
 		
 		Button like = new Button("My likes", VaadinIcons.HEART);
 		like.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-ml");
 		like.setWidth("100%");
-		like.setHeight(80, Unit.PIXELS);
+		like.setHeight(75, Unit.PIXELS);
 		like.addClickListener(event->{
 			pages.removeAllComponents();
-			pages.addComponent(myLikes(myUser1));
+			pages.addComponent(myLikes(myUser));
 		});
 		menu.addComponent(like);
+		
+		Button matches = new Button("My matches", VaadinIcons.USERS);
+		matches.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-mm");
+		matches.setWidth("100%");
+		matches.setHeight(75, Unit.PIXELS);
+		matches.addClickListener(event->{
+			pages.removeAllComponents();
+			pages.addComponent(myMatches(myUser));
+		});
+		menu.addComponent(matches);
 
 		grid.addComponent(menu);
 		grid.addComponent(pages, 2, 0);
@@ -449,6 +458,41 @@ public class MyProfileUI extends UI {
 
 		return mainLayout;
 	}
+	
+	private HorizontalLayout myMatches(TUser myUser) {
+
+		HorizontalLayout mainLayout = new HorizontalLayout();
+		mainLayout.setId("mainLayout");
+		mainLayout.setSizeFull();
+		mainLayout.setSpacing(true);
+		
+
+		// main helper
+		VerticalLayout mainVertical = new VerticalLayout();
+		mainVertical.setId("mainVertical");
+		Panel panelMain = new Panel();
+		panelMain.setSizeFull();
+		panelMain.setContent(mainVertical);
+		panelMain.setId("panelMain");
+		mainLayout.addComponent(panelMain);
+
+		Pair<Integer, Object> result = Controller.getInstance().action(Commands.CommandMyMatches, myUser);
+
+		if (result.getLeft() == 1) {
+
+			VerticalLayout resultsMatches = createResultPanel((ArrayList<TUser>) result.getRight());
+			resultsMatches.setId("resultsMatches");
+			mainVertical.addComponent(resultsMatches);
+
+		} else {
+
+			Label labelNoMatches = new Label("No Matches");
+			labelNoMatches.setId("labelNoMatches");
+			mainVertical.addComponent(labelNoMatches);
+		}
+
+		return mainLayout;
+	}
 
 	private VerticalLayout createResultPanel(ArrayList<TUser> users) {
 		VerticalLayout resultLayout = new VerticalLayout();
@@ -458,7 +502,7 @@ public class MyProfileUI extends UI {
 		resultLayout.setId("resultLayout");
 		int counter = 1;
 		for (TUser u : users) {
-			Card card = new Card(u.getNickname(), u.getDescription());
+			Card card = new Card(u);
 			card.setId("card" + counter++);
 			resultLayout.addComponent(card);
 			resultLayout.setComponentAlignment(card, Alignment.TOP_LEFT);

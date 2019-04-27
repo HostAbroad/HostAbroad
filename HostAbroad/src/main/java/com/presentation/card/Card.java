@@ -1,7 +1,14 @@
 package com.presentation.card;
 
 import java.io.File;
+import java.util.ArrayList;
 
+import com.business.transfers.TLikes;
+import com.business.transfers.TUser;
+import com.presentation.commands.CommandEnum.Commands;
+import com.presentation.commands.Pair;
+import com.presentation.controller.Controller;
+import com.presentation.loginUI.AuthService;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.FontAwesome;
@@ -12,19 +19,20 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
 
 
 public class Card extends Panel{
-	public Card(String nickname, String description) {
+	public Card(TUser tUser) {
 		//This is the horizontalLayout. It's used to locate the 2 inner VLayouts.
 		HorizontalLayout horizontalLayout = new HorizontalLayout();
 		
 		//Locating the inner layouts
-		horizontalLayout.addComponent(createLeftPartOfCard(nickname));
-		horizontalLayout.addComponent(createRightPartOfCard(description));
+		horizontalLayout.addComponent(createLeftPartOfCard(tUser.getNickname()));
+		horizontalLayout.addComponent(createRightPartOfCard(tUser));
 		
 		this.setContent(horizontalLayout);
 		this.setSizeUndefined();
@@ -77,7 +85,7 @@ public class Card extends Panel{
 	/** private VerticalLayout createRightPartOfCard(String description) 
 	 *  Creates inner layout for the right part of the panel(containing user description)
 	 * */
-	private VerticalLayout createRightPartOfCard(String description) {
+	private VerticalLayout createRightPartOfCard(TUser tUser) {
 		
 		VerticalLayout descriptionLayout = new VerticalLayout();
 		//Creates the textArea
@@ -87,11 +95,24 @@ public class Card extends Panel{
 		area.setReadOnly(true);
 		area.setWordWrap(true);
 		// Put the content in it
-		area.setValue(description);
+		area.setValue(tUser.getDescription());
 		
 		Button like = new Button();
 		like.setStyleName("card-like-button");
 		like.setIcon(FontAwesome.HEART);
+		like.addClickListener(event -> {
+			
+			TLikes sendLike = new TLikes(AuthService.getUserNickName(), tUser.getNickname());
+			Pair<Integer,Object> result = Controller.getInstance().action(Commands.CommandSendLike, sendLike);
+			if (result.getLeft() == 1) {
+
+				Notification.show("Like Sended!", Notification.Type.HUMANIZED_MESSAGE);
+
+			} else {
+
+				Notification.show("We couldnt send your like", Notification.Type.ERROR_MESSAGE);
+			}
+		});
 		descriptionLayout.setWidth("500px");
 		descriptionLayout.addComponent(like);
 		descriptionLayout.addComponent(area);

@@ -39,6 +39,10 @@ public class Rating {
 		this.userReceiver = userReceiver;
 		this.rate = rate;
 	}
+	
+	public Integer getId() {
+		return id;
+	}
 
 	public UserHA getUserSender() {
 		return userSender;
