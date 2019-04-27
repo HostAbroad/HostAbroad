@@ -162,6 +162,9 @@ public class SearchUI extends UI{
 			Card card = new Card(u);
 			card.setId("card" + counter++);
 			result.addComponent(card);
+			card.setVisibleLikeButton(true);
+			card.setVisibleAcceptButton(false);
+			card.setVisibleDeclineButton(false);
 			result.setComponentAlignment(card, Alignment.TOP_CENTER);
 		}
 		result.setWidth("100%");

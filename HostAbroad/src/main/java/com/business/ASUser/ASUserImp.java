@@ -22,6 +22,7 @@ import com.business.transfers.TPlace;
 import com.business.transfers.TRating;
 import com.business.transfers.TTraveler;
 import com.business.transfers.TUser;
+import com.presentation.loginUI.AuthService;
 
 public class ASUserImp implements ASUser {
 
@@ -524,9 +525,14 @@ public class ASUserImp implements ASUser {
 					catch (NoResultException ex) {
 						System.out.println(ex.getMessage());
 					}
-				
-					tUserSender = new TUser(matches.getUserSender().getNickname(), matches.getUserSender().getRating(),
+					
+					if(matches.getUserReceiver().getNickname().equals(AuthService.getUserNickName()))
+						tUserSender = new TUser(matches.getUserSender().getNickname(), matches.getUserSender().getRating(),
 							matches.getUserSender().getDescription());
+					else
+						tUserSender = new TUser(matches.getUserReceiver().getNickname(), matches.getUserReceiver().getRating(),
+								matches.getUserReceiver().getDescription());
+					
 					
 					myMatches.add(tUserSender);
 					

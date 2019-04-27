@@ -480,7 +480,7 @@ public class MyProfileUI extends UI {
 
 		if (result.getLeft() == 1) {
 
-			VerticalLayout resultsMatches = createResultPanel((ArrayList<TUser>) result.getRight());
+			VerticalLayout resultsMatches = createResultPanelMatches((ArrayList<TUser>) result.getRight());
 			resultsMatches.setId("resultsMatches");
 			mainVertical.addComponent(resultsMatches);
 
@@ -505,6 +505,29 @@ public class MyProfileUI extends UI {
 			Card card = new Card(u);
 			card.setId("card" + counter++);
 			resultLayout.addComponent(card);
+			card.setVisibleLikeButton(false);
+			card.setVisibleAcceptButton(true);
+			card.setVisibleDeclineButton(true);
+			resultLayout.setComponentAlignment(card, Alignment.TOP_LEFT);
+		}
+		resultLayout.setHeight("100%");
+		return resultLayout;
+	}
+	
+	private VerticalLayout createResultPanelMatches(ArrayList<TUser> users) {
+		VerticalLayout resultLayout = new VerticalLayout();
+		resultLayout.setMargin(false);
+		resultLayout.setSizeFull();
+		resultLayout.removeAllComponents();
+		resultLayout.setId("resultLayout");
+		int counter = 1;
+		for (TUser u : users) {
+			Card card = new Card(u);
+			card.setId("card" + counter++);
+			resultLayout.addComponent(card);
+			card.setVisibleLikeButton(false);
+			card.setVisibleAcceptButton(false);
+			card.setVisibleDeclineButton(false);
 			resultLayout.setComponentAlignment(card, Alignment.TOP_LEFT);
 		}
 		resultLayout.setHeight("100%");

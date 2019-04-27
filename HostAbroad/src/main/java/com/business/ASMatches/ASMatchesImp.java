@@ -1,5 +1,8 @@
 package com.business.ASMatches;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -28,13 +31,29 @@ public class ASMatchesImp implements ASMatches {
 			UserHA userSender; //Usuario 1 es el que acepta el Like (que es el UserReceiver de Likes)
 			UserHA userReceiver; //Usuario 2 es el que envió el like
 			try {
-				String query = "SELECT * FROM USER WHERE NICKNAME = ?1";
+				String query = "SELECT * FROM USERHA WHERE NICKNAME = ?1";
 				userSender = (UserHA)em.createNativeQuery(query, UserHA.class)
 						.setParameter(1, tMatches.getUserSender()).getSingleResult();
 				userReceiver = (UserHA)em.createNativeQuery(query, UserHA.class)
 						.setParameter(1, tMatches.getUserReceiver()).getSingleResult();
+				/*
+				query = "SELECT * FROM LIKES WHERE USERRECEIVER_NICKNAME = ?1";
+			
 				
-				query = "SELECT * FROM MATCHES WHERE (USERONE_NICKNAME = ?1 AND USERTWO_NICKNAME = ?2) OR (USERONE_NICKNAME = ?2 AND USERTWO_NICKNAME = ?1)  ";
+				try {
+					ArrayList<Likes> likes = new ArrayList<Likes>();
+					List<Likes> likesList = em.createNativeQuery(query, Likes.class).setParameter(1, tMatches.getUserSender()).getResultList();
+					while(!likesList.isEmpty()) {
+						likes.add(likesList.get(0));
+						likesList.remove(0);
+					}
+					userSender.setLikes(likes);
+				}
+				catch (NoResultException ex) {
+					System.out.println(ex.getMessage());
+				}
+				*/
+				query = "SELECT * FROM MATCHES WHERE (USERSENDER_NICKNAME = ?1 AND USERRECEIVER_NICKNAME = ?2) OR (USERSENDER_NICKNAME = ?2 AND USERRECEIVER_NICKNAME = ?1)  ";
 				Matches match;
 				try {
 					
@@ -47,10 +66,27 @@ public class ASMatchesImp implements ASMatches {
 					userSender.getMatches().add(match); //Aqui se añade el match a la dos usuarios
 					userReceiver.getMatches().add(match);
 					
+					query= "SELECT * FROM LIKES WHERE USERSENDER_NICKNAME = ?1 AND USERRECEIVER_NICKNAME = ?2  ";
+					Likes like = null;
+					try {
+						
+						like = (Likes)em.createNativeQuery(query, Likes.class).setParameter(1, tMatches.getUserReceiver()).setParameter(2, tMatches.getUserSender()).getSingleResult();
 					
-					userSender.getLikes().remove(new Likes(userReceiver, userSender)); //Aqui se borra el Like del usuario que lo recibio y que ahora ha aceptado
-																			//Están cambiados de orden porque en Likes se guarda en el primer
-																			// parametro el que envía el like(que ahora es el UserTwo)
+					}catch(Exception e2) {
+						System.out.println(e2.getMessage());
+					}
+					
+					query = "DELETE FROM LIKES WHERE ID = ?1 ";
+					
+					try {
+
+						em.createNativeQuery(query, Matches.class).setParameter(1,like.getId());
+					
+					}catch(Exception e3) {
+						System.out.println(e3.getMessage());
+					}
+					//userSender.getLikes().remove(new Likes(userSender, userReceiver));
+					em.persist(like);
 					em.persist(userSender);
 					em.persist(userReceiver);
 					result = true;
@@ -82,7 +118,7 @@ public class ASMatchesImp implements ASMatches {
 			UserHA userSender; //Usuario 1 es el que declina el Like (que es el UserReceiver de Likes)
 			UserHA userReceiver; //Usuario 2 es el que envió el like
 			try {
-				String query = "SELECT * FROM USER WHERE NICKNAME = ?1";
+				String query = "SELECT * FROM USERHA WHERE NICKNAME = ?1";
 				userSender = (UserHA)em.createNativeQuery(query, UserHA.class)
 						.setParameter(1, tMatches.getUserSender()).getSingleResult();
 				userReceiver = (UserHA)em.createNativeQuery(query, UserHA.class)

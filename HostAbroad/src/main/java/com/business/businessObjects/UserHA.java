@@ -322,7 +322,7 @@ public class UserHA {
     		myRates.add(r.getId());
     	ArrayList<Integer> myMatches = new ArrayList<Integer>();
     	for(Matches m : this.getMatches())
-    		myLikes.add(m.getId());
+    		myMatches.add(m.getId());
     	
     	return new TUser(this.nickname, this.fullName, this.email, 
     			((Integer)this.password).toString(), this.rating, this.description, this.host, this.traveler, myLikes, myRates, myMatches);

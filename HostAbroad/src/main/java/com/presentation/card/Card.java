@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import com.business.transfers.TLikes;
+import com.business.transfers.TMatches;
 import com.business.transfers.TUser;
 import com.presentation.commands.CommandEnum.Commands;
 import com.presentation.commands.Pair;
@@ -26,6 +27,11 @@ import com.vaadin.ui.VerticalLayout;
 
 
 public class Card extends Panel{
+	
+	Button like;
+	Button acceptLikes;
+	Button declineLikes;
+	
 	public Card(TUser tUser) {
 		//This is the horizontalLayout. It's used to locate the 2 inner VLayouts.
 		HorizontalLayout horizontalLayout = new HorizontalLayout();
@@ -97,7 +103,7 @@ public class Card extends Panel{
 		// Put the content in it
 		area.setValue(tUser.getDescription());
 		
-		Button like = new Button();
+		like = new Button();
 		like.setStyleName("card-like-button");
 		like.setIcon(FontAwesome.HEART);
 		like.addClickListener(event -> {
@@ -113,13 +119,67 @@ public class Card extends Panel{
 				Notification.show("We couldnt send your like", Notification.Type.ERROR_MESSAGE);
 			}
 		});
+		
+		acceptLikes = new Button();
+		acceptLikes.setStyleName("card-acceptLike-button");
+		acceptLikes.setIcon(FontAwesome.CHECK);
+		acceptLikes.addClickListener(event -> {
+			
+			TMatches acceptLike = new TMatches(AuthService.getUserNickName(), tUser.getNickname());
+			Pair<Integer,Object> result = Controller.getInstance().action(Commands.CommandAcceptLike, acceptLike);
+			if (result.getLeft() == 1) {
+
+				Notification.show("Like Accepted!", Notification.Type.HUMANIZED_MESSAGE);
+
+			} else {
+
+				Notification.show("We couldnt accept your like", Notification.Type.ERROR_MESSAGE);
+			}
+		});
+		
+		declineLikes = new Button();
+		declineLikes.setStyleName("card-declineLike-button");
+		declineLikes.setIcon(FontAwesome.CLOSE);
+		declineLikes.addClickListener(event -> {
+			
+			TMatches declineLike = new TMatches(AuthService.getUserNickName(), tUser.getNickname());
+			Pair<Integer,Object> result = Controller.getInstance().action(Commands.CommandDeclineLike, declineLike);
+			if (result.getLeft() == 1) {
+
+				Notification.show("Like Declined!", Notification.Type.HUMANIZED_MESSAGE);
+
+			} else {
+
+				Notification.show("We couldnt decline your like", Notification.Type.ERROR_MESSAGE);
+			}
+		});
+		
+		acceptLikes.setVisible(false);
+		declineLikes.setVisible(false);
+		
 		descriptionLayout.setWidth("500px");
 		descriptionLayout.addComponent(like);
+		descriptionLayout.addComponent(acceptLikes);
+		descriptionLayout.addComponent(declineLikes);
 		descriptionLayout.addComponent(area);
 		descriptionLayout.setComponentAlignment(like, Alignment.TOP_RIGHT);
+		descriptionLayout.setComponentAlignment(acceptLikes, Alignment.TOP_RIGHT);
+		descriptionLayout.setComponentAlignment(declineLikes, Alignment.TOP_RIGHT);
 		
 		
 		return descriptionLayout;
+	}
+	
+	public void setVisibleAcceptButton(boolean visible) {
+		acceptLikes.setVisible(visible);
+	}
+	
+	public void setVisibleDeclineButton(boolean visible) {
+		declineLikes.setVisible(visible);
+	}
+	
+	public void setVisibleLikeButton(boolean visible) {
+		like.setVisible(visible);
 	}
 
 }
