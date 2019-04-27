@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.LockModeType;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
@@ -293,10 +294,10 @@ public class ASUserImp implements ASUser {
 		return traveler;
 	}
 	
+	//this method is not ok
 	public ArrayList<TUser> SendersLike(TUser tUser) {
 		
 		 ArrayList<TUser> sendersUser = new ArrayList<TUser>();
-		
 	
 		try {
 			EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
@@ -335,5 +336,46 @@ public class ASUserImp implements ASUser {
 		
 		
 		return  sendersUser;
+	}
+
+	
+	/**
+	 * This method modifies the basic information of an user
+	 * */
+	public boolean modifyBasicInformation(TUser tUser) {
+		boolean isEditPossible = true;
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction tr = em.getTransaction();
+		tr.begin();
+		
+		UserHA user = em.find(UserHA.class, tUser.getNickname());
+		em.lock(user, LockModeType.OPTIMISTIC);
+		
+		String newEmail = tUser.getEmail();
+		
+		if(!newEmail.equals(user.getEmail())) {
+			String query = "SELECT * FROM USER WHERE email = ?1";
+			try {
+				UserHA userWithEmailFromTransfer = (UserHA) em.createNativeQuery(query, UserHA.class)
+																	.setParameter(1, tUser.getEmail())
+																	.getSingleResult();
+				isEditPossible = false;
+			}catch(NoResultException ex) {
+			}
+		}
+		
+		if(isEditPossible) {
+			user.setFullName(tUser.getFullName());
+			user.setEmail(newEmail);
+			user.setDescription(tUser.getDescription());
+			user.setPhoto(tUser.getPhoto());
+			em.persist(user);
+		}
+		
+		tr.commit();
+		em.close();
+		emf.close();
+		return isEditPossible;
 	}
 }
