@@ -13,10 +13,12 @@ import javax.persistence.Query;
 import com.business.businessObjects.Host;
 import com.business.businessObjects.Likes;
 import com.business.businessObjects.Place;
+import com.business.businessObjects.Rating;
 import com.business.businessObjects.Traveler;
 import com.business.businessObjects.UserHA;
 import com.business.transfers.THost;
 import com.business.transfers.TPlace;
+import com.business.transfers.TRating;
 import com.business.transfers.TTraveler;
 import com.business.transfers.TUser;
 
@@ -293,9 +295,9 @@ public class ASUserImp implements ASUser {
  		emfactory.close();
 		return traveler;
 	}
-	
-	//this method is not ok
-	public ArrayList<TUser> SendersLike(TUser tUser) {
+
+	public ArrayList<TUser> sendersLike(TUser tUser) {
+
 		
 		 ArrayList<TUser> sendersUser = new ArrayList<TUser>();
 	
@@ -338,7 +340,6 @@ public class ASUserImp implements ASUser {
 		return  sendersUser;
 	}
 
-	
 	/**
 	 * This method modifies the basic information of an user
 	 * */
@@ -377,5 +378,85 @@ public class ASUserImp implements ASUser {
 		em.close();
 		emf.close();
 		return isEditPossible;
+	
+	@Override
+	public boolean rateUser(TRating tRating) {
+
+		boolean result = false; //Devolverá false si ha habido algún error o si ese Sender ya ha valorado a Receiver
+		
+		try {
+			
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
+			EntityManager em = emf.createEntityManager();
+			EntityTransaction tr = em.getTransaction();
+			tr.begin();
+
+			UserHA userSender; // Usuario 1 es el que envia valoracion
+			UserHA userReceiver; // Usuario 2 es el que la recibe
+
+			try {
+				
+				String query = "SELECT * FROM USERHA WHERE NICKNAME = ?1";
+				userSender = (UserHA) em.createNativeQuery(query, UserHA.class).setParameter(1, tRating.getUserSender())
+						.getSingleResult();
+				userReceiver = (UserHA) em.createNativeQuery(query, UserHA.class).setParameter(1, tRating.getUserReceiver())
+						.getSingleResult();
+
+				query = "SELECT * FROM RATING WHERE USERRECEIVER_NICKNAME = ?1 AND USERSENDER_NICKNAME = ?2";
+				Rating rating;
+				
+				try {
+
+					rating = (Rating) em.createNativeQuery(query, Rating.class)
+							.setParameter(1, tRating.getUserReceiver()).setParameter(2, tRating.getUserSender())
+							.getSingleResult();
+
+				} catch (Exception e) {
+
+					rating = new Rating(userSender, userReceiver, tRating.getRate());
+					em.persist(rating);
+
+					userReceiver.addRate(rating);
+					userReceiver.updateRating(); // Vuelve a calcular la valoracion total para
+																	// actualizarla
+
+					em.persist(userReceiver);
+					result = true;
+
+				}
+			} catch (NoResultException e) {}
+
+			tr.commit();
+			em.close();
+			emf.close();
+			
+		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		
+		return result;
+	}
+
+	@Override
+	public TUser readUserNickName(TUser user) {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
+		EntityManager em = emf.createEntityManager();
+		
+		String queryStr = "SELECT NICKNAME FROM USERHA WHERE EMAIL = ?1";
+		Query query = em.createNativeQuery(queryStr, UserHA.class);
+		query.setParameter(1, user.getEmail());
+		TUser nickname = null;
+		try {
+			UserHA userNick = (UserHA)query.getSingleResult();
+			nickname = userNick.toTransfer();
+		}
+		catch (NoResultException ex) {
+			System.out.println(ex.getMessage());
+		}
+		
+		em.close();
+		emf.close();
+		
+		return nickname;
 	}
 }

@@ -4,8 +4,6 @@ public class CommandEnum {
 
 	//This is the enum that we are using for the dynamic loading
 	public enum Commands {
-	    CommandSearchHost,
-	    CommandSearchTraveler,
 		CommandLogin,
 		CommandCreateUser,
 		CommandSendLike,
@@ -15,6 +13,10 @@ public class CommandEnum {
 		CommandEditHost,
 		CommandSendersLike,
 		CommandModifyBasicInformation,
-		CommandSearch
+		CommandSearch,
+		CommandRateUser,
+		CommandAcceptLike,
+		CommandDeclineLike,
+		CommandReadUserNickName
 	}
 }

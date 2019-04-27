@@ -2,22 +2,48 @@ package com.business.transfers;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+
+import com.business.businessObjects.Host;
+import com.business.businessObjects.Likes;
+import com.business.businessObjects.Matches;
+import com.business.businessObjects.Rating;
+import com.business.businessObjects.Traveler;
 
 public class TUser implements Serializable {
 	private String nickname;
 	private String fullName;
 	private String password;
-	private double rating;
+	private String email;
 	private String description;
+	private double rating;
 	private boolean host;
 	private boolean traveler;
-	private String email;
 	private ArrayList<Integer> likes;
+	private ArrayList<Integer> rates;
+
+	private ArrayList<Integer> matches;
 
 	public TUser() {
 	};
+	
+	public TUser(String nickname, String fullName, String email, String password, double rating, String description, boolean host, boolean traveler, ArrayList<Integer> likes, ArrayList<Integer> rates, ArrayList<Integer> matches){
+
+		this.nickname = nickname;
+		this.fullName = fullName;
+		this.email = email;
+		this.password = password;
+		this.rating = rating;
+		this.description = description;
+		this.host = host;
+		this.traveler = traveler;
+		this.likes = likes;
+		this.rates = rates;
+		this.matches = matches;
+	}
 
 	public TUser(String nickname, String fullName, String email, String password, double rating, String description,
+
 			boolean host, boolean traveler, ArrayList<Integer> likes) {
 		this.nickname = nickname;
 		this.fullName = fullName;
@@ -26,7 +52,7 @@ public class TUser implements Serializable {
 		this.rating = rating;
 		this.description = description;
 		this.host = host;
-		this.setTraveler(traveler);
+		this.traveler = traveler;
 		this.likes = likes;
 	}
 
@@ -47,7 +73,6 @@ public class TUser implements Serializable {
 		this.rating = rating;
 		this.description = description;
 		this.host = host;
-		this.traveler = traveler;
 	}
 
 	public TUser(String nickname, double rating, boolean traveler, String description) {
@@ -164,5 +189,21 @@ public class TUser implements Serializable {
 
 	public void setLikes(ArrayList<Integer> likes) {
 		this.likes = likes;
+	}
+
+	public ArrayList<Integer> getRates() {
+		return rates;
+	}
+
+	public void setRates(ArrayList<Integer> rates) {
+		this.rates = rates;
+	}
+	
+	public ArrayList<Integer> getMatches() {
+		return matches;
+	}
+
+	public void setMatches(ArrayList<Integer> matches) {
+		this.matches = matches;
 	}
 }
