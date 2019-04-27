@@ -36,7 +36,7 @@ public class ASMatchesImp implements ASMatches {
 						.setParameter(1, tMatches.getUserSender()).getSingleResult();
 				userReceiver = (UserHA)em.createNativeQuery(query, UserHA.class)
 						.setParameter(1, tMatches.getUserReceiver()).getSingleResult();
-				/*
+			
 				query = "SELECT * FROM LIKES WHERE USERRECEIVER_NICKNAME = ?1";
 			
 				
@@ -52,7 +52,7 @@ public class ASMatchesImp implements ASMatches {
 				catch (NoResultException ex) {
 					System.out.println(ex.getMessage());
 				}
-				*/
+				
 				query = "SELECT * FROM MATCHES WHERE (USERSENDER_NICKNAME = ?1 AND USERRECEIVER_NICKNAME = ?2) OR (USERSENDER_NICKNAME = ?2 AND USERRECEIVER_NICKNAME = ?1)  ";
 				Matches match;
 				try {
@@ -79,15 +79,16 @@ public class ASMatchesImp implements ASMatches {
 					query = "DELETE FROM LIKES WHERE ID = ?1 ";
 					
 					try {
-
-						em.createNativeQuery(query, Matches.class).setParameter(1,like.getId());
+						userSender.getLikes().remove(new Likes(userReceiver, userSender));
+						em.persist(userSender);
+						em.remove(like);
+						em.persist(like);
+						em.createNativeQuery(query, Likes.class).setParameter(1,like.getId());
 					
 					}catch(Exception e3) {
 						System.out.println(e3.getMessage());
 					}
-					//userSender.getLikes().remove(new Likes(userSender, userReceiver));
-					em.persist(like);
-					em.persist(userSender);
+				
 					em.persist(userReceiver);
 					result = true;
 					

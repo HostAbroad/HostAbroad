@@ -101,7 +101,10 @@ public class Card extends Panel{
 		area.setReadOnly(true);
 		area.setWordWrap(true);
 		// Put the content in it
-		area.setValue(tUser.getDescription());
+		if(tUser.getDescription() != null)
+			area.setValue(tUser.getDescription());
+		else
+			area.setValue("");
 		
 		like = new Button();
 		like.setStyleName("card-like-button");

@@ -317,7 +317,10 @@ public class MyProfileUI extends UI {
 
 		TextArea description = new TextArea("Description");
 		description.setWordWrap(true);
-		description.setValue(user.getDescription());
+		if(user.getDescription() != null)
+			description.setValue(user.getDescription());
+		else
+			description.setValue("");
 		description.setStyleName("v-textarea v-widget v-textarea-prompt");
 		description.setId("ProfileDescription");
 
@@ -478,7 +481,7 @@ public class MyProfileUI extends UI {
 
 		Pair<Integer, Object> result = Controller.getInstance().action(Commands.CommandMyMatches, myUser);
 
-		if (result.getLeft() == 1) {
+		if (result.getLeft() == 1 && !((ArrayList<TUser>)result.getRight()).isEmpty()){
 
 			VerticalLayout resultsMatches = createResultPanelMatches((ArrayList<TUser>) result.getRight());
 			resultsMatches.setId("resultsMatches");
