@@ -42,37 +42,38 @@ public class UserHA {
     
     public UserHA(String nickname, String fullName, String email, int password, 
 			double rating, String description, boolean host, boolean traveler, 
-			Host hostEntity, Traveler travelerEntity, Collection<Likes> likes, Collection<Matches> matches) {
-    this.nickname = nickname;
-    this.fullName = fullName;
-    this.rating = rating;
-    this.description = description;
-    this.host = host;
-    this.traveler = traveler;
-    this.email = email;
-    this.password = password;
-    this.hostEntity = hostEntity;
-    this.travelerEntity = travelerEntity;
-    this.likes = likes;
-    this.matches = matches;
+			Host hostEntity, Traveler travelerEntity, Collection<Likes> likes, Collection<Matches> matches, Collection<Rating> rates) {
+	    this.nickname = nickname;
+	    this.fullName = fullName;
+	    this.rating = rating;
+	    this.description = description;
+	    this.host = host;
+	    this.traveler = traveler;
+	    this.email = email;
+	    this.password = password;
+	    this.hostEntity = hostEntity;
+	    this.travelerEntity = travelerEntity;
+	    this.likes = likes;
+	    this.matches = matches;
+	    this.rates = rates;
     }
     
 
     public UserHA(String nickname, String fullName, String email, int password, 
 			double rating, String description, boolean host, boolean traveler, 
 			Host hostEntity, Traveler travelerEntity, Collection<Likes> likes, Collection<Rating> rates) {
-    this.nickname = nickname;
-    this.fullName = fullName;
-    this.rating = rating;
-    this.description = description;
-    this.host = host;
-    this.traveler = traveler;
-    this.email = email;
-    this.password = password;
-    this.hostEntity = hostEntity;
-    this.travelerEntity = travelerEntity;
-    this.likes = likes;
-    this.rates = rates;
+	    this.nickname = nickname;
+	    this.fullName = fullName;
+	    this.rating = rating;
+	    this.description = description;
+	    this.host = host;
+	    this.traveler = traveler;
+	    this.email = email;
+	    this.password = password;
+	    this.hostEntity = hostEntity;
+	    this.travelerEntity = travelerEntity;
+	    this.likes = likes;
+	    this.rates = rates;
     }
     
     public UserHA(String nickname, String fullName, String email, int password, 
@@ -298,7 +299,7 @@ public class UserHA {
     
     public void updateRating() {
     	this.setRating(this.calculateRating());
-
+    }
       
     public void setMatches(Collection<Matches> matches) {
     	this.matches = matches;
