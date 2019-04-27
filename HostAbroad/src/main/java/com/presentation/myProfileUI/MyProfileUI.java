@@ -1,11 +1,14 @@
 package com.presentation.myProfileUI;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import org.vaadin.easyuploads.UploadField;
 
 import com.business.enums.CountriesEnum;
 import com.business.enums.DurationOfStayEnum;
+import com.business.enums.InterestsEnum;
 import com.business.enums.InterestsTokens;
 import com.business.transfers.THost;
 import com.business.transfers.TTraveler;
@@ -113,7 +116,7 @@ public class MyProfileUI extends UI {
 		interests.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-i");
 		interests.setWidth("100%");
 		interests.setHeight(80, Unit.PIXELS);
-		
+
 		menu.addComponent(interests);
 
 		Button comments = new Button("Comments", VaadinIcons.CHAT);
@@ -171,11 +174,11 @@ public class MyProfileUI extends UI {
 		interests.getTokensOfInputField().clear();
 		InterestsTokens interest = new InterestsTokens();
 		interests.addTokensToInputField(interest.getTokens());
-		
+
 		Pair<Integer, Object> resultRead = Controller.getInstance().action(Commands.CommandReadHostInformation, user);
 
 		if (resultRead.getLeft() == 1) {
-			
+
 			for (int i = 0; i < ((THost) resultRead.getRight()).getListOfInterests().size(); i++)
 				interests.addToken(new Token(((THost) resultRead.getRight()).getListOfInterests().get(i).name()));
 
@@ -187,24 +190,29 @@ public class MyProfileUI extends UI {
 		saveButton.setId("saveButton");
 		saveButton.addClickListener(event -> {
 
-			/*
-			 * InterestsEnum arrayInterests[] = null; ArrayList<InterestsEnum>
-			 * arrayListInterests = new ArrayList<InterestsEnum>(); Set<InterestsEnum>
-			 * setInterests = interests.getSelectedItems();
-			 * arrayListInterests.addAll(setInterests);
-			 * tHost.setNickname(user.getNickname());
-			 * tHost.setListOfInterests(arrayListInterests); Pair<Integer, Object> result =
-			 * Controller.getInstance().action(Commands.CommandEditHost, tHost);
-			 * 
-			 * if(result.getLeft() == 1) { Notification not = new Notification("Saved",
-			 * Notification.Type.HUMANIZED_MESSAGE); not.setDelayMsec(3000);
-			 * not.show(Page.getCurrent()); }
-			 * 
-			 * else { Notification.show("Error, We couldnt save your interests",
-			 * Notification.Type.ERROR_MESSAGE);
-			 * 
-			 * }
-			 */
+			//interests.getTokens().forEach(e -> debugLayout.addComponent(new Label(e.toString())));
+			InterestsEnum arrayInterests[] = null;
+			ArrayList<InterestsEnum> arrayListInterests = new ArrayList<InterestsEnum>();
+			List<Token> setInterests = interests.getTokens();
+			for(Token t : setInterests) {
+				
+			}
+			arrayListInterests.addAll(setInterests);
+			tHost.setNickname(user.getNickname());
+			tHost.setListOfInterests(arrayListInterests);
+			Pair<Integer, Object> result = Controller.getInstance().action(Commands.CommandEditHost, tHost);
+
+			if (result.getLeft() == 1) {
+				Notification not = new Notification("Saved", Notification.Type.HUMANIZED_MESSAGE);
+				not.setDelayMsec(3000);
+				not.show(Page.getCurrent());
+			}
+
+			else {
+				Notification.show("Error, We couldnt save your interests", Notification.Type.ERROR_MESSAGE);
+
+			}
+
 		});
 
 		mainLayout.addComponents(interests, saveButton);
