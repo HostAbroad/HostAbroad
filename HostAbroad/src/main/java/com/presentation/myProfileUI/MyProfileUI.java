@@ -8,6 +8,7 @@ import org.vaadin.easyuploads.UploadField;
 
 import com.business.enums.CountriesEnum;
 import com.business.enums.CountriesTokens;
+import com.business.enums.DurationOfStayEnum;
 import com.business.enums.InterestsEnum;
 import com.business.enums.KnowledgesEnum;
 import com.business.enums.KnowledgesTokens;
@@ -54,6 +55,9 @@ import com.vaadin.ui.VerticalLayout;
 @SuppressWarnings("deprecation")
 public class MyProfileUI extends UI {
 
+	
+	private String enumValue;
+	
 	// Hay que pasarle un transfer usuario desde el LoginUI, y de ahi sacar todos
 	// los campos
 	@Override
@@ -321,49 +325,60 @@ public class MyProfileUI extends UI {
 		days.addValueChangeListener(event -> {
 			if (days.getValue() == 0.0) {
 				dias.setValue("0 days");
+				enumValue = "ZeroToSixDays";
 			} else if (days.getValue() == 1.0) {
 				dias.setValue("Six days");
+				enumValue = "ZeroToSixDays";
 			} else if (days.getValue() == 2.0) {
 				dias.setValue("Two weeks");
+				enumValue = "OneToTwoWeeks";
 			} else if (days.getValue() == 3.0) {
 				dias.setValue("One month");
+				enumValue = "TwoWeeksToAMonth";
 			} else {
 				dias.setValue("More than a month");
+				enumValue = "MoreThanMonth";
 			}
 		});
 		info.addComponent(stay, 2, 0);
 
 		mainGrid.addComponent(info, 0, 0);
 
+
+		TTraveler tTraveler = new TTraveler();
+		
 		Button saveButton = new Button("Save");
 		saveButton.setId("saveButton");
 		saveButton.addClickListener(event -> {
-
 			/*
-			 * ArrayList<KnowledgesEnum> arrayListKnowledges = new
-			 * ArrayList<KnowledgesEnum>(); Set<KnowledgesEnum> setKnowledges =
-			 * knowledges.getSelectedItems(); arrayListKnowledges.addAll(setKnowledges);
-			 * 
-			 * ArrayList<CountriesEnum> arrayListCountries = new ArrayList<CountriesEnum>();
-			 * Set<CountriesEnum> setCountries = countries.getSelectedItems();
-			 * arrayListCountries.addAll(setCountries);
-			 * 
-			 * tTraveler.setNickname(user.getNickname());
-			 * tTraveler.setListOfKnowledges(arrayListKnowledges);
-			 * tTraveler.setDurationOfStay(days.getValue());
-			 * tTraveler.setListOfCountries(arrayListCountries); Pair<Integer, Object>
-			 * resultEdit = Controller.getInstance().action(Commands.CommandEditTraveler,
-			 * tTraveler);
-			 * 
-			 * if(resultEdit.getLeft() == 1) { Notification not = new Notification("Saved",
-			 * Notification.Type.HUMANIZED_MESSAGE); not.setDelayMsec(3000);
-			 * not.show(Page.getCurrent()); }
-			 * 
-			 * else { Notification.show("Error, We couldnt save your properties",
-			 * Notification.Type.ERROR_MESSAGE);
-			 * 
-			 * }
+			 * The problem is that you can get a List of Tokens or a List of Strings, but not
+			 * a List of KnowledgesEnum or CountriesEnum
 			 */
+			/*ArrayList<KnowledgesEnum> arrayListKnowledges = new ArrayList<KnowledgesEnum>();
+			Set<KnowledgesEnum> setKnowledges = knowledges.getSelectedItems();
+			arrayListKnowledges.addAll(setKnowledges);
+
+			ArrayList<CountriesEnum> arrayListCountries = new ArrayList<CountriesEnum>();
+			Set<CountriesEnum> setCountries = countries.getSelectedItems();
+			arrayListCountries.addAll(setCountries);
+*/
+			tTraveler.setNickname(user.getNickname());
+			//tTraveler.setListOfKnowledges(arrayListKnowledges);
+			tTraveler.setDurationOfStay(DurationOfStayEnum.valueOf(enumValue));
+			//tTraveler.setListOfCountries(arrayListCountries);
+			Pair<Integer, Object> resultEdit = Controller.getInstance().action(Commands.CommandEditTraveler, tTraveler);
+
+			if (resultEdit.getLeft() == 1) {
+				Notification not = new Notification("Saved", Notification.Type.HUMANIZED_MESSAGE);
+				not.setDelayMsec(3000);
+				not.show(Page.getCurrent());
+			}
+
+			else {
+				Notification.show("Error, We couldnt save your properties", Notification.Type.ERROR_MESSAGE);
+
+			}
+
 		});
 		info.addComponent(saveButton, 1, 1);
 
@@ -373,7 +388,7 @@ public class MyProfileUI extends UI {
 		if (resultRead.getLeft() == 1) {
 
 			for (int i = 0; i < ((TTraveler) resultRead.getRight()).getListOfKnowledges().size(); i++)
-				knowledges.addToken( new Token(((TTraveler) resultRead.getRight()).getListOfKnowledges().get(i).name()));
+				knowledges.addToken(new Token(((TTraveler) resultRead.getRight()).getListOfKnowledges().get(i).name()));
 
 			for (int i = 0; i < ((TTraveler) resultRead.getRight()).getListOfCountries().size(); i++)
 				countries.addToken(new Token(((TTraveler) resultRead.getRight()).getListOfCountries().get(i).name()));
@@ -383,8 +398,7 @@ public class MyProfileUI extends UI {
 
 		}
 
-		TTraveler tTraveler = new TTraveler();
-		
+
 		return mainGrid;
 	}
 
