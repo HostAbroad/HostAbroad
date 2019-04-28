@@ -1,9 +1,7 @@
 package com.presentation.myProfileUI;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 import org.vaadin.easyuploads.UploadField;
 
@@ -18,6 +16,9 @@ import com.business.transfers.TTraveler;
 import com.business.transfers.TUser;
 import com.fo0.advancedtokenfield.main.AdvancedTokenField;
 import com.fo0.advancedtokenfield.model.Token;
+import com.jarektoro.responsivelayout.ResponsiveColumn;
+import com.jarektoro.responsivelayout.ResponsiveLayout;
+import com.jarektoro.responsivelayout.ResponsiveRow;
 import com.presentation.card.Card;
 import com.presentation.commands.CommandEnum.Commands;
 import com.presentation.commands.Pair;
@@ -34,6 +35,7 @@ import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.Page.Styles;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.slider.SliderOrientation;
 import com.vaadin.ui.Alignment;
@@ -68,7 +70,55 @@ public class MyProfileUI extends UI {
 		likes.add(2);
 
 		TUser myUser1 = new TUser("Prueba", "PruebaFull", "ivan@ucm.es", "1234", 5, "Im prueba", false, true, likes);
-		VerticalLayout superLayout = new VerticalLayout();
+		
+		setSizeFull(); // set the size of the UI to fill the screen
+
+
+        ResponsiveLayout responsiveLayout = new ResponsiveLayout();
+        responsiveLayout.setSizeFull();
+        responsiveLayout.setScrollable(true);
+        setContent(responsiveLayout);
+        
+        ResponsiveLayout header = new ResponsiveLayout();
+        header.addComponent(new Header());
+        responsiveLayout.addComponent(header);
+		
+		ResponsiveLayout profile = new ResponsiveLayout();
+		ResponsiveRow r = profile.addRow();
+		ResponsiveColumn a = new ResponsiveColumn(12,12,8,8);
+		a.setWidth("100%");
+		ResponsiveColumn b = new ResponsiveColumn(12,12,4,4);
+			a.setComponent(new Label("Holi"));
+			b.setComponent(new Label("Holi2"));
+			ResponsiveLayout c = new ResponsiveLayout();
+			for(int i = 0; i < 50; i++) {
+				ResponsiveRow d = new ResponsiveRow();
+				Button x = new Button("HOLAA");
+				x.setHeight("80px");
+				x.setWidthUndefined();
+				Button x1 = new Button("ADIOS");
+				x1.setHeight("40px");
+				x1.setWidth("100%");
+				final Styles styles = Page.getCurrent().getStyles();
+				String css = "#botoncillo {\n" 
+													+ "    background: red;"  
+													+ "}";
+				styles.add(css);
+				x1.setId("botoncillo");
+				d.addColumn().withComponent(x);
+				c.addComponent(d);
+			}
+			r.addColumn(a);
+			a.setComponent(c);
+			r.addColumn(b);
+		responsiveLayout.addComponent(profile);
+		
+		ResponsiveLayout footer = new ResponsiveLayout();
+		footer.addComponent(new Footer());
+		responsiveLayout.addComponent(footer);
+		
+		
+		/*VerticalLayout superLayout = new VerticalLayout();
 		superLayout.setStyleName("v-scrollable");
 		superLayout.setSpacing(false);
 		superLayout.setMargin(false);
@@ -155,7 +205,7 @@ public class MyProfileUI extends UI {
 		superLayout.addComponentsAndExpand(grid);
 		superLayout.addComponent(new Footer());
 		personalInfo.click();
-		this.setContent(superLayout);
+		//this.setContent(superLayout);*/
 	}
 
 	public GridLayout personalInfoForm(TUser user) {
@@ -270,8 +320,12 @@ public class MyProfileUI extends UI {
 		return mainGrid;
 	}
 
+	public ResponsiveLayout tInfoR(TUser user) {
+		ResponsiveLayout infoTravelerResponsive = new ResponsiveLayout();
+		return infoTravelerResponsive;
+	}
+	
 	public GridLayout travelerInfo(TUser user) {
-
 		GridLayout mainGrid = new GridLayout(1, 1);
 		mainGrid.setSpacing(true);
 		mainGrid.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
