@@ -27,7 +27,8 @@ public class UserHA {
     private double rating;
     private String description;
     private String photo;
-    private String gender; //
+    private String gender; 
+    private String birthday;
     private boolean host;
     private boolean traveler;
     @OneToOne (mappedBy = "user")
@@ -50,7 +51,7 @@ public class UserHA {
     //full constructor
     
     public UserHA(String nickname, String fullName, String email, int password, 
-			double rating, String description, String photo, String gender, boolean host,
+			double rating, String description, String photo, String gender, String birthday, boolean host,
 			boolean traveler, Host hostEntity, Traveler travelerEntity, 
 			Collection<Likes> likes, Collection<Matches> matches,Collection<Rating> rate,
 			List<Language> languages, List<Interest> interests) {
@@ -64,6 +65,7 @@ public class UserHA {
     this.traveler = traveler;
     this.email = email;
     this.password = password;
+    this.birthday = birthday;
     this.hostEntity = hostEntity;
     this.travelerEntity = travelerEntity;
     this.likes = likes;
@@ -377,6 +379,14 @@ public class UserHA {
 	
 	public void setInterests(List<Interest> interests) {
 		this.interests = interests;
+	}
+
+	public String getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
 	}
 }
 

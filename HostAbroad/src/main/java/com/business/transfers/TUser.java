@@ -15,6 +15,7 @@ public class TUser{
 	private String photo;
 	private String gender;
 	private double rating;
+	private String birthday;
 	private boolean host;
 	private boolean traveler;
 	private ArrayList<Integer> likes;
@@ -29,7 +30,7 @@ public class TUser{
 	
 	//Full constructor
 	public TUser(String nickname, String fullName, String password, String email,
-			String description, String photo, String gender, double rating, boolean host,
+			String description, String photo, String gender, String birthday, double rating, boolean host,
 			boolean traveler,ArrayList<Integer> likes, ArrayList<Integer> rates,
 			TreeSet<LanguagesEnum> languages, TreeSet<InterestsEnum> interests, ArrayList<Integer> matches){
 
@@ -41,6 +42,7 @@ public class TUser{
 		this.photo = photo;
 		this.gender = gender;
 		this.rating = rating;
+		this.birthday = birthday;
 		this.host = host;
 		this.traveler = traveler;
 		this.likes = likes;
@@ -51,7 +53,7 @@ public class TUser{
 	}
 	
 	public TUser(String nickname, String fullName, String password, String email,
-			String description, String photo, String gender, double rating, boolean host,
+			String description, String photo, String gender, String birthday, double rating, boolean host,
 			boolean traveler,ArrayList<Integer> likes, ArrayList<Integer> rates,
 			TreeSet<LanguagesEnum> languages, ArrayList<Integer> matches){
 
@@ -62,6 +64,7 @@ public class TUser{
 		this.description = description;
 		this.photo = photo;
 		this.gender = gender;
+		this.birthday = birthday;
 		this.rating = rating;
 		this.host = host;
 		this.traveler = traveler;
@@ -289,5 +292,13 @@ public class TUser{
 	
 	public void setInterests(TreeSet<InterestsEnum> interests) {
 		this.interests = interests;
+	}
+	
+	public String getBirthday() {
+		return this.birthday;
+	}
+	
+	public void setBrthday(String birthday) {
+		this.birthday = birthday;
 	}
 }
