@@ -1,6 +1,7 @@
 package com.business.transfers;
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 import com.business.enums.LanguagesEnum;
 
@@ -17,7 +18,7 @@ public class TUser{
 	private boolean traveler;
 	private ArrayList<Integer> likes;
 	private ArrayList<Integer> rates;
-	private ArrayList<LanguagesEnum> languages;
+	private TreeSet<LanguagesEnum> languages;
 
 	private ArrayList<Integer> matches;
 
@@ -28,7 +29,7 @@ public class TUser{
 	public TUser(String nickname, String fullName, String password, String email,
 			String description, String photo, String gender, double rating, boolean host,
 			boolean traveler,ArrayList<Integer> likes, ArrayList<Integer> rates,
-			ArrayList<LanguagesEnum> languages, ArrayList<Integer> matches){
+			TreeSet<LanguagesEnum> languages, ArrayList<Integer> matches){
 
 		this.nickname = nickname;
 		this.fullName = fullName;
@@ -243,5 +244,13 @@ public class TUser{
 	
 	public void setGender(String gender) {
 		this.gender = gender;
+	}
+	
+	public TreeSet<LanguagesEnum> getLanguages(){
+		return this.languages;
+	}
+	
+	public void getLanguages(TreeSet<LanguagesEnum> languages){
+		this.languages = languages;
 	}
 }

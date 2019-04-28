@@ -1,12 +1,17 @@
 package com.business.businessObjects;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
+import com.business.enums.LanguagesEnum;
 import com.business.transfers.TUser;
 
 @Entity
@@ -37,7 +42,7 @@ public class UserHA {
     @OneToMany(mappedBy = "userSender")
 	private Collection<Matches> matches;
     @OneToMany(mappedBy = "user")
-   	private Collection<Language> languages; 
+   	private List<Language> languages; 
 
 
     public UserHA() {};
@@ -48,7 +53,7 @@ public class UserHA {
 			double rating, String description, String photo, String gender, boolean host,
 			boolean traveler, Host hostEntity, Traveler travelerEntity, 
 			Collection<Likes> likes, Collection<Matches> matches,Collection<Rating> rate,
-			Collection<Language> languages) {
+			List<Language> languages) {
     this.nickname = nickname;
     this.fullName = fullName;
     this.rating = rating;
@@ -355,6 +360,14 @@ public class UserHA {
 	
 	public void setGender(String gender) {
 		this.gender = gender;
+	}
+	
+	public List<Language> getLanguages(){
+		return this.languages;
+	}
+	
+	public void getLanguages(ArrayList<Language> languages){
+		this.languages = languages;
 	}
 }
 
