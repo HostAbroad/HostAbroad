@@ -35,7 +35,7 @@ public class HomePage extends UI {
 		setContent(mainResponsive);
 		
 		ResponsiveRow headerRow = mainResponsive.addRow();
-		//headerRow.setHeight("100%");
+		headerRow.setHeight("100%");
 		
 		ResponsiveRow mainRow = mainResponsive.addRow();
 		
