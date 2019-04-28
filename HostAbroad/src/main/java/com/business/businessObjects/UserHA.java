@@ -1,15 +1,12 @@
 package com.business.businessObjects;
 
-import java.util.ArrayList;
 import java.util.Collection;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
 import com.business.transfers.TUser;
 
 @Entity
@@ -25,6 +22,8 @@ public class UserHA {
     private int password;
     private double rating;
     private String description;
+    private String photo;
+    private String gender; //
     private boolean host;
     private boolean traveler;
     @OneToOne (mappedBy = "user")
@@ -37,11 +36,36 @@ public class UserHA {
 	private Collection<Rating> rates;
     @OneToMany(mappedBy = "userSender")
 	private Collection<Matches> matches;
+    @OneToMany(mappedBy = "user")
+   	private Collection<Language> languages; 
 
 
     public UserHA() {};
     
     //full constructor
+    
+    public UserHA(String nickname, String fullName, String email, int password, 
+			double rating, String description, String photo, String gender, boolean host,
+			boolean traveler, Host hostEntity, Traveler travelerEntity, 
+			Collection<Likes> likes, Collection<Matches> matches,Collection<Rating> rate,
+			Collection<Language> languages) {
+    this.nickname = nickname;
+    this.fullName = fullName;
+    this.rating = rating;
+    this.description = description;
+    this.gender = gender;
+    this.photo = photo;
+    this.host = host;
+    this.traveler = traveler;
+    this.email = email;
+    this.password = password;
+    this.hostEntity = hostEntity;
+    this.travelerEntity = travelerEntity;
+    this.likes = likes;
+    this.matches = matches;
+    this.rates = rate;
+    this.languages = languages;
+    }
     
     public UserHA(String nickname, String fullName, String email, int password, 
 			double rating, String description, boolean host, boolean traveler, 
@@ -316,5 +340,21 @@ public class UserHA {
     	return new TUser(this.nickname, this.fullName, this.email, 
     			((Integer)this.password).toString(), this.rating, this.description, this.host, this.traveler);
     }
+
+	public String getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
+	
+	public String getGender() {
+		return this.gender;
+	}
+	
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
 }
 
