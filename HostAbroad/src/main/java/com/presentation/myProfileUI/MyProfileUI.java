@@ -1,18 +1,6 @@
 package com.presentation.myProfileUI;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-
-import org.vaadin.easyuploads.UploadField;
-
-import com.business.enums.CountriesEnum;
-import com.business.enums.CountriesTokens;
-import com.business.enums.DurationOfStayEnum;
-import com.business.enums.InterestsEnum;
-import com.business.enums.KnowledgesEnum;
-import com.business.enums.KnowledgesTokens;
+import com.business.enums.*;
 import com.business.transfers.THost;
 import com.business.transfers.TTraveler;
 import com.business.transfers.TUser;
@@ -36,21 +24,12 @@ import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.slider.SliderOrientation;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.CheckBoxGroup;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Image;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.Slider;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
+import org.vaadin.easyuploads.UploadField;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Theme("mytheme")
 @SuppressWarnings("deprecation")
@@ -171,7 +150,7 @@ public class MyProfileUI extends UI {
 		image.setSpacing(true);
 		image.setMargin(true);
 		image.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
-		GridLayout fields = new GridLayout(3, 5);
+		GridLayout fields = new GridLayout(4, 5);
 		fields.setSpacing(true);
 		fields.setMargin(true);
 		fields.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
@@ -228,27 +207,26 @@ public class MyProfileUI extends UI {
 		genderCB.setItems("Male", "Female", "Other");
 		genderCB.setId("ProfileGender");
 
-		ComboBox<String> languageCB = new ComboBox<>("Language");
-		languageCB.setItems("Spanish", "Saharawi");
-		languageCB.setId("ProfileLanguages");
+		// Create a DateField with the default style
+		DateField date = new DateField("Birthday");
+		date.setRangeStart(LocalDate.now().minusYears(100)); //Cant put a strange date.
+		LocalDate valid = LocalDate.now().minusYears(16);
 
-		Button save = new Button("Save");
-		save.setIcon(FontAwesome.SAVE);
-		save.addClickListener(event -> {
-			if (binder.isValid()) {
-				Notification notif = new Notification("Changes saved!");
-				notif.setDelayMsec(3000);
-				notif.setPosition(Position.MIDDLE_CENTER);
-				notif.show(Page.getCurrent());
-				// Hay que llamar al comando
-			} else {
-				Notification notif = new Notification("Please fill all of the fields correctly. Then click save.");
-				notif.setDelayMsec(5000);
-				notif.setPosition(Position.MIDDLE_CENTER);
-				notif.show(Page.getCurrent());
-			}
-		});
-		save.setId("ProfileSave");
+		AdvancedTokenField lenguages = new AdvancedTokenField();
+		lenguages.setCaption("Lenguages:");
+		lenguages.setIcon(FontAwesome.BOOK);
+		lenguages.setWidth("100%");
+		lenguages.setAllowNewTokens(false);
+		lenguages.clearTokens();
+		lenguages.getTokensOfInputField().clear();
+		LanguagesTokens tokens = new LanguagesTokens();
+		lenguages.addTokensToInputField(tokens.getTokens());
+		lenguages.setVisible(true);
+
+
+		ComboBox<CountriesEnum> country = new ComboBox<>("Country");
+		country.setItems(CountriesEnum.values());
+		country.setId("countryComboBox");
 
 		TextArea description = new TextArea("Description");
 		description.setWordWrap(true);
@@ -256,11 +234,45 @@ public class MyProfileUI extends UI {
 		description.setStyleName("v-textarea v-widget v-textarea-prompt");
 		description.setId("ProfileDescription");
 
+		Button save = new Button("Save");
+		save.setStyleName("v-button-register");
+		save.setIcon(FontAwesome.SAVE);
+		save.addClickListener(event -> {
+			/*
+			Sacar del Lenguages el valor
+			ArrayList<LanguagesEnum> arrayListLanguages = new ArrayList<LanguagesEnum>();
+			List<LanguagesEnum> setLanguages = new ArrayList<>();
+			lenguages.getTokens().forEach(e -> setLanguages.add(LanguagesEnum.valueOf(e.getValue())));
+			arrayListLanguages.addAll(setLanguages);
+			 */
+			if (binder.isValid() && (date.getValue().getYear() <= valid.getYear())) {
+				TUser newUser = new TUser(user.getNickname(),fullName.getValue(),user.getPassword(), email.getValue(), description.getValue(), user.getPhoto(), genderCB.getValue(), date.getValue().toString(), user.getRating(), user.getHost(), user.getTraveler(), user.getLikes(), user.getRates(),null , user.getInterests(), user.getMatches());
+				Pair<Integer, Object> result = Controller.getInstance().action(Commands.CommandModifyBasicInformation, newUser);
+				if ((boolean) result.getRight()) {
+					Notification notif = new Notification("Changes saved!");
+					notif.setDelayMsec(3000);
+					notif.setPosition(Position.MIDDLE_CENTER);
+					notif.show(Page.getCurrent());
+				}
+			} else {
+				Notification notif = new Notification("Please fill all of the fields correctly and and enter a valid date (min 16 years). Then click save.");
+				notif.setDelayMsec(5000);
+				notif.setPosition(Position.MIDDLE_CENTER);
+				notif.show(Page.getCurrent());
+			}
+		});
+		save.setId("ProfileSave");
+
+
+
+
 		fields.addComponent(fullName, 0, 0);
 		fields.addComponent(username, 1, 0);
 		fields.addComponent(email, 0, 1);
-		fields.addComponent(genderCB, 1, 1);
-		fields.addComponent(languageCB, 0, 2);
+		fields.addComponent(genderCB, 1, 2);
+		fields.addComponent(country,0,2);
+		fields.addComponent(date,1,1);
+		fields.addComponent(lenguages,3,0);
 		fields.addComponent(description, 0, 3, 2, 4);
 
 		sections.addComponent(fields, 1, 0);
@@ -359,15 +371,15 @@ public class MyProfileUI extends UI {
 			ArrayList<KnowledgesEnum> arrayListKnowledges = new ArrayList<KnowledgesEnum>();
 			List<KnowledgesEnum> setKnowledges = new ArrayList<>();
 			knowledges.getTokens().forEach(e -> setKnowledges.add(KnowledgesEnum.valueOf(e.getValue()))
-					);
+			);
 			arrayListKnowledges.addAll(setKnowledges);
 
 			ArrayList<CountriesEnum> arrayListCountries = new ArrayList<CountriesEnum>();
 			List<CountriesEnum> setCountries = new ArrayList<>();
 			countries.getTokens().forEach(e -> setCountries.add(CountriesEnum.valueOf(e.getValue()))
-					);
+			);
 			arrayListCountries.addAll(setCountries);
-			
+
 			tTraveler.setNickname(user.getNickname());
 			// tTraveler.setListOfKnowledges(arrayListKnowledges);
 			tTraveler.setDurationOfStay(DurationOfStayEnum.valueOf(enumValue));
@@ -446,14 +458,14 @@ public class MyProfileUI extends UI {
 			 * tHost.setNickname(user.getNickname());
 			 * tHost.setListOfInterests(arrayListInterests); Pair<Integer, Object> result =
 			 * Controller.getInstance().action(Commands.CommandEditHost, tHost);
-			 * 
+			 *
 			 * if(result.getLeft() == 1) { Notification not = new Notification("Saved",
 			 * Notification.Type.HUMANIZED_MESSAGE); not.setDelayMsec(3000);
 			 * not.show(Page.getCurrent()); }
-			 * 
+			 *
 			 * else { Notification.show("Error, We couldnt save your interests",
 			 * Notification.Type.ERROR_MESSAGE);
-			 * 
+			 *
 			 * }
 			 */
 		});
