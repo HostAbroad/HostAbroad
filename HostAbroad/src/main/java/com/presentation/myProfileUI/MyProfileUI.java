@@ -3,6 +3,7 @@ package com.presentation.myProfileUI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.vaadin.easyuploads.UploadField;
 
@@ -55,9 +56,8 @@ import com.vaadin.ui.VerticalLayout;
 @SuppressWarnings("deprecation")
 public class MyProfileUI extends UI {
 
-	
 	private String enumValue;
-	
+
 	// Hay que pasarle un transfer usuario desde el LoginUI, y de ahi sacar todos
 	// los campos
 	@Override
@@ -297,6 +297,9 @@ public class MyProfileUI extends UI {
 		KnowledgesTokens tokens = new KnowledgesTokens();
 		knowledges.addTokensToInputField(tokens.getTokens());
 		info.addComponent(knowledges, 0, 0);
+		knowledges.addTokenAddListener(event -> {
+
+		});
 
 		AdvancedTokenField countries = new AdvancedTokenField();
 		countries.setCaption("Countries I want to visit");
@@ -344,28 +347,31 @@ public class MyProfileUI extends UI {
 
 		mainGrid.addComponent(info, 0, 0);
 
-
 		TTraveler tTraveler = new TTraveler();
-		
+
 		Button saveButton = new Button("Save");
 		saveButton.setId("saveButton");
 		saveButton.addClickListener(event -> {
 			/*
-			 * The problem is that you can get a List of Tokens or a List of Strings, but not
-			 * a List of KnowledgesEnum or CountriesEnum
+			 * The problem is that you can get a List of Tokens or a List of Strings, but
+			 * not a List of KnowledgesEnum or CountriesEnum
 			 */
-			/*ArrayList<KnowledgesEnum> arrayListKnowledges = new ArrayList<KnowledgesEnum>();
-			Set<KnowledgesEnum> setKnowledges = knowledges.getSelectedItems();
+			ArrayList<KnowledgesEnum> arrayListKnowledges = new ArrayList<KnowledgesEnum>();
+			List<KnowledgesEnum> setKnowledges = new ArrayList<>();
+			knowledges.getTokens().forEach(e -> setKnowledges.add(KnowledgesEnum.valueOf(e.getValue()))
+					);
 			arrayListKnowledges.addAll(setKnowledges);
 
 			ArrayList<CountriesEnum> arrayListCountries = new ArrayList<CountriesEnum>();
-			Set<CountriesEnum> setCountries = countries.getSelectedItems();
+			List<CountriesEnum> setCountries = new ArrayList<>();
+			countries.getTokens().forEach(e -> setCountries.add(CountriesEnum.valueOf(e.getValue()))
+					);
 			arrayListCountries.addAll(setCountries);
-*/
+			
 			tTraveler.setNickname(user.getNickname());
-			//tTraveler.setListOfKnowledges(arrayListKnowledges);
+			// tTraveler.setListOfKnowledges(arrayListKnowledges);
 			tTraveler.setDurationOfStay(DurationOfStayEnum.valueOf(enumValue));
-			//tTraveler.setListOfCountries(arrayListCountries);
+			// tTraveler.setListOfCountries(arrayListCountries);
 			Pair<Integer, Object> resultEdit = Controller.getInstance().action(Commands.CommandEditTraveler, tTraveler);
 
 			if (resultEdit.getLeft() == 1) {
@@ -397,7 +403,6 @@ public class MyProfileUI extends UI {
 				days.setValue(((TTraveler) resultRead.getRight()).getDurationOfStay().ordinal() + 0.0);
 
 		}
-
 
 		return mainGrid;
 	}

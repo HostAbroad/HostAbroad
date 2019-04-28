@@ -8,7 +8,7 @@ import com.fo0.advancedtokenfield.model.Token;
 public class KnowledgesTokens {
 
 	List<Token> tokens;
-	
+
 	public KnowledgesTokens() {
 		tokens = new ArrayList<>();
 		tokens.add(new Token("Programming"));
@@ -23,7 +23,7 @@ public class KnowledgesTokens {
 		tokens.add(new Token("Sports"));
 		tokens.add(new Token("Languages"));
 	}
-	
+
 	public List<Token> getTokens() {
 		return tokens;
 	}
