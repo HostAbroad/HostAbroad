@@ -11,7 +11,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import com.business.enums.LanguagesEnum;
 import com.business.transfers.TUser;
 
 @Entity
@@ -43,7 +42,8 @@ public class UserHA {
 	private Collection<Matches> matches;
     @OneToMany(mappedBy = "user")
    	private List<Language> languages; 
-
+    @OneToMany(mappedBy = "user")
+   	private List<Interest> interests;
 
     public UserHA() {};
     
@@ -53,7 +53,7 @@ public class UserHA {
 			double rating, String description, String photo, String gender, boolean host,
 			boolean traveler, Host hostEntity, Traveler travelerEntity, 
 			Collection<Likes> likes, Collection<Matches> matches,Collection<Rating> rate,
-			List<Language> languages) {
+			List<Language> languages, List<Interest> interests) {
     this.nickname = nickname;
     this.fullName = fullName;
     this.rating = rating;
@@ -70,6 +70,7 @@ public class UserHA {
     this.matches = matches;
     this.rates = rate;
     this.languages = languages;
+    this.interests = interests;
     }
     
     public UserHA(String nickname, String fullName, String email, int password, 
@@ -368,6 +369,14 @@ public class UserHA {
 	
 	public void getLanguages(ArrayList<Language> languages){
 		this.languages = languages;
+	}
+	
+	public List<Interest> getInterests(){
+		return this.interests;
+	}
+	
+	public void setInterests(List<Interest> interests) {
+		this.interests = interests;
 	}
 }
 

@@ -7,7 +7,7 @@ import javax.persistence.ManyToOne;
 
 @Entity
 @IdClass(LanguagesKey.class)
-public class Language implements Comparable{
+public class Language implements Comparable<Language>{
 
 	@Id
 	@ManyToOne
@@ -40,8 +40,8 @@ public class Language implements Comparable{
 	}
 
 	@Override
-	public int compareTo(Object lang) {
-		return this.language.compareTo(((Language)lang).getLanguage());
+	public int compareTo(Language lang) {
+		return this.language.compareTo(lang.getLanguage());
 	}
 	
 }

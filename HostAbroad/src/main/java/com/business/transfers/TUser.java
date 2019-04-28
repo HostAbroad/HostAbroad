@@ -3,6 +3,7 @@ package com.business.transfers;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
+import com.business.enums.InterestsEnum;
 import com.business.enums.LanguagesEnum;
 
 public class TUser{
@@ -19,6 +20,7 @@ public class TUser{
 	private ArrayList<Integer> likes;
 	private ArrayList<Integer> rates;
 	private TreeSet<LanguagesEnum> languages;
+	private TreeSet<InterestsEnum> interests;
 
 	private ArrayList<Integer> matches;
 
@@ -26,6 +28,28 @@ public class TUser{
 	};
 	
 	//Full constructor
+	public TUser(String nickname, String fullName, String password, String email,
+			String description, String photo, String gender, double rating, boolean host,
+			boolean traveler,ArrayList<Integer> likes, ArrayList<Integer> rates,
+			TreeSet<LanguagesEnum> languages, TreeSet<InterestsEnum> interests, ArrayList<Integer> matches){
+
+		this.nickname = nickname;
+		this.fullName = fullName;
+		this.password = password;
+		this.email = email;
+		this.description = description;
+		this.photo = photo;
+		this.gender = gender;
+		this.rating = rating;
+		this.host = host;
+		this.traveler = traveler;
+		this.likes = likes;
+		this.rates = rates;
+		this.languages = languages;
+		this.interests = interests;
+		this.matches = matches;
+	}
+	
 	public TUser(String nickname, String fullName, String password, String email,
 			String description, String photo, String gender, double rating, boolean host,
 			boolean traveler,ArrayList<Integer> likes, ArrayList<Integer> rates,
@@ -141,6 +165,11 @@ public class TUser{
 		this.email = email;
 		this.password = password;
 	}
+	
+	public TUser(String nickname, TreeSet<InterestsEnum> interests) {
+		this.nickname = nickname;
+		this.interests = interests;
+	}
 
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
@@ -252,5 +281,13 @@ public class TUser{
 	
 	public void getLanguages(TreeSet<LanguagesEnum> languages){
 		this.languages = languages;
+	}
+	
+	public TreeSet<InterestsEnum> getInterests(){
+		return this.interests;
+	}
+	
+	public void setInterests(TreeSet<InterestsEnum> interests) {
+		this.interests = interests;
 	}
 }

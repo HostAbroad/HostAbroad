@@ -14,12 +14,14 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import com.business.businessObjects.Host;
+import com.business.businessObjects.Interest;
 import com.business.businessObjects.Language;
 import com.business.businessObjects.Likes;
 import com.business.businessObjects.Place;
 import com.business.businessObjects.Rating;
 import com.business.businessObjects.Traveler;
 import com.business.businessObjects.UserHA;
+import com.business.enums.InterestsEnum;
 import com.business.enums.LanguagesEnum;
 import com.business.transfers.THost;
 import com.business.transfers.TPlace;
@@ -501,6 +503,51 @@ public class ASUserImp implements ASUser {
 		emf.close();
 		
 		return nickname;
+	}
+
+	@Override
+	public void modifyInterests(TUser tUser) {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction tr = em.getTransaction();
+		tr.begin();
+		
+		UserHA user = em.find(UserHA.class, tUser.getNickname());
+		em.lock(user, LockModeType.OPTIMISTIC);
+		
+		List<Interest> oldInterests = user.getInterests();
+		ArrayList<InterestsEnum> newInterests = new ArrayList<InterestsEnum>(tUser.getInterests());
+		int i = 0;
+		int j = 0;
+		Collections.sort(oldInterests);
+		
+		while(i < oldInterests.size() && j < newInterests.size()) {
+			if(oldInterests.get(i).getInterest().equals(newInterests.get(j).getString())) {
+				i++;
+				j++;
+			}
+			else if(oldInterests.get(i).getInterest().compareTo(newInterests.get(j).getString()) < 0) {
+				em.remove(oldInterests.get(i));
+				i++;
+			}
+			else {
+				em.persist(new Interest(user, newInterests.get(j).getString()));
+				j++;
+			}
+		}
+		
+		while(i < oldInterests.size()) {
+			em.remove(oldInterests.get(i));
+			i++;
+		}
+		
+		while(j < newInterests.size()) {
+			em.persist(new Interest(user, newInterests.get(j).getString()));
+			j++;
+		}
+		tr.commit();
+		em.close();
+		emf.close();
 	}
 	
 }

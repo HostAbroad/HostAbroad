@@ -13,7 +13,7 @@ public enum InterestsEnum {
 	Music("Photography"),
 	Gastronomy("Gastronomy"),
 	Partying("Partying"),
-	Animals("Partying"),
+	Animals("Animals"),
 	Nature("Nature"),
 	Arts("Arts"),
 	Cars("Cars");
