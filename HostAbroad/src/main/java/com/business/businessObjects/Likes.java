@@ -21,15 +21,24 @@ public class Likes {
 	private UserHA userSender;
 	@ManyToOne
 	private UserHA userReceiver;
+	private boolean activo;
 	@Version
 	private Integer version;
 
 	public Likes() {}
-
-	public Likes(int id, UserHA userSender, UserHA userReceiver) {
+	
+	public Likes(int id, UserHA userSender, UserHA userReceiver, boolean activo) {
 		this.id = id;
 		this.userSender = userSender;
 		this.userReceiver = userReceiver;
+		this.activo = activo;
+	}
+
+	public Likes(UserHA userSender, UserHA userReceiver, boolean activo) {
+		
+		this.userSender = userSender;
+		this.userReceiver = userReceiver;
+		this.activo = activo;
 	}
 
 	public Likes(UserHA userSender, UserHA userReceiver) {
@@ -67,5 +76,13 @@ public class Likes {
 	
 	public Integer getVersion() {
 		return this.version;
+	}
+
+	public boolean getActivo() {
+		return activo;
+	}
+
+	public void setActivo(boolean activo) {
+		this.activo = activo;
 	}
 }

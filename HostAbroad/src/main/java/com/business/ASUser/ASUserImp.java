@@ -312,7 +312,7 @@ public class ASUserImp implements ASUser {
 			TUser tUserSender; //El que nos ha enviado el like
 			for(Integer id : tUser.getLikes()) {
 				
-				String consulta = "SELECT * FROM LIKES WHERE id = ?1";
+				String consulta = "SELECT * FROM LIKES WHERE id = ?1 AND ACTIVO = 1";
 				Query query = em.createNativeQuery(consulta, Likes.class);
 				query.setParameter(1, id);
 	

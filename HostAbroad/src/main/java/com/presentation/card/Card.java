@@ -13,6 +13,7 @@ import com.presentation.loginUI.AuthService;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.Page;
 import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Alignment;
@@ -132,7 +133,10 @@ public class Card extends Panel{
 			Pair<Integer,Object> result = Controller.getInstance().action(Commands.CommandAcceptLike, acceptLike);
 			if (result.getLeft() == 1) {
 
-				Notification.show("Like Accepted!", Notification.Type.HUMANIZED_MESSAGE);
+
+				Notification notA = new Notification("Like Accepted!","Click My Profile to update your changes!", Notification.Type.HUMANIZED_MESSAGE);
+				notA.setDelayMsec(5000);
+				notA.show(Page.getCurrent());
 
 			} else {
 
@@ -149,7 +153,9 @@ public class Card extends Panel{
 			Pair<Integer,Object> result = Controller.getInstance().action(Commands.CommandDeclineLike, declineLike);
 			if (result.getLeft() == 1) {
 
-				Notification.show("Like Declined!", Notification.Type.HUMANIZED_MESSAGE);
+				Notification notD = new Notification("Like Declined!","Click My Profile to update your changes!", Notification.Type.HUMANIZED_MESSAGE);
+				notD.setDelayMsec(5000);
+				notD.show(Page.getCurrent());
 
 			} else {
 

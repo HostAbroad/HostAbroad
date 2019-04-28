@@ -66,7 +66,7 @@ public class ASMatchesImp implements ASMatches {
 					userSender.getMatches().add(match); //Aqui se añade el match a la dos usuarios
 					userReceiver.getMatches().add(match);
 					
-					query= "SELECT * FROM LIKES WHERE USERSENDER_NICKNAME = ?1 AND USERRECEIVER_NICKNAME = ?2  ";
+					query= "SELECT * FROM LIKES WHERE USERSENDER_NICKNAME = ?1 AND USERRECEIVER_NICKNAME = ?2  AND ACTIVO = 1";
 					Likes like = null;
 					try {
 						
@@ -76,19 +76,10 @@ public class ASMatchesImp implements ASMatches {
 						System.out.println(e2.getMessage());
 					}
 					
-					query = "DELETE FROM LIKES WHERE ID = ?1 ";
-					
-					try {
-						userSender.getLikes().remove(new Likes(userReceiver, userSender));
-						em.persist(userSender);
-						em.remove(like);
-						em.persist(like);
-						em.createNativeQuery(query, Likes.class).setParameter(1,like.getId());
-					
-					}catch(Exception e3) {
-						System.out.println(e3.getMessage());
-					}
-				
+					userSender.getLikes().remove(new Likes(userReceiver, userSender));
+					em.persist(userSender);
+					like.setActivo(false);
+					em.persist(like);
 					em.persist(userReceiver);
 					result = true;
 					
@@ -125,9 +116,20 @@ public class ASMatchesImp implements ASMatches {
 				userReceiver = (UserHA)em.createNativeQuery(query, UserHA.class)
 						.setParameter(1, tMatches.getUserReceiver()).getSingleResult();
 				
-				userSender.getLikes().remove(new Likes(userReceiver, userSender)); //Aqui se borra el Like del usuario que lo recibio y que ahora ha aceptado
-																		//Están cambiados de orden porque en Likes se guarda en el primer
-																		//parámetro el que envía el like(que ahora es el UserTwo)
+				query= "SELECT * FROM LIKES WHERE USERSENDER_NICKNAME = ?1 AND USERRECEIVER_NICKNAME = ?2  AND ACTIVO = 1";
+				Likes like = null;
+				try {
+					
+					like = (Likes)em.createNativeQuery(query, Likes.class).setParameter(1, tMatches.getUserReceiver()).setParameter(2, tMatches.getUserSender()).getSingleResult();
+				
+				}catch(Exception e2) {
+					System.out.println(e2.getMessage());
+				}
+				
+				userSender.getLikes().remove(new Likes(userReceiver, userSender));
+				em.persist(userSender);
+				like.setActivo(false);
+				em.persist(like);
 					
 				em.persist(userSender);
 				result = true;
