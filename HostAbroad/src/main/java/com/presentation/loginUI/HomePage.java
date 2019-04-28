@@ -1,18 +1,18 @@
 package com.presentation.loginUI;
 
+import com.jarektoro.responsivelayout.ResponsiveLayout;
+import com.jarektoro.responsivelayout.ResponsiveRow;
 import com.presentation.headerAndFooter.Footer;
 import com.presentation.headerAndFooter.Header;
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FontAwesome;
-import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
@@ -29,6 +29,18 @@ public class HomePage extends UI {
 
 	@Override
 	protected void init(VaadinRequest request) {
+		setSizeFull();
+		ResponsiveLayout mainResponsive = new ResponsiveLayout();
+		mainResponsive.setSizeFull();
+		setContent(mainResponsive);
+		
+		ResponsiveRow headerRow = mainResponsive.addRow();
+		//headerRow.setHeight("100%");
+		
+		ResponsiveRow mainRow = mainResponsive.addRow();
+		
+		ResponsiveRow footerRow = mainResponsive.addRow();
+		
 		mainLayout = new VerticalLayout();
 		mainLayout.setStyleName("v-scrollable h-scrollable homePage-main-layout");
 		mainLayout.setMargin(false);
@@ -51,8 +63,8 @@ public class HomePage extends UI {
 		mainLayout.setComponentAlignment(bottom, Alignment.MIDDLE_CENTER);
 		mainLayout.addComponent(new Label("&nbsp;", ContentMode.HTML));
 		mainLayout.addComponent(new Footer());
-		this.setContent(mainLayout);
-		this.setWidthUndefined();
+		//this.setContent(mainLayout);
+		//this.setWidthUndefined();
 	}
 
 	private Component splitPanel() {
