@@ -15,12 +15,12 @@ public enum KnowledgesEnum {
 	Languages("Languages");
 	
 	private String name;
-	
+
 	private KnowledgesEnum(String name) {
-		this.name = name;
+	  this.name = name;
 	}
 	
 	public String getString() {
-		return this.name;
+	  return this.name;
 	}
 }
