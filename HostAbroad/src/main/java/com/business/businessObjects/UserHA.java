@@ -2,6 +2,7 @@ package com.business.businessObjects;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -25,6 +26,9 @@ public class UserHA {
     private int password;
     private double rating;
     private String description;
+    private String photo;
+    private String gender; 
+    private String birthday;
     private boolean host;
     private boolean traveler;
     @OneToOne (mappedBy = "user")
@@ -37,11 +41,39 @@ public class UserHA {
 	private Collection<Rating> rates;
     @OneToMany(mappedBy = "userSender")
 	private Collection<Matches> matches;
-
+    @OneToMany(mappedBy = "user")
+   	private List<Language> languages; 
+    @OneToMany(mappedBy = "user")
+   	private List<Interest> interests;
 
     public UserHA() {};
     
     //full constructor
+    
+    public UserHA(String nickname, String fullName, String email, int password, 
+			double rating, String description, String photo, String gender, String birthday, boolean host,
+			boolean traveler, Host hostEntity, Traveler travelerEntity, 
+			Collection<Likes> likes, Collection<Matches> matches,Collection<Rating> rate,
+			List<Language> languages, List<Interest> interests) {
+    this.nickname = nickname;
+    this.fullName = fullName;
+    this.rating = rating;
+    this.description = description;
+    this.gender = gender;
+    this.photo = photo;
+    this.host = host;
+    this.traveler = traveler;
+    this.email = email;
+    this.password = password;
+    this.birthday = birthday;
+    this.hostEntity = hostEntity;
+    this.travelerEntity = travelerEntity;
+    this.likes = likes;
+    this.matches = matches;
+    this.rates = rate;
+    this.languages = languages;
+    this.interests = interests;
+    }
     
     public UserHA(String nickname, String fullName, String email, int password, 
 			double rating, String description, boolean host, boolean traveler, 
@@ -327,5 +359,45 @@ public class UserHA {
     	return new TUser(this.nickname, this.fullName, this.email, 
     			((Integer)this.password).toString(), this.rating, this.description, this.host, this.traveler, myLikes, myRates, myMatches);
     }
+
+	public String getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
+	
+	public String getGender() {
+		return this.gender;
+	}
+	
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	
+	public List<Language> getLanguages(){
+		return this.languages;
+	}
+	
+	public void getLanguages(ArrayList<Language> languages){
+		this.languages = languages;
+	}
+	
+	public List<Interest> getInterests(){
+		return this.interests;
+	}
+	
+	public void setInterests(List<Interest> interests) {
+		this.interests = interests;
+	}
+
+	public String getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
 }
 

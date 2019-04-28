@@ -31,13 +31,10 @@ public class ASMatchesImp implements ASMatches {
 			UserHA userSender; //Usuario 1 es el que acepta el Like (que es el UserReceiver de Likes)
 			UserHA userReceiver; //Usuario 2 es el que envió el like
 			try {
-				String query = "SELECT * FROM USERHA WHERE NICKNAME = ?1";
-				userSender = (UserHA)em.createNativeQuery(query, UserHA.class)
-						.setParameter(1, tMatches.getUserSender()).getSingleResult();
-				userReceiver = (UserHA)em.createNativeQuery(query, UserHA.class)
-						.setParameter(1, tMatches.getUserReceiver()).getSingleResult();
+				userSender = em.find(UserHA.class, tMatches.getUserSender());
+				userReceiver = em.find(UserHA.class, tMatches.getUserReceiver());
 			
-				query = "SELECT * FROM LIKES WHERE USERRECEIVER_NICKNAME = ?1";
+				String query = "SELECT * FROM LIKES WHERE USERRECEIVER_NICKNAME = ?1";
 			
 				
 				try {

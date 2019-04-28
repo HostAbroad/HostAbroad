@@ -23,7 +23,9 @@ public interface ASUser {
 	public abstract THost readHostInformation(TUser user);
 	
 	public abstract TTraveler readTravelerInformation(TUser user);
-	
+  
+	public abstract boolean modifyInformation(TUser tUser);
+
 	public abstract TUser readUserNickName(TUser user);
 	
 	public abstract ArrayList<TUser> sendersLike(TUser tUser);
@@ -33,4 +35,6 @@ public interface ASUser {
 	public abstract ArrayList<TUser> readMyMatches(TUser transfer);
 
 	public TUser readUser(TUser user);
+	
+	public abstract void modifyInterests(TUser tUser);
 }
