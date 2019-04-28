@@ -1,6 +1,7 @@
 package com.business.ASUser;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -11,11 +12,13 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import com.business.businessObjects.Host;
+import com.business.businessObjects.Language;
 import com.business.businessObjects.Likes;
 import com.business.businessObjects.Place;
 import com.business.businessObjects.Rating;
 import com.business.businessObjects.Traveler;
 import com.business.businessObjects.UserHA;
+import com.business.enums.LanguagesEnum;
 import com.business.transfers.THost;
 import com.business.transfers.TPlace;
 import com.business.transfers.TRating;
@@ -343,7 +346,7 @@ public class ASUserImp implements ASUser {
 	/**
 	 * This method modifies the basic information of an user
 	 * */
-	public boolean modifyBasicInformation(TUser tUser) {
+	public boolean modifyInformation(TUser tUser) {
 		boolean isEditPossible = true;
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
 		EntityManager em = emf.createEntityManager();
@@ -356,7 +359,7 @@ public class ASUserImp implements ASUser {
 		String newEmail = tUser.getEmail();
 		
 		if(!newEmail.equals(user.getEmail())) {
-			String query = "SELECT * FROM USER WHERE email = ?1";
+			String query = "SELECT * FROM USER WHERE EMAIL = ?1";
 			try {
 				UserHA userWithEmailFromTransfer = (UserHA) em.createNativeQuery(query, UserHA.class)
 																	.setParameter(1, tUser.getEmail())
@@ -371,6 +374,13 @@ public class ASUserImp implements ASUser {
 			user.setEmail(newEmail);
 			user.setDescription(tUser.getDescription());
 			user.setPhoto(tUser.getPhoto());
+			user.setGender(tUser.getGender());
+			
+			String query = "SELECT * FROM LANGUAGE WHERE USER_NICKNAME = ?1";
+			@SuppressWarnings("unchecked")
+			Collection<Language> languages = (Collection<Language>)em.createNativeQuery(query, Language.class)
+					.setParameter(1, tUser.getNickname()).getResultList();
+			
 			em.persist(user);
 		}
 		
@@ -378,6 +388,13 @@ public class ASUserImp implements ASUser {
 		em.close();
 		emf.close();
 		return isEditPossible;
+	}
+	
+	//private void newLanguages(Collection<Language> oldLanguages, 
+	//		Collection<LanguagesEnum> newLanguages, EntityManager em){
+	//	int i = 0;
+	//	int j = 0;
+	//}
 	
 	@Override
 	public boolean rateUser(TRating tRating) {
@@ -459,4 +476,5 @@ public class ASUserImp implements ASUser {
 		
 		return nickname;
 	}
+	
 }

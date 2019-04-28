@@ -61,4 +61,12 @@ public enum LanguagesEnum {
 	public String getString() {
 		return this.name;
 	}
+	
+	public LanguagesEnum setToEnum(String name) {
+		for(LanguagesEnum language : LanguagesEnum.values()) {
+			if(language.getString().equals(name))
+				return language;
+		}
+		return null;
+	}
 }
