@@ -193,10 +193,9 @@ public class MyProfileUI extends UI {
 			//interests.getTokens().forEach(e -> debugLayout.addComponent(new Label(e.toString())));
 			InterestsEnum arrayInterests[] = null;
 			ArrayList<InterestsEnum> arrayListInterests = new ArrayList<InterestsEnum>();
-			List<Token> setInterests = interests.getTokens();
-			for(Token t : setInterests) {
-				
-			}
+			List<InterestsEnum> setInterests = new ArrayList<>();
+			interests.getTokens().forEach(e->setInterests.add(InterestsEnum.valueOf(e.getValue())));
+			
 			arrayListInterests.addAll(setInterests);
 			tHost.setNickname(user.getNickname());
 			tHost.setListOfInterests(arrayListInterests);
