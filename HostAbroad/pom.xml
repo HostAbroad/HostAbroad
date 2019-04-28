@@ -127,10 +127,23 @@
 			<version>2.0</version>
 		</dependency>
 
+		<!-- AdvancedTokenField -->
 		<dependency>
 			<groupId>com.fo0.advancedtokenfield</groupId>
 			<artifactId>AdvancedTokenField</artifactId>
 			<version>0.5.1</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>com.microsoft.azure</groupId>
+		    <artifactId>azure-storage-blob</artifactId>
+		    <version>10.1.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.microsoft.azure</groupId>
+			<artifactId>azure-storage</artifactId>
+			<version>5.0.0</version>
 		</dependency>
 
 		<dependency>
@@ -145,6 +158,9 @@
 			<version>2.0</version>
 		</dependency>
 
+			<artifactId>extended-token-field</artifactId>
+			<version>0.3.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

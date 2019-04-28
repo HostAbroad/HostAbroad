@@ -1,16 +1,26 @@
 package com.business;
 
 import java.util.ArrayList;
+import java.util.TreeSet;
+
+import com.business.ASUser.ASUserImp;
+import com.business.enums.InterestsEnum;
+import com.business.enums.LanguagesEnum;
+import com.business.transfers.TUser;
 
 public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		//ASUserImp asUser = new ASUserImp();
+		ASUserImp asUser = new ASUserImp();
 		//ASLikesImp asLikes = new ASLikesImp();
 		//asUser.createUser(new TUser("Roni", "Veronika Yanova", "veronikayankova3@gmail.com", "roniponi"));
-		
+	/*	TreeSet<InterestsEnum> l = new TreeSet<InterestsEnum>();
+		l.add(InterestsEnum.Animals);
+		l.add(InterestsEnum.Nature);
+		asUser.modifyInterests(new TUser("Roni", l));
+		*/
 		//asUser.editTravelerInformation(new TTraveler("prueba", null, null, null));
 		//TUser u = asUser.loginUser(new TUser("saninazer@gmail.com", "Sanii12"));
 		//asUser.addPlace(new TPlace("asd", "asd", null, "", FamilyUnit.Fam1, "sani"));

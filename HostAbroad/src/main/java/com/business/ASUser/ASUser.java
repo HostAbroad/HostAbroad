@@ -24,11 +24,13 @@ public interface ASUser {
 	
 	public abstract TTraveler readTravelerInformation(TUser user);
   
-	public abstract boolean modifyBasicInformation(TUser tUser);
+	public abstract boolean modifyInformation(TUser tUser);
 
 	public abstract TUser readUserNickName(TUser user);
 	
 	public abstract ArrayList<TUser> sendersLike(TUser tUser);
 
 	public abstract boolean rateUser(TRating tRating);
+	
+	public abstract void modifyInterests(TUser tUser);
 }

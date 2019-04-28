@@ -1,16 +1,24 @@
 package com.presentation.myProfileUI;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 import org.vaadin.easyuploads.UploadField;
 import org.vaadin.teemu.ratingstars.RatingStars;
 
 import com.business.enums.CountriesEnum;
+import com.business.enums.CountriesTokens;
 import com.business.enums.DurationOfStayEnum;
 import com.business.enums.InterestsEnum;
+import com.business.enums.KnowledgesEnum;
+import com.business.enums.KnowledgesTokens;
 import com.business.transfers.THost;
 import com.business.transfers.TTraveler;
 import com.business.transfers.TUser;
+import com.fo0.advancedtokenfield.main.AdvancedTokenField;
+import com.fo0.advancedtokenfield.model.Token;
 import com.presentation.card.Card;
 import com.presentation.commands.CommandEnum.Commands;
 import com.presentation.commands.Pair;
@@ -28,6 +36,7 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.Position;
+import com.vaadin.shared.ui.slider.SliderOrientation;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBoxGroup;
@@ -39,6 +48,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.RadioButtonGroup;
+import com.vaadin.ui.Slider;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
@@ -48,89 +58,90 @@ import com.vaadin.ui.VerticalLayout;
 @SuppressWarnings("deprecation")
 public class MyProfileUI extends UI {
 
+	private String enumValue;
+
 	// Hay que pasarle un transfer usuario desde el LoginUI, y de ahi sacar todos
 	// los campos
 	@Override
 	protected void init(VaadinRequest request) {
 
-		TUser myUser = new TUser("Prueba", "PruebaFull", "ivan@ucm.es", "1234", 5, "Im prueba", false, false);
 		ArrayList<Integer> likes = new ArrayList<Integer>();
 		likes.add(1);
 		likes.add(2);
-		
-		TUser myUser1 = new TUser("Prueba", "PruebaFull", "ivan@ucm.es", "1234", 5, "Im prueba", false, false, likes);
+
+		TUser myUser1 = new TUser("Prueba", "PruebaFull", "ivan@ucm.es", "1234", 5, "Im prueba", false, true, likes);
 		VerticalLayout superLayout = new VerticalLayout();
 		superLayout.setStyleName("v-scrollable");
 		superLayout.setSpacing(false);
 		superLayout.setMargin(false);
-		
+
 		GridLayout grid = new GridLayout(3, 1);
-		
+
 		Label gap = new Label();
 		gap.setWidth("3em");
 		grid.addComponent(gap, 1, 0);
-		
+
 		GridLayout menu = new GridLayout(1, 6);
-		
+
 		HorizontalLayout pages = new HorizontalLayout();
 		pages.setSizeFull();
 		pages.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 		Panel panel = new Panel();
 		panel.setSizeFull();
-		
+
 		Button personalInfo = new Button("Personal information", VaadinIcons.USER);
 		personalInfo.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-pi");
 		personalInfo.setHeight(80, Unit.PIXELS);
-		personalInfo.addClickListener(event ->{
+		personalInfo.addClickListener(event -> {
 			pages.removeAllComponents();
 			pages.addComponent(personalInfoForm(myUser1));
 			pages.setWidth("100%");
 		});
 		menu.addComponent(personalInfo);
-		
+
 		Button traveler = new Button("Traveler settings", VaadinIcons.PAPERPLANE);
 		traveler.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-t");
 		traveler.setWidth("100%");
 		traveler.setHeight(80, Unit.PIXELS);
-		traveler.addClickListener(event->{
+		traveler.addClickListener(event -> {
 			pages.removeAllComponents();
-			pages.addComponent(myProperties(myUser1));
+			pages.addComponent(travelerInfo(myUser1));
 		});
 		menu.addComponent(traveler);
-		
+
 		Button host = new Button("Host settings", VaadinIcons.HOME);
 		host.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-h");
 		host.setWidth("100%");
 		host.setHeight(80, Unit.PIXELS);
 		menu.addComponent(host);
-		
+
 		Button interests = new Button("Interests", VaadinIcons.CALC_BOOK);
 		interests.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-i");
 		interests.setWidth("100%");
 		interests.setHeight(80, Unit.PIXELS);
-		interests.addClickListener(event->{
+		interests.addClickListener(event -> {
 			pages.removeAllComponents();
 			pages.addComponent(myInterests(myUser1));
 		});
 		menu.addComponent(interests);
-		
+
 		Button comments = new Button("Comments", VaadinIcons.CHAT);
 		comments.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-c");
 		comments.setWidth("100%");
 		comments.setHeight(80, Unit.PIXELS);
 		menu.addComponent(comments);
-		
+
 		Button msgs = new Button("Messages", VaadinIcons.ENVELOPES);
 		msgs.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-m");
 		msgs.setWidth("100%");
 		msgs.setHeight(80, Unit.PIXELS);
 		menu.addComponent(msgs);
-		
+
 		Button like = new Button("My likes", VaadinIcons.HEART);
 		like.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-ml");
 		like.setWidth("100%");
 		like.setHeight(80, Unit.PIXELS);
-		like.addClickListener(event->{
+		like.addClickListener(event -> {
 			pages.removeAllComponents();
 			pages.addComponent(myLikes(myUser1));
 		});
@@ -139,7 +150,7 @@ public class MyProfileUI extends UI {
 		grid.addComponent(menu);
 		grid.addComponent(pages, 2, 0);
 		grid.setComponentAlignment(pages, Alignment.TOP_CENTER);
-		
+
 		grid.setComponentAlignment(menu, Alignment.MIDDLE_CENTER);
 
 		superLayout.addComponent(new Header());
@@ -149,69 +160,8 @@ public class MyProfileUI extends UI {
 		this.setContent(superLayout);
 	}
 
-	private HorizontalLayout myInterests(TUser user) {
-		Panel panel = new Panel();
-		panel.setWidth("100%");
-		panel.setId("panelInterests");
-		VerticalLayout mainLayout = new VerticalLayout();
-		mainLayout.setId("mainLayout");
-		HorizontalLayout mainLayoutInterests = new HorizontalLayout();
-		mainLayoutInterests.setId("mainLayoutInterests");
-		mainLayoutInterests.setStyleName("v-scrollable");
-		mainLayoutInterests.setSizeFull();
-		mainLayoutInterests.setSpacing(true);
+	public GridLayout personalInfoForm(TUser user) {
 
-		CheckBoxGroup<InterestsEnum> interests = new CheckBoxGroup<>("Interests");
-		interests.setItems(InterestsEnum.values());
-		interests.setId("interests");
-
-		Pair<Integer, Object> resultRead = Controller.getInstance().action(Commands.CommandReadHostInformation, user);
-
-		if (resultRead.getLeft() == 1) {
-
-			for (int i = 0; i < ((THost) resultRead.getRight()).getListOfInterests().size(); i++)
-				interests.select(((THost) resultRead.getRight()).getListOfInterests().get(i));
-
-		}
-
-		THost tHost = new THost();
-
-		Button saveButton = new Button("Save");
-		saveButton.setId("saveButton");
-		saveButton.addClickListener(event -> {
-
-			/*
-			 * InterestsEnum arrayInterests[] = null; ArrayList<InterestsEnum>
-			 * arrayListInterests = new ArrayList<InterestsEnum>(); Set<InterestsEnum>
-			 * setInterests = interests.getSelectedItems();
-			 * arrayListInterests.addAll(setInterests);
-			 * tHost.setNickname(user.getNickname());
-			 * tHost.setListOfInterests(arrayListInterests); Pair<Integer, Object> result =
-			 * Controller.getInstance().action(Commands.CommandEditHost, tHost);
-			 * 
-			 * if(result.getLeft() == 1) { Notification not = new Notification("Saved",
-			 * Notification.Type.HUMANIZED_MESSAGE); not.setDelayMsec(3000);
-			 * not.show(Page.getCurrent()); }
-			 * 
-			 * else { Notification.show("Error, We couldnt save your interests",
-			 * Notification.Type.ERROR_MESSAGE);
-			 * 
-			 * }
-			 */
-		});
-
-		mainLayout.addComponents(interests, saveButton);
-		mainLayout.setComponentAlignment(interests, Alignment.BOTTOM_CENTER);
-		mainLayout.setComponentAlignment(saveButton, Alignment.BOTTOM_CENTER);
-		panel.setContent(mainLayout);
-		mainLayoutInterests.addComponent(mainLayout);
-
-		return mainLayoutInterests;
-	}
-
-	
-	public GridLayout personalInfoForm( TUser user) {
-		
 		GridLayout mainGrid = new GridLayout(1, 2);
 		mainGrid.setSpacing(true);
 		mainGrid.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
@@ -227,17 +177,18 @@ public class MyProfileUI extends UI {
 		fields.setSpacing(true);
 		fields.setMargin(true);
 		fields.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
-		
+
 		Binder<TUser> binder = new Binder<>(TUser.class);
-		
+
 		Image profileImg = new Image();
-		profileImg.setSource(new ExternalResource("https://raw.githubusercontent.com/evivar/images/master/User_Circle.png"));
+		profileImg.setSource(
+				new ExternalResource("https://raw.githubusercontent.com/evivar/images/master/User_Circle.png"));
 		profileImg.setId("ProfileImage");
-		
+
 		UploadField uploadField = new UploadField();
 		uploadField.setClearButtonVisible(false);
 		uploadField.setButtonCaption("Select image");
-		
+
 		Button changeImg = new Button("Change image");
 		changeImg.setIcon(FontAwesome.UPLOAD);
 		changeImg.addClickListener(event -> {
@@ -251,7 +202,7 @@ public class MyProfileUI extends UI {
 		image.addComponent(changeImg);
 		image.setComponentAlignment(changeImg, Alignment.MIDDLE_CENTER);
 		sections.addComponent(image, 0, 0);
-		
+
 		TextField username = new TextField("Username");
 		username.setValue(user.getNickname());
 		username.setId("ProfileUsername");
@@ -321,98 +272,206 @@ public class MyProfileUI extends UI {
 		fields.addComponent(languageCB, 0, 2);
 		fields.addComponent(stars, 1, 2);
 		fields.addComponent(description, 0, 3, 2, 4);
-		
+
 		sections.addComponent(fields, 1, 0);
-		
+
 		mainGrid.addComponent(sections);
 		mainGrid.addComponent(save);
 		return mainGrid;
 	}
 
-	public HorizontalLayout myProperties(TUser user) {
+	public GridLayout travelerInfo(TUser user) {
 
-		Panel panel = new Panel();
-		panel.setWidth("100%");
-		panel.setId("panelProperties");
-		GridLayout mainLayout = new GridLayout(4, 1);
-		mainLayout.setId("mainLayout");
-		HorizontalLayout mainLayoutInterests = new HorizontalLayout();
-		mainLayoutInterests.setId("mainLayoutProperties");
-		mainLayoutInterests.setStyleName("v-scrollable");
-		mainLayoutInterests.setSizeFull();
-		mainLayoutInterests.setSpacing(true);
+		GridLayout mainGrid = new GridLayout(1, 1);
+		mainGrid.setSpacing(true);
+		mainGrid.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+		mainGrid.setSizeFull();
+		mainGrid.setHeight("100%");
+		mainGrid.setWidth("100%");
 
-		/*CheckBoxGroup<KnowledgesEnum> knowledges = new CheckBoxGroup<>("Knowledges: ");
-		knowledges.setItems(KnowledgesEnum.values());
-		knowledges.setId("knowledges");
-*/
-		CheckBoxGroup<CountriesEnum> countries = new CheckBoxGroup<>("Countries I want to visit: ");
-		countries.setItems(CountriesEnum.values());
-		countries.setId("countries");
+		GridLayout info = new GridLayout(3, 2);
+		info.setSpacing(true);
+		info.setMargin(true);
+		info.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+		info.setHeight("100%");
+		info.setSizeFull();
+		info.setStyleName("v-scrollable");
 
-		RadioButtonGroup<DurationOfStayEnum> days = new RadioButtonGroup<DurationOfStayEnum>("Maximum stay: ");
-		days.setItems(DurationOfStayEnum.values());
-		days.setId("days");
+		AdvancedTokenField knowledges = new AdvancedTokenField();
+		knowledges.setCaption("Knowledges");
+		knowledges.setIcon(FontAwesome.BOOK);
+		knowledges.setWidth("100%");
+		knowledges.setAllowNewTokens(false);
+		knowledges.clearTokens();
+		knowledges.getTokensOfInputField().clear();
+		KnowledgesTokens tokens = new KnowledgesTokens();
+		knowledges.addTokensToInputField(tokens.getTokens());
+		info.addComponent(knowledges, 0, 0);
+		knowledges.addTokenAddListener(event -> {
 
-		Pair<Integer, Object> resultRead = Controller.getInstance().action(Commands.CommandReadTravelerInformation,
-				user);
+		});
 
-		if (resultRead.getLeft() == 1) {
+		AdvancedTokenField countries = new AdvancedTokenField();
+		countries.setCaption("Countries I want to visit");
+		countries.setIcon(FontAwesome.GLOBE);
+		countries.setWidth("100%");
+		countries.setAllowNewTokens(false);
+		countries.clearTokens();
+		countries.getTokensOfInputField().clear();
+		CountriesTokens country = new CountriesTokens();
+		countries.addTokensToInputField(country.getTokens());
+		info.addComponent(countries, 1, 0);
 
-			/*for (int i = 0; i < ((TTraveler) resultRead.getRight()).getListOfKnowledges().size(); i++)
-				knowledges.select(((TTraveler) resultRead.getRight()).getListOfKnowledges().get(i));*/
+		VerticalLayout stay = new VerticalLayout();
+		stay.setWidth("100%");
+		stay.setSizeFull();
+		// stay.setSizeUndefined();
+		Slider days = new Slider("Maximum stay: ", 0, 4);
+		days.setOrientation(SliderOrientation.HORIZONTAL);
+		// days.setSizeFull();
+		days.setWidth("100%");
+		stay.addComponentsAndExpand(days);
+		Label dias = new Label("0 days");
+		dias.setSizeFull();
+		stay.addComponentsAndExpand(dias);
+		stay.setComponentAlignment(dias, Alignment.MIDDLE_CENTER);
+		days.addValueChangeListener(event -> {
+			if (days.getValue() == 0.0) {
+				dias.setValue("0 days");
+				enumValue = "ZeroToSixDays";
+			} else if (days.getValue() == 1.0) {
+				dias.setValue("Six days");
+				enumValue = "ZeroToSixDays";
+			} else if (days.getValue() == 2.0) {
+				dias.setValue("Two weeks");
+				enumValue = "OneToTwoWeeks";
+			} else if (days.getValue() == 3.0) {
+				dias.setValue("One month");
+				enumValue = "TwoWeeksToAMonth";
+			} else {
+				dias.setValue("More than a month");
+				enumValue = "MoreThanMonth";
+			}
+		});
+		info.addComponent(stay, 2, 0);
 
-			for (int i = 0; i < ((TTraveler) resultRead.getRight()).getListOfCountries().size(); i++)
-				countries.select(((TTraveler) resultRead.getRight()).getListOfCountries().get(i));
-
-			if (((TTraveler) resultRead.getRight()).getDurationOfStay() != null)
-				days.setSelectedItem(((TTraveler) resultRead.getRight()).getDurationOfStay());
-
-		}
+		mainGrid.addComponent(info, 0, 0);
 
 		TTraveler tTraveler = new TTraveler();
 
 		Button saveButton = new Button("Save");
 		saveButton.setId("saveButton");
 		saveButton.addClickListener(event -> {
+			/*
+			 * The problem is that you can get a List of Tokens or a List of Strings, but
+			 * not a List of KnowledgesEnum or CountriesEnum
+			 */
+			ArrayList<KnowledgesEnum> arrayListKnowledges = new ArrayList<KnowledgesEnum>();
+			List<KnowledgesEnum> setKnowledges = new ArrayList<>();
+			knowledges.getTokens().forEach(e -> setKnowledges.add(KnowledgesEnum.valueOf(e.getValue()))
+					);
+			arrayListKnowledges.addAll(setKnowledges);
+
+			ArrayList<CountriesEnum> arrayListCountries = new ArrayList<CountriesEnum>();
+			List<CountriesEnum> setCountries = new ArrayList<>();
+			countries.getTokens().forEach(e -> setCountries.add(CountriesEnum.valueOf(e.getValue()))
+					);
+			arrayListCountries.addAll(setCountries);
+			
+			tTraveler.setNickname(user.getNickname());
+			// tTraveler.setListOfKnowledges(arrayListKnowledges);
+			tTraveler.setDurationOfStay(DurationOfStayEnum.valueOf(enumValue));
+			// tTraveler.setListOfCountries(arrayListCountries);
+			Pair<Integer, Object> resultEdit = Controller.getInstance().action(Commands.CommandEditTraveler, tTraveler);
+
+			if (resultEdit.getLeft() == 1) {
+				Notification not = new Notification("Saved", Notification.Type.HUMANIZED_MESSAGE);
+				not.setDelayMsec(3000);
+				not.show(Page.getCurrent());
+			}
+
+			else {
+				Notification.show("Error, We couldnt save your properties", Notification.Type.ERROR_MESSAGE);
+
+			}
+
+		});
+		info.addComponent(saveButton, 1, 1);
+
+		Pair<Integer, Object> resultRead = Controller.getInstance().action(Commands.CommandReadTravelerInformation,
+				user);
+
+		if (resultRead.getLeft() == 1) {
+
+			for (int i = 0; i < ((TTraveler) resultRead.getRight()).getListOfKnowledges().size(); i++)
+				knowledges.addToken(new Token(((TTraveler) resultRead.getRight()).getListOfKnowledges().get(i).name()));
+
+			for (int i = 0; i < ((TTraveler) resultRead.getRight()).getListOfCountries().size(); i++)
+				countries.addToken(new Token(((TTraveler) resultRead.getRight()).getListOfCountries().get(i).name()));
+
+			if (((TTraveler) resultRead.getRight()).getDurationOfStay() != null)
+				days.setValue(((TTraveler) resultRead.getRight()).getDurationOfStay().ordinal() + 0.0);
+
+		}
+
+		return mainGrid;
+	}
+
+	private HorizontalLayout myInterests(TUser user) {
+		Panel panel = new Panel();
+		panel.setWidth("100%");
+		panel.setId("panelInterests");
+		VerticalLayout mainLayout = new VerticalLayout();
+		mainLayout.setId("mainLayout");
+		HorizontalLayout mainLayoutInterests = new HorizontalLayout();
+		mainLayoutInterests.setId("mainLayoutInterests");
+		mainLayoutInterests.setStyleName("v-scrollable");
+		mainLayoutInterests.setSizeFull();
+		mainLayoutInterests.setSpacing(true);
+
+		CheckBoxGroup<InterestsEnum> interests = new CheckBoxGroup<>("Interests");
+		interests.setItems(InterestsEnum.values());
+		interests.setId("interests");
+
+		Pair<Integer, Object> resultRead = Controller.getInstance().action(Commands.CommandReadHostInformation, user);
+
+		if (resultRead.getLeft() == 1) {
+
+			for (int i = 0; i < ((THost) resultRead.getRight()).getListOfInterests().size(); i++)
+				interests.select(((THost) resultRead.getRight()).getListOfInterests().get(i));
+
+		}
+
+		THost tHost = new THost();
+
+		Button saveButton = new Button("Save");
+		saveButton.setId("saveButton");
+		saveButton.addClickListener(event -> {
 
 			/*
-			 * ArrayList<KnowledgesEnum> arrayListKnowledges = new
-			 * ArrayList<KnowledgesEnum>(); Set<KnowledgesEnum> setKnowledges =
-			 * knowledges.getSelectedItems(); arrayListKnowledges.addAll(setKnowledges);
+			 * InterestsEnum arrayInterests[] = null; ArrayList<InterestsEnum>
+			 * arrayListInterests = new ArrayList<InterestsEnum>(); Set<InterestsEnum>
+			 * setInterests = interests.getSelectedItems();
+			 * arrayListInterests.addAll(setInterests);
+			 * tHost.setNickname(user.getNickname());
+			 * tHost.setListOfInterests(arrayListInterests); Pair<Integer, Object> result =
+			 * Controller.getInstance().action(Commands.CommandEditHost, tHost);
 			 * 
-			 * ArrayList<CountriesEnum> arrayListCountries = new ArrayList<CountriesEnum>();
-			 * Set<CountriesEnum> setCountries = countries.getSelectedItems();
-			 * arrayListCountries.addAll(setCountries);
-			 * 
-			 * tTraveler.setNickname(user.getNickname());
-			 * tTraveler.setListOfKnowledges(arrayListKnowledges);
-			 * tTraveler.setDurationOfStay(days.getValue());
-			 * tTraveler.setListOfCountries(arrayListCountries); Pair<Integer, Object>
-			 * resultEdit = Controller.getInstance().action(Commands.CommandEditTraveler,
-			 * tTraveler);
-			 * 
-			 * if(resultEdit.getLeft() == 1) { Notification not = new Notification("Saved",
+			 * if(result.getLeft() == 1) { Notification not = new Notification("Saved",
 			 * Notification.Type.HUMANIZED_MESSAGE); not.setDelayMsec(3000);
 			 * not.show(Page.getCurrent()); }
 			 * 
-			 * else { Notification.show("Error, We couldnt save your properties",
+			 * else { Notification.show("Error, We couldnt save your interests",
 			 * Notification.Type.ERROR_MESSAGE);
 			 * 
 			 * }
 			 */
 		});
 
-		/*AdvancedTokenField tfm = new AdvancedTokenField();
-		tfm.setCaption("Knowledges");
-		mainLayout.addComponent(tfm, 0, 0);*/
-		
-		//mainLayout.addComponent(knowledges, 0, 0);
-		mainLayout.addComponent(days, 1, 0);
-		mainLayout.addComponent(countries, 2, 0);
-		mainLayout.addComponent(saveButton, 3, 0);
-		mainLayout.setComponentAlignment(saveButton, Alignment.MIDDLE_RIGHT);
-
+		mainLayout.addComponents(interests, saveButton);
+		mainLayout.setComponentAlignment(interests, Alignment.BOTTOM_CENTER);
+		mainLayout.setComponentAlignment(saveButton, Alignment.BOTTOM_CENTER);
+		panel.setContent(mainLayout);
 		mainLayoutInterests.addComponent(mainLayout);
 
 		return mainLayoutInterests;
@@ -424,7 +483,6 @@ public class MyProfileUI extends UI {
 		mainLayout.setId("mainLayout");
 		mainLayout.setSizeFull();
 		mainLayout.setSpacing(true);
-		
 
 		// main helper
 		VerticalLayout mainVertical = new VerticalLayout();

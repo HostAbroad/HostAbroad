@@ -4,15 +4,14 @@ import com.business.ASFactory.ASFactory;
 import com.business.ASUser.ASUser;
 import com.business.transfers.TUser;
 
-public class CommandModifyBasicInformation extends Command{
+public class CommandModifyInterests extends Command{
 
+	@Override
 	public Pair<Integer, Object> execute(Object transfer) {
 		ASUser as = ASFactory.getInstance().createASUser();
+		as.modifyInterests((TUser)transfer);
 		
-		boolean res = as.modifyInformation((TUser)transfer);
-		int result = res ? 1 : 0;
-		
-		return new Pair<Integer, Object>(result, res);
+		return new Pair<Integer, Object>(1, null);
 	}
 
 }
