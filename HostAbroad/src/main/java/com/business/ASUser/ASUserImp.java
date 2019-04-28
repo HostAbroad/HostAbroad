@@ -1,7 +1,9 @@
 package com.business.ASUser;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -375,12 +377,7 @@ public class ASUserImp implements ASUser {
 			user.setDescription(tUser.getDescription());
 			user.setPhoto(tUser.getPhoto());
 			user.setGender(tUser.getGender());
-			
-			String query = "SELECT * FROM LANGUAGE WHERE USER_NICKNAME = ?1";
-			@SuppressWarnings("unchecked")
-			Collection<Language> languages = (Collection<Language>)em.createNativeQuery(query, Language.class)
-					.setParameter(1, tUser.getNickname()).getResultList();
-			
+			this.newLanguages(user.getLanguages(), tUser.getLanguages(), em, user);
 			em.persist(user);
 		}
 		
@@ -390,11 +387,40 @@ public class ASUserImp implements ASUser {
 		return isEditPossible;
 	}
 	
-	//private void newLanguages(Collection<Language> oldLanguages, 
-	//		Collection<LanguagesEnum> newLanguages, EntityManager em){
-	//	int i = 0;
-	//	int j = 0;
-	//}
+	@SuppressWarnings("unchecked")
+	private void newLanguages(List<Language> oldLanguages, 
+			TreeSet<LanguagesEnum> newLanguages, EntityManager em, UserHA user){
+		int i = 0;
+		int j = 0;
+		Collections.sort(oldLanguages);
+		
+		ArrayList<LanguagesEnum> newLanguagesA = new ArrayList<LanguagesEnum>(newLanguages);
+		
+		while(i < oldLanguages.size() && j < newLanguagesA.size()) {
+			if(oldLanguages.get(i).getLanguage().equals(newLanguagesA.get(j).getString())) {
+				i++;
+				j++;
+			}
+			else if(oldLanguages.get(i).getLanguage().compareTo(newLanguagesA.get(j).getString()) < 0) {
+				em.remove(oldLanguages.get(i));
+				i++;
+			}
+			else {
+				em.persist(new Language(user, newLanguagesA.get(j).getString()));
+				j++;
+			}
+		}
+		
+		while(i < oldLanguages.size()) {
+			em.remove(oldLanguages.get(i));
+			i++;
+		}
+		
+		while(j < newLanguagesA.size()) {
+			em.persist(new Language(user, newLanguagesA.get(j).getString()));
+			j++;
+		}
+	}
 	
 	@Override
 	public boolean rateUser(TRating tRating) {

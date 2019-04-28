@@ -34,8 +34,16 @@ public class LanguagesKey implements Serializable{
 		return this.user;
 	}
 	
+	public void setUser(String user) {
+		this.user = user;
+	}
+	
 	public String getLanguage() {
 		return this.language;
+	}
+	
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 }
 

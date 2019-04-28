@@ -1,6 +1,8 @@
 package com.business.enums;
 
-public enum LanguagesEnum {
+import com.business.businessObjects.Language;
+
+public enum LanguagesEnum{
 
 	Albanian("Albanian"),
 	Arabic("Arabic"),
