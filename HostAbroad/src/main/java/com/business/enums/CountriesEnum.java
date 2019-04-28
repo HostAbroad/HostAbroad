@@ -52,6 +52,7 @@ public enum CountriesEnum {
 	Turkey,
 	Ukraine,
 	UnitedKingdom,
-	VaticanCity
+	VaticanCity;
+	
 }
 
