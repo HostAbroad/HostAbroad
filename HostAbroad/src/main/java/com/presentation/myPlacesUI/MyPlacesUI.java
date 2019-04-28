@@ -3,8 +3,11 @@ package com.presentation.myPlacesUI;
 
 import com.business.enums.FamilyUnit;
 import com.business.transfers.TPlace;
+import com.presentation.commands.CommandEnum.Commands;
+import com.presentation.controller.Controller;
 import com.presentation.headerAndFooter.Footer;
 import com.presentation.headerAndFooter.Header;
+import com.presentation.loginUI.AuthService;
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.*;
 import com.vaadin.shared.ui.slider.SliderOrientation;
@@ -40,7 +43,7 @@ public class MyPlacesUI extends UI {
 		uploadField.setId("uploadField");
 		uploadField.setClearButtonVisible(false);
 		uploadField.setButtonCaption("Select image");
-
+		
 		Button changeImg = new Button("Change image");
 		changeImg.setIcon(FontAwesome.UPLOAD);
 		changeImg.addClickListener(event -> {
@@ -108,8 +111,8 @@ public class MyPlacesUI extends UI {
 				familyUnit = FamilyUnit.Friends;
 			}
 				if(address.getValue().length() > 0 && address.getValue().length() < 50){
-					TPlace tPlace = new TPlace(address.getValue(),description.getValue(),null,null,familyUnit,"Roberto");
-					//Deberia haber un comando que te permitiera modificar el lugar
+					TPlace tPlace = new TPlace(address.getValue(),description.getValue(), new ArrayList<>(),"",familyUnit, AuthService.getUserNickName());
+					Controller.getInstance().action(Commands.CommandAddPlace, tPlace);
 				}
 				else {
 					Notification.show("Invalid Address", Notification.Type.ERROR_MESSAGE);

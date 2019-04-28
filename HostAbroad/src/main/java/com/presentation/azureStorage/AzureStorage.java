@@ -66,8 +66,7 @@ public class AzureStorage {
 			//Listing contents of container
 			for (ListBlobItem blobItem : container.listBlobs()) {
 			System.out.println("URI of blob is: " + blobItem.getUri());
-			
-			
+				
 		}
 
 		// Download blob. In most cases, you would have to retrieve the reference
