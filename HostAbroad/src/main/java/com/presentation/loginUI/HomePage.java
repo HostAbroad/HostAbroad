@@ -30,7 +30,7 @@ public class HomePage extends UI {
 	@Override
 	protected void init(VaadinRequest request) {
 		setSizeFull();
-		ResponsiveLayout mainResponsive = new ResponsiveLayout();
+		ResponsiveLayout mainResponsive = new ResponsiveLayout();  
 		mainResponsive.setSizeFull();
 		setContent(mainResponsive);
 		
