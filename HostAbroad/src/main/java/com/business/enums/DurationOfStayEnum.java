@@ -2,19 +2,18 @@ package com.business.enums;
 
 public enum DurationOfStayEnum {
 
-	ZeroToSixDays(0.0),
-	OneToTwoWeeks(1.0),
-	TwoWeeksToAMonth(2.0),
-	MoreThanMonth(3.0);
+	ZeroToSixDays("1-6 days"),
+	OneToTwoWeeks("1-2 weeks"),
+	TwoWeeksToAMonth("2 weeks to a month"),
+	MoreThanMonth("More than a month");
 	
-	private Double value;
+	private String name;
 	
-	private DurationOfStayEnum(Double value) {
-		this.value = value;
+	private DurationOfStayEnum(String name) {
+		this.name = name;
 	}
 	
-	public Double getValue() {
-		return this.value;
+	public String getString() {
+		return this.name;
 	}
-	
 }

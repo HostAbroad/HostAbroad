@@ -13,7 +13,7 @@ public class CommandSendersLike extends Command {
 	public Pair<Integer, Object> execute(Object transfer) {
 		int result;
 		ASUser asUser= ASFactory.getInstance().createASUser();
-		ArrayList<TUser> sendersLike = asUser.SendersLike((TUser)transfer);
+		ArrayList<TUser> sendersLike = asUser.sendersLike((TUser)transfer);
 		result = sendersLike.isEmpty() ? 0 : 1;
 		
 		return new Pair<Integer,Object>(result,sendersLike);

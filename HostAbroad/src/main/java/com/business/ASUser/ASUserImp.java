@@ -1,21 +1,31 @@
 package com.business.ASUser;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.LockModeType;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import com.business.businessObjects.Host;
+import com.business.businessObjects.Interest;
+import com.business.businessObjects.Language;
 import com.business.businessObjects.Likes;
 import com.business.businessObjects.Place;
+import com.business.businessObjects.Rating;
 import com.business.businessObjects.Traveler;
 import com.business.businessObjects.UserHA;
+import com.business.enums.InterestsEnum;
+import com.business.enums.LanguagesEnum;
 import com.business.transfers.THost;
 import com.business.transfers.TPlace;
+import com.business.transfers.TRating;
 import com.business.transfers.TTraveler;
 import com.business.transfers.TUser;
 
@@ -292,11 +302,11 @@ public class ASUserImp implements ASUser {
  		emfactory.close();
 		return traveler;
 	}
-	
-	public ArrayList<TUser> SendersLike(TUser tUser) {
+
+	public ArrayList<TUser> sendersLike(TUser tUser) {
+
 		
 		 ArrayList<TUser> sendersUser = new ArrayList<TUser>();
-		
 	
 		try {
 			EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
@@ -336,4 +346,208 @@ public class ASUserImp implements ASUser {
 		
 		return  sendersUser;
 	}
+
+	/**
+	 * This method modifies the basic information of an user
+	 * */
+	public boolean modifyInformation(TUser tUser) {
+		boolean isEditPossible = true;
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction tr = em.getTransaction();
+		tr.begin();
+		
+		UserHA user = em.find(UserHA.class, tUser.getNickname());
+		em.lock(user, LockModeType.OPTIMISTIC);
+		
+		String newEmail = tUser.getEmail();
+		
+		if(!newEmail.equals(user.getEmail())) {
+			String query = "SELECT * FROM USER WHERE EMAIL = ?1";
+			try {
+				UserHA userWithEmailFromTransfer = (UserHA) em.createNativeQuery(query, UserHA.class)
+																	.setParameter(1, tUser.getEmail())
+																	.getSingleResult();
+				isEditPossible = false;
+			}catch(NoResultException ex) {
+			}
+		}
+		
+		if(isEditPossible) {
+			user.setFullName(tUser.getFullName());
+			user.setEmail(newEmail);
+			user.setDescription(tUser.getDescription());
+			user.setPhoto(tUser.getPhoto());
+			user.setGender(tUser.getGender());
+			this.newLanguages(user.getLanguages(), tUser.getLanguages(), em, user);
+			em.persist(user);
+		}
+		
+		tr.commit();
+		em.close();
+		emf.close();
+		return isEditPossible;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void newLanguages(List<Language> oldLanguages, 
+			TreeSet<LanguagesEnum> newLanguages, EntityManager em, UserHA user){
+		int i = 0;
+		int j = 0;
+		Collections.sort(oldLanguages);
+		
+		ArrayList<LanguagesEnum> newLanguagesA = new ArrayList<LanguagesEnum>(newLanguages);
+		
+		while(i < oldLanguages.size() && j < newLanguagesA.size()) {
+			if(oldLanguages.get(i).getLanguage().equals(newLanguagesA.get(j).getString())) {
+				i++;
+				j++;
+			}
+			else if(oldLanguages.get(i).getLanguage().compareTo(newLanguagesA.get(j).getString()) < 0) {
+				em.remove(oldLanguages.get(i));
+				i++;
+			}
+			else {
+				em.persist(new Language(user, newLanguagesA.get(j).getString()));
+				j++;
+			}
+		}
+		
+		while(i < oldLanguages.size()) {
+			em.remove(oldLanguages.get(i));
+			i++;
+		}
+		
+		while(j < newLanguagesA.size()) {
+			em.persist(new Language(user, newLanguagesA.get(j).getString()));
+			j++;
+		}
+	}
+	
+	@Override
+	public boolean rateUser(TRating tRating) {
+
+		boolean result = false; //Devolverá false si ha habido algún error o si ese Sender ya ha valorado a Receiver
+		
+		try {
+			
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
+			EntityManager em = emf.createEntityManager();
+			EntityTransaction tr = em.getTransaction();
+			tr.begin();
+
+			UserHA userSender; // Usuario 1 es el que envia valoracion
+			UserHA userReceiver; // Usuario 2 es el que la recibe
+
+			try {
+				
+				String query = "SELECT * FROM USERHA WHERE NICKNAME = ?1";
+				userSender = (UserHA) em.createNativeQuery(query, UserHA.class).setParameter(1, tRating.getUserSender())
+						.getSingleResult();
+				userReceiver = (UserHA) em.createNativeQuery(query, UserHA.class).setParameter(1, tRating.getUserReceiver())
+						.getSingleResult();
+
+				query = "SELECT * FROM RATING WHERE USERRECEIVER_NICKNAME = ?1 AND USERSENDER_NICKNAME = ?2";
+				Rating rating;
+				
+				try {
+
+					rating = (Rating) em.createNativeQuery(query, Rating.class)
+							.setParameter(1, tRating.getUserReceiver()).setParameter(2, tRating.getUserSender())
+							.getSingleResult();
+
+				} catch (Exception e) {
+
+					rating = new Rating(userSender, userReceiver, tRating.getRate());
+					em.persist(rating);
+
+					userReceiver.addRate(rating);
+					userReceiver.updateRating(); // Vuelve a calcular la valoracion total para
+																	// actualizarla
+
+					em.persist(userReceiver);
+					result = true;
+
+				}
+			} catch (NoResultException e) {}
+
+			tr.commit();
+			em.close();
+			emf.close();
+			
+		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		
+		return result;
+	}
+
+	@Override
+	public TUser readUserNickName(TUser user) {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
+		EntityManager em = emf.createEntityManager();
+		
+		String queryStr = "SELECT NICKNAME FROM USERHA WHERE EMAIL = ?1";
+		Query query = em.createNativeQuery(queryStr, UserHA.class);
+		query.setParameter(1, user.getEmail());
+		TUser nickname = null;
+		try {
+			UserHA userNick = (UserHA)query.getSingleResult();
+			nickname = userNick.toTransfer();
+		}
+		catch (NoResultException ex) {
+			System.out.println(ex.getMessage());
+		}
+		
+		em.close();
+		emf.close();
+		
+		return nickname;
+	}
+
+	@Override
+	public void modifyInterests(TUser tUser) {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction tr = em.getTransaction();
+		tr.begin();
+		
+		UserHA user = em.find(UserHA.class, tUser.getNickname());
+		em.lock(user, LockModeType.OPTIMISTIC);
+		
+		List<Interest> oldInterests = user.getInterests();
+		ArrayList<InterestsEnum> newInterests = new ArrayList<InterestsEnum>(tUser.getInterests());
+		int i = 0;
+		int j = 0;
+		Collections.sort(oldInterests);
+		
+		while(i < oldInterests.size() && j < newInterests.size()) {
+			if(oldInterests.get(i).getInterest().equals(newInterests.get(j).getString())) {
+				i++;
+				j++;
+			}
+			else if(oldInterests.get(i).getInterest().compareTo(newInterests.get(j).getString()) < 0) {
+				em.remove(oldInterests.get(i));
+				i++;
+			}
+			else {
+				em.persist(new Interest(user, newInterests.get(j).getString()));
+				j++;
+			}
+		}
+		
+		while(i < oldInterests.size()) {
+			em.remove(oldInterests.get(i));
+			i++;
+		}
+		
+		while(j < newInterests.size()) {
+			em.persist(new Interest(user, newInterests.get(j).getString()));
+			j++;
+		}
+		tr.commit();
+		em.close();
+		emf.close();
+	}
+	
 }
