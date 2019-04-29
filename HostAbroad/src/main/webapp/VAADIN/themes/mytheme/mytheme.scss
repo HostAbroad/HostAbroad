@@ -60,7 +60,7 @@ $v-layout-margin-left: $v-layout-margin-top !default;
 $v-layout-spacing-vertical: round($v-unit-size / 1.8) !default;
 $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
 
-$v-app-loading-text: "Metro Valo";
+$v-app-loading-text: "Host Abroad";
 
 $v-font-family: "Source Sans Pro", sans-serif;
 $v-app-background-color: #fff;
@@ -422,7 +422,6 @@ $v-panel-border: 2px solid v-shade;
 
     .v-button-icon-align-top-pi:hover {
         background: #434343;
-        letter-spacing: 1px;
         -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
@@ -438,7 +437,7 @@ $v-panel-border: 2px solid v-shade;
 
     .v-button-icon-align-top-t:hover {
         background: #434343;
-        letter-spacing: 1px;
+        
         -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
@@ -454,7 +453,7 @@ $v-panel-border: 2px solid v-shade;
 
     .v-button-icon-align-top-h:hover {
         background: #434343;
-        letter-spacing: 1px;
+        
         -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
@@ -470,7 +469,7 @@ $v-panel-border: 2px solid v-shade;
 
     .v-button-icon-align-top-i:hover {
         background: #434343;
-        letter-spacing: 1px;
+        
         -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
@@ -486,7 +485,7 @@ $v-panel-border: 2px solid v-shade;
 
     .v-button-icon-align-top-c:hover {
         background: #434343;
-        letter-spacing: 1px;
+        
         -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
@@ -502,7 +501,7 @@ $v-panel-border: 2px solid v-shade;
 
     .v-button-icon-align-top-m:hover {
         background: #434343;
-        letter-spacing: 1px;
+        
         -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
@@ -518,7 +517,7 @@ $v-panel-border: 2px solid v-shade;
 
     .v-button-icon-align-top-ml:hover {
         background: #434343;
-        letter-spacing: 1px;
+        
         -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
@@ -534,7 +533,7 @@ $v-panel-border: 2px solid v-shade;
 
     .v-button-icon-align-top-mm:hover {
         background: #434343;
-        letter-spacing: 1px;
+        
         -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
@@ -549,7 +548,7 @@ $v-panel-border: 2px solid v-shade;
     }
 
     .login-layout {
-        background-image: url(https://raw.githubusercontent.com/OmegaSkyres/images/master/wallpaper.jpg);
+        background-image: url(https://raw.githubusercontent.com/evivar/images/master/prism.png);
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
@@ -562,7 +561,7 @@ $v-panel-border: 2px solid v-shade;
 
     .card-like-button:hover {
         background: #ff40a0;
-        letter-spacing: 1px;
+        
         -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
@@ -571,7 +570,7 @@ $v-panel-border: 2px solid v-shade;
 
     .card-acceptLike-button:hover {
         background: #40FF00;
-        letter-spacing: 1px;
+        
         -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
@@ -580,7 +579,7 @@ $v-panel-border: 2px solid v-shade;
 
     .card-declineLike-button:hover {
         background: red;
-        letter-spacing: 1px;
+        
         -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         box-shadow: 5px 40px -10px rgba(0,0,0,0.57);

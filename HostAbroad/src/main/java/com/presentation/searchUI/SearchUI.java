@@ -39,6 +39,7 @@ public class SearchUI extends UI{
 	protected void init(VaadinRequest request) {
 		//main layout
 		HorizontalLayout mainLayout = new HorizontalLayout();
+		mainLayout.setStyleName("homePage-main-layout");
 		mainLayout.setSizeFull();
 			
 		//main helper
