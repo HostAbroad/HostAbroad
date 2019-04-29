@@ -204,6 +204,6 @@ public class Card extends Panel {
 	}
 	
 	public void setStarsAvailable(boolean stars) {
-		this.stars.setVisible(stars);
+		this.stars.setVisible(!stars);
 	}
 }
