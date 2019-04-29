@@ -13,16 +13,22 @@ import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import com.business.businessObjects.Country;
 import com.business.businessObjects.Host;
 import com.business.businessObjects.Interest;
+import com.business.businessObjects.KnowledgeHost;
+import com.business.businessObjects.KnowledgeTraveler;
 import com.business.businessObjects.Language;
 import com.business.businessObjects.Likes;
 import com.business.businessObjects.Matches;
 import com.business.businessObjects.Place;
+import com.business.businessObjects.PlacesKey;
 import com.business.businessObjects.Rating;
 import com.business.businessObjects.Traveler;
 import com.business.businessObjects.UserHA;
+import com.business.enums.CountriesEnum;
 import com.business.enums.InterestsEnum;
+import com.business.enums.KnowledgesEnum;
 import com.business.enums.LanguagesEnum;
 import com.business.transfers.THost;
 import com.business.transfers.TPlace;
@@ -36,6 +42,7 @@ public class ASUserImp implements ASUser {
 	 * This method checks if a user with that nickname or password exists. the
 	 * password is encrypted with hashCode
 	 **/
+	
 	@Override
 	public boolean createUser(TUser tUser) {
 
@@ -132,17 +139,47 @@ public class ASUserImp implements ASUser {
 
 		if (user != null) {
 			Host host;
-
+			List<KnowledgeHost> oldKnowledgeHost = new ArrayList<KnowledgeHost>();
 			try {
-				String query = "SELECT * FROM HOST WHERE USER_NICKNAME = ?1";
-				host = (Host) em.createNativeQuery(query, Host.class).setParameter(1, tHost.getNickname())
-						.getSingleResult();
-				host.setListOfInterests(tHost.getListOfInterests());
-			} catch (NoResultException e) {
-				host = new Host(user, tHost.getListOfInterests());
+				host = em.find(Host.class, tHost.getNickname());
+				oldKnowledgeHost = host.getListOfKnowledges();
+			} catch (NullPointerException e) {
+				host = new Host();
+				host.setUser(user);
+				user.setHost(true);
+				em.persist(user);
+				em.persist(host);
 			}
-
-			em.persist(host);
+			
+			ArrayList<KnowledgesEnum> newKnowledges = new ArrayList<KnowledgesEnum>(tHost.getListOfKnowledges());
+			int i = 0;
+			int j = 0;
+			Collections.sort(oldKnowledgeHost);
+			
+			while(i < oldKnowledgeHost.size() && j < newKnowledges.size()) {
+				if(oldKnowledgeHost.get(i).getKnowledge().equals(newKnowledges.get(j).getString())) {
+					i++;
+					j++;
+				}
+				else if(oldKnowledgeHost.get(i).getKnowledge().compareTo(newKnowledges.get(j).getString()) < 0) {
+					em.remove(oldKnowledgeHost.get(i));
+					i++;
+				}
+				else {
+					em.persist(new KnowledgeHost(host, newKnowledges.get(j).getString()));
+					j++;
+				}
+			}
+			
+			while(i < oldKnowledgeHost.size()) {
+				em.remove(oldKnowledgeHost.get(i));
+				i++;
+			}
+			
+			while(j < newKnowledges.size()) {
+				em.persist(new KnowledgeHost(host, newKnowledges.get(j).getString()));
+				j++;
+			}
 
 			if (!user.getHost()) {
 				user.setHost(true);
@@ -181,20 +218,91 @@ public class ASUserImp implements ASUser {
 
 		if (user != null) {
 			Traveler traveler;
-
+			List<Country> oldCountries = new ArrayList<Country>();
+			List<KnowledgeTraveler> oldKnowledges = new ArrayList<KnowledgeTraveler>();
 			try {
-				String query = "SELECT * FROM TRAVELER WHERE USER_NICKNAME = ?1";
-				traveler = (Traveler) em.createNativeQuery(query, Traveler.class)
-						.setParameter(1, tTraveler.getNickname()).getSingleResult();
-				traveler.setDurationOfStay(tTraveler.getDurationOfStay());
-				traveler.setListOfCountries(tTraveler.getListOfCountries());
-				traveler.setListOfKnowledges(tTraveler.getListOfKnowledges());
-			} catch (NoResultException e) {
-				traveler = new Traveler(user, tTraveler.getListOfCountries(), tTraveler.getListOfKnowledges(),
-						tTraveler.getDurationOfStay());
+				traveler = em.find(Traveler.class, tTraveler.getNickname());
+				oldCountries = traveler.getListOfCountries();
+				oldKnowledges = traveler.getListOfKnowledges();
+			} catch (NullPointerException e) {
+				traveler = new Traveler();
+				traveler.setUser(user);
+			}
+			traveler.setDurationOfStay(tTraveler.getDurationOfStay());
+			em.persist(traveler);
+			
+			ArrayList<CountriesEnum> newCountries;
+			try {
+				newCountries = new ArrayList<CountriesEnum>();
+			}catch(NullPointerException e) {
+				newCountries = new ArrayList<>();
+			}
+			
+			int i = 0;
+			int j = 0;
+			Collections.sort(oldCountries);
+			
+			while(i < oldCountries.size() && j < newCountries.size()) {
+				if(oldCountries.get(i).getCountry().equals(newCountries.get(j).getString())) {
+					i++;
+					j++;
+				}
+				else if(oldCountries.get(i).getCountry().compareTo(newCountries.get(j).getString()) < 0) {
+					em.remove(oldCountries.get(i));
+					i++;
+				}
+				else {
+					em.persist(new Country(traveler, newCountries.get(j).getString()));
+					j++;
+				}
+			}
+			
+			while(i < oldCountries.size()) {
+				em.remove(oldCountries.get(i));
+				i++;
+			}
+			
+			while(j < newCountries.size()) {
+				em.persist(new Country(traveler, newCountries.get(j).getString()));
+				j++;
 			}
 
-			em.persist(traveler);
+			ArrayList<KnowledgesEnum> newKnowledges;
+			try {
+				newKnowledges = new ArrayList<KnowledgesEnum>(tTraveler.getListOfKnowledges());
+			}catch(NullPointerException e) {
+				newKnowledges = new ArrayList<KnowledgesEnum>();
+			}
+			
+			i = 0;
+			j = 0;
+			Collections.sort(oldCountries);
+			
+			while(i < oldKnowledges.size() && j < newKnowledges.size()) {
+				if(oldKnowledges.get(i).getKnowledge().equals(newKnowledges.get(j).getString())) {
+					i++;
+					j++;
+				}
+				else if(oldKnowledges.get(i).getKnowledge().compareTo(newKnowledges.get(j).getString()) < 0) {
+					em.remove(oldKnowledges.get(i));
+					i++;
+				}
+				else {
+					em.persist(new KnowledgeTraveler(traveler, newKnowledges.get(j).getString()));
+					j++;
+				}
+			}
+			
+			while(i < oldKnowledges.size()) {
+				em.remove(oldKnowledges.get(i));
+				i++;
+			}
+			
+			while(j < newKnowledges.size()) {
+				em.persist(new KnowledgeTraveler(traveler, newKnowledges.get(j).getString()));
+				j++;
+			}
+			
 
 			if (!user.getTraveler()) {
 				user.setTraveler(true);
@@ -228,34 +336,23 @@ public class ASUserImp implements ASUser {
 		EntityManager em = emfactory.createEntityManager();
 		EntityTransaction t = em.getTransaction();
 		t.begin();
-		Host host;
-		String consulta = "SELECT * FROM HOST WHERE USER_NICKNAME = ?1";
-		try {
-			host = (Host) em.createNativeQuery(consulta, Host.class).setParameter(1, tPlace.getNickname())
-					.getSingleResult();
-			consulta = "SELECT * FROM PLACE WHERE ADDRESS = ?1 AND HOST_ID = ?2";
-			Place place;
-			try {
-				place = (Place) em.createNativeQuery(consulta, Place.class).setParameter(1, tPlace.getAddress())
-						.setParameter(2, host.getId()).getSingleResult();
-			} catch (NoResultException e) {
-				place = new Place();
-				place.setHost(host);
-				place.setAddress(tPlace.getAddress());
-				host.getPlaces().add(place);
-			}
-
-			place.setDescription(tPlace.getDescription());
-			place.setFamilyUnit(tPlace.getFamilyUnit());
-			place.setNoAvaliableDates(tPlace.getNoAvaliableDates());
-			place.setPhoto(tPlace.getPhoto());
-			em.persist(place);
-			em.persist(host);
-			updated = true;
-		} catch (NoResultException e) {
+		
+		PlacesKey key = new PlacesKey(tPlace.getNickname(), tPlace.getAddress());
+		Place place;
+		place = em.find(Place.class, key);
+		if(place == null) {
+			Host host = em.find(Host.class, tPlace.getNickname());
+			place = new Place();
+			place.setHost(host);
 		}
-
-		em.getTransaction().commit();
+		place.setAddress(tPlace.getAddress());
+		place.setDescription(tPlace.getDescription());
+		place.setNoAvaliableDates(tPlace.getNoAvaliableDates());
+		place.setPhoto(tPlace.getPhoto());
+		place.setFamilyUnit(tPlace.getFamilyUnit());
+		em.persist(place);
+		
+		t.commit();
 		em.close();
 		emfactory.close();
 		return updated;
@@ -269,12 +366,12 @@ public class ASUserImp implements ASUser {
 		EntityTransaction t = em.getTransaction();
 		t.begin();
 		
-		String query = "SELECT * FROM HOST WHERE USER_NICKNAME = ?1";
 		try {
-			Host hostEntity = (Host)em.createNativeQuery(query, Host.class)
-					.setParameter(1, user.getNickname()).getSingleResult();
-			host = hostEntity.toTransfer();	
-		}catch(NoResultException e) {}
+			host = em.find(Host.class, user.getNickname()).toTransfer();	
+		}
+		catch(NullPointerException e) {
+			e.printStackTrace();
+		}
 		
 		em.getTransaction().commit();
         em.close();
@@ -372,7 +469,6 @@ public class ASUserImp implements ASUser {
 		return isEditPossible;
 	}
 
-	@SuppressWarnings("unchecked")
  private void newLanguages(List<Language> oldLanguages, 
 			TreeSet<LanguagesEnum> newLanguages, EntityManager em, UserHA user){
 		int i = 0;

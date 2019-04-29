@@ -63,4 +63,12 @@ public enum CountriesEnum {
 	public String getString() {
 		return this.name;
 	}
+	
+	public static CountriesEnum setToEnum(String name) {
+		for(CountriesEnum country : CountriesEnum.values()) {
+			if(country.getString().equals(name))
+				return country;
+		}
+		return null;
+	}
 }
