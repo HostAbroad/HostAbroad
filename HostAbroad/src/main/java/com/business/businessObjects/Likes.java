@@ -1,53 +1,26 @@
 package com.business.businessObjects;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Version;
 
-import com.business.transfers.TLikes;
-
-@Entity
-@Table
+@Entity @IdClass(LikesKey.class)
 public class Likes {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
 	@ManyToOne
 	private UserHA userSender;
+	
+	@Id
 	@ManyToOne
 	private UserHA userReceiver;
-	private boolean activo;
-	@Version
-	private Integer version;
 
 	public Likes() {}
-	
-	public Likes(int id, UserHA userSender, UserHA userReceiver, boolean activo) {
-		this.id = id;
-		this.userSender = userSender;
-		this.userReceiver = userReceiver;
-		this.activo = activo;
-	}
-
-	public Likes(UserHA userSender, UserHA userReceiver, boolean activo) {
-		
-		this.userSender = userSender;
-		this.userReceiver = userReceiver;
-		this.activo = activo;
-	}
 
 	public Likes(UserHA userSender, UserHA userReceiver) {
 		this.userSender = userSender;
 		this.userReceiver = userReceiver;
-	}
-	
-	public Integer getId() {
-		return id;
 	}
 
 	public UserHA getUserSender() {
@@ -64,25 +37,5 @@ public class Likes {
 
 	public void setUserReceiver(UserHA userReceiver) {
 		this.userReceiver = userReceiver;
-	}
-
-	public TLikes toTransfer() {
-		return new TLikes(this.userSender.getNickname(), this.userReceiver.getNickname());
-	}
-	
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
-	
-	public Integer getVersion() {
-		return this.version;
-	}
-
-	public boolean getActivo() {
-		return activo;
-	}
-
-	public void setActivo(boolean activo) {
-		this.activo = activo;
 	}
 }

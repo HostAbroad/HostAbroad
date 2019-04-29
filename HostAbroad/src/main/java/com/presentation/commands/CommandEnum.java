@@ -11,7 +11,7 @@ public class CommandEnum {
 		CommandReadTravelerInformation,
 		CommandEditTraveler,
 		CommandEditHost,
-		CommandSendersLike,
+		CommandGetMyLike,
 		CommandModifyBasicInformation,
 		CommandSearch,
 		CommandRateUser,

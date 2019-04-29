@@ -16,7 +16,6 @@ import com.business.enums.InterestsEnum;
 import com.business.transfers.THost;
 
 @Entity
-@Table
 public class Host {
 	
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY) 

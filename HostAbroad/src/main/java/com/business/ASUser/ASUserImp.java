@@ -29,7 +29,6 @@ import com.business.transfers.TPlace;
 import com.business.transfers.TRating;
 import com.business.transfers.TTraveler;
 import com.business.transfers.TUser;
-import com.presentation.loginUI.AuthService;
 
 public class ASUserImp implements ASUser {
 
@@ -305,7 +304,7 @@ public class ASUserImp implements ASUser {
 		return traveler;
 	}
 
-	public ArrayList<TUser> sendersLike(TUser tUser) {
+	public ArrayList<TUser> getMyLikes(TUser tUser) {
 
 		 ArrayList<TUser> sendersUser = new ArrayList<TUser>(); //usuarios que nos han enviado like
 		
@@ -315,36 +314,17 @@ public class ASUserImp implements ASUser {
 			EntityTransaction tr = em.getTransaction();
 			tr.begin();
 			
-			TUser tUserSender; //El que nos ha enviado el like
-			for(Integer id : tUser.getLikes()) {
-				
-				String consulta = "SELECT * FROM LIKES WHERE id = ?1 AND ACTIVO = 1";
-				Query query = em.createNativeQuery(consulta, Likes.class);
-				query.setParameter(1, id);
+			UserHA user = em.find(UserHA.class, tUser.getNickname());
+			for(Likes like : user.getLikes()) 
+				sendersUser.add(like.getUserSender().toTransfer());
 	
-				Likes like = null;
-				
-				try {
-					like = (Likes) query.getSingleResult();
-				}
-				catch (NoResultException ex) {
-					System.out.println(ex.getMessage());
-				}
-			
-				tUserSender = new TUser(like.getUserSender().getNickname(), like.getUserSender().getRating(),
-						like.getUserSender().getDescription());
-				
-				sendersUser.add(tUserSender);
-				
-			}
+			tr.commit();
 			em.close();
 			emf.close();
 		}
 		catch (Exception ex) {
 			System.out.println(ex.getMessage());
-		}		
-		
-		
+		}	
 		return  sendersUser;
 	}
 
@@ -429,57 +409,26 @@ public class ASUserImp implements ASUser {
 	public boolean rateUser(TRating tRating) {
 
 		boolean result = false; //Devolverá false si ha habido algún error o si ese Sender ya ha valorado a Receiver
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction tr = em.getTransaction();
+		tr.begin();
 		
 		try {
-			
-			EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
-			EntityManager em = emf.createEntityManager();
-			EntityTransaction tr = em.getTransaction();
-			tr.begin();
-
 			UserHA userSender; // Usuario 1 es el que envia valoracion
 			UserHA userReceiver; // Usuario 2 es el que la recibe
-
-			try {
-				
-				String query = "SELECT * FROM USERHA WHERE NICKNAME = ?1";
-				userSender = (UserHA) em.createNativeQuery(query, UserHA.class).setParameter(1, tRating.getUserSender())
-						.getSingleResult();
-				userReceiver = (UserHA) em.createNativeQuery(query, UserHA.class).setParameter(1, tRating.getUserReceiver())
-						.getSingleResult();
-
-				query = "SELECT * FROM RATING WHERE USERRECEIVER_NICKNAME = ?1 AND USERSENDER_NICKNAME = ?2";
-				Rating rating;
-				
-				try {
-
-					rating = (Rating) em.createNativeQuery(query, Rating.class)
-							.setParameter(1, tRating.getUserReceiver()).setParameter(2, tRating.getUserSender())
-							.getSingleResult();
-
-				} catch (Exception e) {
-
-					rating = new Rating(userSender, userReceiver, tRating.getRate());
-					em.persist(rating);
-
-					userReceiver.addRate(rating);
-					userReceiver.updateRating(); // Vuelve a calcular la valoracion total para
-																	// actualizarla
-
-					em.persist(userReceiver);
-					result = true;
-
-				}
-			} catch (NoResultException e) {}
-
-			tr.commit();
-			em.close();
-			emf.close();
+			userSender = em.find(UserHA.class, tRating.getUserSender());
+			userReceiver = em.find(UserHA.class, tRating.getUserReceiver());
+			em.persist(new Rating(userSender, userReceiver, tRating.getRate()));
 			
+			tr.commit();
+			result = true;
 		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
+			tr.rollback();
 		}
-		
+			
+		em.close();
+		emf.close();
 		return result;
 	}
 
@@ -509,77 +458,11 @@ public class ASUserImp implements ASUser {
 	@Override
 	public TUser readUser(TUser tUser) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
-		EntityManager em = emf.createEntityManager();
-		
-		String queryStr = "SELECT * FROM USERHA WHERE NICKNAME = ?1";
-		Query query = em.createNativeQuery(queryStr, UserHA.class);
-		query.setParameter(1, tUser.getNickname());
-		TUser user = null;
-		UserHA userNick = null;
-		try {
-			userNick = (UserHA)query.getSingleResult();
-		}
-		catch (NoResultException ex) {
-			System.out.println(ex.getMessage());
-		}
-		
-		queryStr = "SELECT * FROM LIKES WHERE USERRECEIVER_NICKNAME = ?1";
-		query = em.createNativeQuery(queryStr, Likes.class);
-		query.setParameter(1, tUser.getNickname());
-		
-		try {
-			ArrayList<Likes> likes = new ArrayList<Likes>();
-			List<Likes> likesList = query.getResultList();
-			while(!likesList.isEmpty()) {
-				likes.add(likesList.get(0));
-				likesList.remove(0);
-			}
-			userNick.setLikes(likes);
-		}
-		catch (NoResultException ex) {
-			System.out.println(ex.getMessage());
-		}
-		
-		queryStr = "SELECT * FROM RATING WHERE USERRECEIVER_NICKNAME = ?1";
-		query = em.createNativeQuery(queryStr, Rating.class);
-		query.setParameter(1, tUser.getNickname());
-		
-		try {
-			ArrayList<Rating> rates = new ArrayList<Rating>();
-			List<Rating> ratesList = query.getResultList();
-			while(!ratesList.isEmpty()) {
-				rates.add(ratesList.get(0));
-				ratesList.remove(0);
-			}
-			userNick.setRates(rates);
-		}
-		catch (NoResultException ex) {
-			System.out.println(ex.getMessage());
-		}
-		
-		queryStr = "SELECT * FROM MATCHES WHERE USERRECEIVER_NICKNAME = ?1 OR USERSENDER_NICKNAME = ?1";
-		query = em.createNativeQuery(queryStr, Matches.class);
-		query.setParameter(1, tUser.getNickname());
-		
-		try {
-			ArrayList<Matches> matches = new ArrayList<Matches>();
-			List<Matches> matchesList = query.getResultList();
-			while(!matchesList.isEmpty()) {
-				matches.add(matchesList.get(0));
-				matchesList.remove(0);
-			}
-			userNick.setMatches(matches);
-		}
-		catch (NoResultException ex) {
-			System.out.println(ex.getMessage());
-		}
-		
-		user = userNick.toTransfer();
-		
+		EntityManager em = emf.createEntityManager();		
+		UserHA user = em.find(UserHA.class, tUser.getNickname());
 		em.close();
 		emf.close();
-		
-		return user;
+		return user.toTransfer();
 	}
 
 	@Override
@@ -592,42 +475,18 @@ public class ASUserImp implements ASUser {
 				EntityManager em = emf.createEntityManager();
 				EntityTransaction tr = em.getTransaction();
 				tr.begin();
-				
-				TUser tUserSender;
-				for(Integer id : tUser.getMatches()) {
-					
-					String consulta = "SELECT * FROM MATCHES WHERE id = ?1";
-					Query query = em.createNativeQuery(consulta, Matches.class);
-					query.setParameter(1, id);
-		
-					Matches matches = null;
-					
-					try {
-						matches = (Matches) query.getSingleResult();
-					}
-					catch (NoResultException ex) {
-						System.out.println(ex.getMessage());
-					}
-					
-					if(matches.getUserReceiver().getNickname().equals(AuthService.getUserNickName()))
-						tUserSender = new TUser(matches.getUserSender().getNickname(), matches.getUserSender().getRating(),
-							matches.getUserSender().getDescription());
-					else
-						tUserSender = new TUser(matches.getUserReceiver().getNickname(), matches.getUserReceiver().getRating(),
-								matches.getUserReceiver().getDescription());
-					
-					
-					myMatches.add(tUserSender);
-					
-				}
+				UserHA user = em.find(UserHA.class, tUser.getNickname());
+				for(Matches match : user.getMatchesReceiver())
+						myMatches.add(match.getUserSender().toTransfer());
+				for(Matches match : user.getMatchesSender())
+						myMatches.add(match.getUserReceiver().toTransfer());
+				tr.commit();
 				em.close();
 				emf.close();
 			}
 			catch (Exception ex) {
 				System.out.println(ex.getMessage());
-			}		
-			
-			
+			}	
 			return myMatches;
 	}
 

@@ -3,7 +3,7 @@ package com.business.businessObjects;
 import java.io.Serializable;
 
 public class InterestsKey implements Serializable{
-private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	
 	private String user;
 	private String interest;

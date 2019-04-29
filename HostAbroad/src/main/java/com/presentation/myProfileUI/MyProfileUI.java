@@ -1,9 +1,7 @@
 package com.presentation.myProfileUI;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 import org.vaadin.easyuploads.UploadField;
 
@@ -56,7 +54,7 @@ import com.vaadin.ui.VerticalLayout;
 @Theme("mytheme")
 @SuppressWarnings("deprecation")
 public class MyProfileUI extends UI {
-
+	private static final long serialVersionUID = 1L;
 	private String enumValue;
 
 	// Hay que pasarle un transfer usuario desde el LoginUI, y de ahi sacar todos
@@ -497,7 +495,7 @@ public class MyProfileUI extends UI {
 		panelMain.setId("panelMain");
 		mainLayout.addComponent(panelMain);
 
-		Pair<Integer, Object> result = Controller.getInstance().action(Commands.CommandSendersLike, myUser);
+		Pair<Integer, Object> result = Controller.getInstance().action(Commands.CommandGetMyLike, myUser);
 
 		if (result.getLeft() == 1) {
 

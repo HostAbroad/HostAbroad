@@ -2,15 +2,15 @@ package com.business.businessObjects;
 
 import java.io.Serializable;
 
-public class MatchesKey implements Serializable{
+public class LikesKey implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private String userSender;
 	private String userReceiver;
 	
-	public MatchesKey() {}
+	public LikesKey() {}
 	
-	public MatchesKey(String userSender, String userReceiver) {
+	public LikesKey(String userSender, String userReceiver) {
 		this.userSender = userSender;
 		this.userReceiver = userReceiver;
 	}

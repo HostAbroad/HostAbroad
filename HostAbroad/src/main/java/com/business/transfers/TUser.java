@@ -18,12 +18,12 @@ public class TUser{
 	private String birthday;
 	private boolean host;
 	private boolean traveler;
-	private ArrayList<Integer> likes;
-	private ArrayList<Integer> rates;
+	private ArrayList<String> likes;
+	private ArrayList<String> rates;
 	private TreeSet<LanguagesEnum> languages;
 	private TreeSet<InterestsEnum> interests;
 
-	private ArrayList<Integer> matches;
+	private ArrayList<String> matches;
 
 	public TUser() {
 	};
@@ -31,8 +31,8 @@ public class TUser{
 	//Full constructor
 	public TUser(String nickname, String fullName, String password, String email,
 			String description, String photo, String gender, String birthday, double rating, boolean host,
-			boolean traveler,ArrayList<Integer> likes, ArrayList<Integer> rates,
-			TreeSet<LanguagesEnum> languages, TreeSet<InterestsEnum> interests, ArrayList<Integer> matches){
+			boolean traveler,ArrayList<String> likes, ArrayList<String> rates,
+			TreeSet<LanguagesEnum> languages, TreeSet<InterestsEnum> interests, ArrayList<String> matches){
 
 		this.nickname = nickname;
 		this.fullName = fullName;
@@ -54,8 +54,8 @@ public class TUser{
 	
 	public TUser(String nickname, String fullName, String password, String email,
 			String description, String photo, String gender, String birthday, double rating, boolean host,
-			boolean traveler,ArrayList<Integer> likes, ArrayList<Integer> rates,
-			TreeSet<LanguagesEnum> languages, ArrayList<Integer> matches){
+			boolean traveler,ArrayList<String> likes, ArrayList<String> rates,
+			TreeSet<LanguagesEnum> languages, ArrayList<String> matches){
 
 		this.nickname = nickname;
 		this.fullName = fullName;
@@ -76,7 +76,7 @@ public class TUser{
 	
 	public TUser(String nickname, String fullName, String email, String password, 
 			double rating, String description, boolean host, boolean traveler,
-			ArrayList<Integer> likes, ArrayList<Integer> rates, ArrayList<Integer> matches){
+			ArrayList<String> likes, ArrayList<String> rates, ArrayList<String> matches){
 
 		this.nickname = nickname;
 		this.fullName = fullName;
@@ -92,7 +92,7 @@ public class TUser{
 	}
 
 	public TUser(String nickname, String fullName, String email, String password, double rating, String description,
-					boolean host, boolean traveler, ArrayList<Integer> likes) {
+					boolean host, boolean traveler, ArrayList<String> likes) {
 		this.nickname = nickname;
 		this.fullName = fullName;
 		this.email = email;
@@ -242,27 +242,27 @@ public class TUser{
 		return this.fullName;
 	}
 
-	public ArrayList<Integer> getLikes() {
+	public ArrayList<String> getLikes() {
 		return likes;
 	}
 
-	public void setLikes(ArrayList<Integer> likes) {
+	public void setLikes(ArrayList<String> likes) {
 		this.likes = likes;
 	}
 
-	public ArrayList<Integer> getRates() {
+	public ArrayList<String> getRates() {
 		return rates;
 	}
 
-	public void setRates(ArrayList<Integer> rates) {
+	public void setRates(ArrayList<String> rates) {
 		this.rates = rates;
 	}
 	
-	public ArrayList<Integer> getMatches() {
+	public ArrayList<String> getMatches() {
 		return matches;
 	}
 
-	public void setMatches(ArrayList<Integer> matches) {
+	public void setMatches(ArrayList<String> matches) {
 		this.matches = matches;
 	}
 

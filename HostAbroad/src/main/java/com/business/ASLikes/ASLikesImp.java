@@ -37,7 +37,7 @@ public class ASLikesImp implements ASLikes{
 					try {
 						like = (Likes)em.createNativeQuery(query, Likes.class).setParameter(1, tLikes.getUserReceiver()).setParameter(2, tLikes.getUserSender()).getSingleResult();
 					}catch(Exception e) {
-						like = new Likes(userSender, userReceiver, true);
+						like = new Likes(userSender, userReceiver);
 						em.persist(like);
 						
 						userReceiver.getLikes().add(like);
