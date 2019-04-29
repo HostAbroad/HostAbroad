@@ -24,9 +24,6 @@ import com.business.transfers.TTraveler;
 import com.business.transfers.TUser;
 import com.fo0.advancedtokenfield.main.AdvancedTokenField;
 import com.fo0.advancedtokenfield.model.Token;
-import com.jarektoro.responsivelayout.ResponsiveColumn;
-import com.jarektoro.responsivelayout.ResponsiveLayout;
-import com.jarektoro.responsivelayout.ResponsiveRow;
 import com.presentation.card.Card;
 import com.presentation.commands.CommandEnum.Commands;
 import com.presentation.commands.Pair;
@@ -34,7 +31,6 @@ import com.presentation.controller.Controller;
 import com.presentation.headerAndFooter.Footer;
 import com.presentation.headerAndFooter.Header;
 import com.presentation.loginUI.AuthService;
-import com.presentation.myPlacesUI.MyPlacesUI;
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.Binder;
 import com.vaadin.data.validator.EmailValidator;
@@ -730,7 +726,6 @@ public class MyProfileUI extends UI {
 	private GridLayout addPlaces() {
 		GridLayout mainGrid = new GridLayout(1, 2);
 		mainGrid.setSpacing(true);
-		mainGrid.setResponsive(false);
 		mainGrid.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 		GridLayout sections = new GridLayout(2, 1);
 		sections.setSpacing(true);
