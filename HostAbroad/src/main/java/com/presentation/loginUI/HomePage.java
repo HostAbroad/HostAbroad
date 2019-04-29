@@ -54,6 +54,8 @@ public class HomePage extends UI {
 		mainLayout.addComponent(new Footer());
 		this.setContent(mainLayout);
 		this.setWidthUndefined();
+		
+		
 	}
 
 	private Component splitPanel() {
