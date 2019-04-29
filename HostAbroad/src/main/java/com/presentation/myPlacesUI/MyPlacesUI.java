@@ -23,17 +23,22 @@ public class MyPlacesUI extends UI {
 
 	@Override
 	protected void init(VaadinRequest request) {
-		VerticalLayout superLayout = new VerticalLayout();
-		superLayout.setMargin(false);
-		superLayout.setSpacing(false);
-		HorizontalLayout mainLayout = new HorizontalLayout();
-		mainLayout.setStyleName("v-scrollable");
-		mainLayout.setSizeFull();
-
-
-		GridLayout secondaryLayout = new GridLayout(2,6);
-		secondaryLayout.setMargin(true);
-		secondaryLayout.setSpacing(true);
+		
+		GridLayout mainGrid = new GridLayout(1, 2);
+		mainGrid.setSpacing(true);
+		mainGrid.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+		GridLayout sections = new GridLayout(2, 1);
+		sections.setSpacing(true);
+		sections.setMargin(true);
+		sections.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+		VerticalLayout image = new VerticalLayout();
+		image.setSpacing(true);
+		image.setMargin(true);
+		image.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+		GridLayout fields = new GridLayout(2, 2);
+		fields.setSpacing(true);
+		fields.setMargin(true);
+		fields.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 
 		Image placeImg = new Image();
 		placeImg.setSource(new ExternalResource("https://raw.githubusercontent.com/OmegaSkyres/images/master/null.png"));
@@ -50,6 +55,11 @@ public class MyPlacesUI extends UI {
 			Notification.show("File: " + uploadField.getLastFileName());
 		});
 		changeImg.setId("PlaceChangeImg");
+		
+		image.addComponent(placeImg);
+		image.addComponent(uploadField);
+		
+		sections.addComponent(image, 0, 0);
 		
 		TextArea description = new TextArea("Description");
 		description.setWordWrap(false);
@@ -94,7 +104,12 @@ public class MyPlacesUI extends UI {
 		unitfamily.setItems("Single", "With friends", "With family");
 		unitfamily.setTextInputAllowed(false);
 		unitfamily.setId("unitFamily");
-
+		
+		fields.addComponent(address, 0, 0);
+		fields.addComponent(description, 1, 0);
+		fields.addComponent(days, 0, 1);
+		fields.addComponent(duration, 1, 1);
+		sections.addComponent(fields, 1, 0);
 
 		Button save = new Button("Save", FontAwesome.SAVE);
 		save.setId("saveButton");
@@ -119,20 +134,10 @@ public class MyPlacesUI extends UI {
 				}
 			
 		});
-
-		secondaryLayout.addComponent(placeImg,0,0);
-		secondaryLayout.addComponent(uploadField,0,1);
-		secondaryLayout.addComponent(duration,0,2);
-		secondaryLayout.addComponent(days,0,3);
-		secondaryLayout.addComponent(unitfamily,0,4);
-		secondaryLayout.addComponent(save,0,5);
-		secondaryLayout.addComponent(description,1,0);
-		secondaryLayout.addComponent(address,1,2);
-		mainLayout.addComponent(secondaryLayout);
-		superLayout.addComponent(new Header());
-		superLayout.addComponentsAndExpand(mainLayout);
-		superLayout.addComponent(new Footer());
-		this.setContent(superLayout);
+		
+		mainGrid.addComponent(sections);
+		mainGrid.addComponent(save);
+		
 	}
 
 

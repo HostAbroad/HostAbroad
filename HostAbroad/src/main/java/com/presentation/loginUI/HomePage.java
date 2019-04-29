@@ -32,7 +32,7 @@ public class HomePage extends UI {
 		setSizeFull();
 		ResponsiveLayout mainResponsive = new ResponsiveLayout();  
 		mainResponsive.setSizeFull();
-		setContent(mainResponsive);
+		//setContent(mainResponsive);
 		
 		ResponsiveRow headerRow = mainResponsive.addRow();
 		headerRow.setHeight("100%");
@@ -63,8 +63,8 @@ public class HomePage extends UI {
 		mainLayout.setComponentAlignment(bottom, Alignment.MIDDLE_CENTER);
 		mainLayout.addComponent(new Label("&nbsp;", ContentMode.HTML));
 		mainLayout.addComponent(new Footer());
-		//this.setContent(mainLayout);
-		//this.setWidthUndefined();
+		this.setContent(mainLayout);
+		this.setWidthUndefined();
 	}
 
 	private Component splitPanel() {
@@ -145,8 +145,8 @@ public class HomePage extends UI {
 		Button join = new Button("Join us");
 		join.setIcon(FontAwesome.USER_PLUS);
 		join.setStyleName(
-				"v-button v-widget large v-button-large v-button v-widget icon-align-top v-button-icon-align-top");
-		join.setId("joinBtn");
+				"v-button v-widget large v-button-large v-button v-widget icon-align-top v-button-icon-align-top v-button-register");
+		join.setId("saveButton");
 		join.addClickListener(event -> {
 			HomePage.this.getUI().getPage().setLocation("register");
 		});
@@ -157,7 +157,7 @@ public class HomePage extends UI {
 		Button login = new Button("Log in");
 		login.setIcon(FontAwesome.SIGN_IN);
 		login.setStyleName(
-				"v-button v-widget large v-button-large v-button v-widget icon-align-top v-button-icon-align-top");
+				"v-button v-widget large v-button-large v-button v-widget icon-align-top v-button-icon-align-top v-button-register");
 		login.setId("loginBtn");
 		login.addClickListener(event -> {
 			HomePage.this.getUI().getPage().setLocation("login");
