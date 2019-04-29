@@ -1,6 +1,6 @@
 @import "mytheme.scss";
 @import "addons.scss";
-@import "../../../../resources/VAADIN/addons/searchdropdown/searchdropdown.scss";
+//import "../../../../resources/VAADIN/addons/searchdropdown/searchdropdown.scss";
 
 // This should be in the Valo theme as a shorthand
 $v-layout-margin: $v-layout-margin-top $v-layout-margin-right $v-layout-margin-bottom $v-layout-margin-left !default;
@@ -11,7 +11,5 @@ $v-layout-margin: $v-layout-margin-top $v-layout-margin-right $v-layout-margin-b
 .mytheme {
     @include addons;
     @include mytheme;
-    @include searchdropdown;
+    //@include searchdropdown;
 }
-
-© 2019 GitHub, Inc.
