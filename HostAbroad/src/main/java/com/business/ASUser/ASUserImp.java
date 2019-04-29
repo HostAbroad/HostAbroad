@@ -358,10 +358,11 @@ public class ASUserImp implements ASUser {
 			user.setFullName(tUser.getFullName());
 			user.setEmail(newEmail);
 			user.setDescription(tUser.getDescription());
-			user.setPhoto(tUser.getPhoto());
+			//user.setPhoto(tUser.getPhoto());
 			user.setGender(tUser.getGender());
 			user.setBirthday(tUser.getBirthday());
 			this.newLanguages(user.getLanguages(), tUser.getLanguages(), em, user);
+
 			em.persist(user);
 		}
 		
@@ -370,8 +371,9 @@ public class ASUserImp implements ASUser {
 		emf.close();
 		return isEditPossible;
 	}
-	
-	private void newLanguages(List<Language> oldLanguages, 
+
+	@SuppressWarnings("unchecked")
+ private void newLanguages(List<Language> oldLanguages, 
 			TreeSet<LanguagesEnum> newLanguages, EntityManager em, UserHA user){
 		int i = 0;
 		int j = 0;

@@ -10,6 +10,10 @@ import com.presentation.commands.CommandEnum.Commands;
 import com.presentation.commands.Pair;
 import com.presentation.controller.Controller;
 import com.presentation.loginUI.AuthService;
+
+import org.vaadin.teemu.ratingstars.RatingStars;
+
+
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.FontAwesome;
@@ -29,17 +33,27 @@ import com.vaadin.ui.VerticalLayout;
 
 public class Card extends Panel{
 	
+
 	Button like;
 	Button acceptLikes;
 	Button declineLikes;
 	
 	public Card(TUser tUser) {
+
+	private RatingStars stars;
+	
+	public Card(String nickname, String description, Double rate, Boolean enabled) {
+		stars = new RatingStars();
+		stars.setValue(rate);
+		stars.setReadOnly(enabled);
+
 		//This is the horizontalLayout. It's used to locate the 2 inner VLayouts.
 		HorizontalLayout horizontalLayout = new HorizontalLayout();
 		
 		//Locating the inner layouts
 		horizontalLayout.addComponent(createLeftPartOfCard(tUser.getNickname()));
 		horizontalLayout.addComponent(createRightPartOfCard(tUser));
+		
 		
 		this.setContent(horizontalLayout);
 		this.setSizeUndefined();
@@ -88,6 +102,8 @@ public class Card extends Panel{
 		
 		return imageNickNameLayout;
 	}
+	
+	
 
 	/** private VerticalLayout createRightPartOfCard(String description) 
 	 *  Creates inner layout for the right part of the panel(containing user description)
@@ -176,9 +192,16 @@ public class Card extends Panel{
 		descriptionLayout.setComponentAlignment(declineLikes, Alignment.TOP_RIGHT);
 		
 		
+		stars.setCaption("Rating: ");
+		stars.setMaxValue(5);
+		
+		descriptionLayout.addComponent(stars);
+		descriptionLayout.setComponentAlignment(stars, Alignment.BOTTOM_RIGHT);
+		
 		return descriptionLayout;
 	}
 	
+
 	public void setVisibleAcceptButton(boolean visible) {
 		acceptLikes.setVisible(visible);
 	}
