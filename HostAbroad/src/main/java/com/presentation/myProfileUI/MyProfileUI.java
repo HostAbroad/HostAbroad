@@ -1,7 +1,9 @@
 package com.presentation.myProfileUI;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 import org.vaadin.easyuploads.UploadField;
 import org.vaadin.teemu.ratingstars.RatingStars;
@@ -13,13 +15,14 @@ import com.business.enums.InterestsEnum;
 import com.business.enums.InterestsTokens;
 import com.business.enums.KnowledgesEnum;
 import com.business.enums.KnowledgesTokens;
+import com.business.enums.LanguagesEnum;
+import com.business.enums.LanguagesTokens;
 import com.business.transfers.THost;
 import com.business.transfers.TTraveler;
 import com.business.transfers.TUser;
 import com.fo0.advancedtokenfield.main.AdvancedTokenField;
 import com.fo0.advancedtokenfield.model.Token;
 import com.jarektoro.responsivelayout.ResponsiveColumn;
-import com.jarektoro.responsivelayout.ResponsiveColumn.ColumnComponentAlignment;
 import com.jarektoro.responsivelayout.ResponsiveLayout;
 import com.jarektoro.responsivelayout.ResponsiveRow;
 import com.presentation.card.Card;
@@ -28,7 +31,6 @@ import com.presentation.commands.Pair;
 import com.presentation.controller.Controller;
 import com.presentation.headerAndFooter.Footer;
 import com.presentation.headerAndFooter.Header;
-import com.presentation.loginUI.AuthService;
 import com.presentation.myPlacesUI.MyPlacesUI;
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.Binder;
@@ -39,7 +41,6 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
-import com.vaadin.server.Page.Styles;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ContentMode;
@@ -48,6 +49,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBoxGroup;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.DateField;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
@@ -118,7 +120,7 @@ public class MyProfileUI extends UI {
 		});
 
 		buttons.addRow().withComponents(places);
-		
+
 		Button traveler = new Button("Traveler settings", VaadinIcons.PAPERPLANE);
 		traveler.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-t");
 		traveler.setWidth("158.55px");
@@ -155,7 +157,6 @@ public class MyProfileUI extends UI {
 		});
 		buttons.addRow().withComponents(matches);
 
-		
 		buttons.setWidth("100%");
 
 		mainRow.addColumn(menuCol);
@@ -329,7 +330,7 @@ public class MyProfileUI extends UI {
 		image.setSpacing(true);
 		image.setMargin(true);
 		image.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
-		GridLayout fields = new GridLayout(3, 5);
+		GridLayout fields = new GridLayout(4, 5);
 		fields.setSpacing(true);
 		fields.setMargin(true);
 		fields.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
@@ -340,6 +341,11 @@ public class MyProfileUI extends UI {
 		profileImg.setSource(
 				new ExternalResource("https://raw.githubusercontent.com/evivar/images/master/User_Circle.png"));
 		profileImg.setId("ProfileImage");
+
+		RatingStars rate = new RatingStars();
+		rate.setCaption("Rate: ");
+		rate.setValue(user.getRating());
+		rate.setReadOnly(true);
 
 		UploadField uploadField = new UploadField();
 		uploadField.setClearButtonVisible(false);
@@ -353,6 +359,8 @@ public class MyProfileUI extends UI {
 		changeImg.setId("ProfileChangeImg");
 
 		image.addComponent(profileImg);
+		image.addComponent(rate);
+		image.setComponentAlignment(rate, Alignment.MIDDLE_CENTER);
 		image.addComponent(uploadField);
 		image.setComponentAlignment(uploadField, Alignment.MIDDLE_CENTER);
 		image.addComponent(changeImg);
@@ -386,28 +394,58 @@ public class MyProfileUI extends UI {
 		genderCB.setItems("Male", "Female", "Other");
 		genderCB.setId("ProfileGender");
 
-		ComboBox<String> languageCB = new ComboBox<>("Language");
-		languageCB.setItems("Spanish", "Saharawi");
-		languageCB.setId("ProfileLanguages");
+		// Create a DateField with the default style
+		DateField date = new DateField("Birthday");
+		date.setRangeStart(LocalDate.now().minusYears(100)); // Cant put a strange date.
+		LocalDate valid = LocalDate.now().minusYears(16);
 
-		RatingStars stars = new RatingStars();
-		stars.setCaption("Rating");
-		stars.setMaxValue(5);
-		stars.setReadOnly(true);
-		stars.setValue(user.getRating());
-		stars.setWidth("100%");
+		AdvancedTokenField lenguages = new AdvancedTokenField();
+		lenguages.setCaption("Languages (Only European languages)");
+		lenguages.setIcon(FontAwesome.BOOK);
+		lenguages.setWidth("100%");
+		lenguages.setAllowNewTokens(false);
+		lenguages.clearTokens();
+		lenguages.getTokensOfInputField().clear();
+		LanguagesTokens tokens = new LanguagesTokens();
+		lenguages.addTokensToInputField(tokens.getTokens());
+		lenguages.setVisible(true);
+
+		ComboBox<CountriesEnum> country = new ComboBox<>("Country");
+		country.setItems(CountriesEnum.values());
+		country.setId("countryComboBox");
+
+		TextArea description = new TextArea("Description");
+		description.setWordWrap(true);
+		description.setValue(user.getDescription());
+		description.setStyleName("v-textarea v-widget v-textarea-prompt");
+		description.setId("ProfileDescription");
 
 		Button save = new Button("Save");
+		save.setStyleName("v-button-register");
 		save.setIcon(FontAwesome.SAVE);
 		save.addClickListener(event -> {
-			if (binder.isValid()) {
-				Notification notif = new Notification("Changes saved!");
-				notif.setDelayMsec(3000);
-				notif.setPosition(Position.MIDDLE_CENTER);
-				notif.show(Page.getCurrent());
-				// Hay que llamar al comando
+
+			ArrayList<LanguagesEnum> arrayListLanguages = new ArrayList<LanguagesEnum>();
+			List<LanguagesEnum> setLanguages = new ArrayList<>();
+			lenguages.getTokens().forEach(e -> setLanguages.add(LanguagesEnum.valueOf(e.getValue())));
+			arrayListLanguages.addAll(setLanguages);
+
+			if (binder.isValid() && (date.getValue().getYear() <= valid.getYear())) {
+				TUser newUser = new TUser(user.getNickname(), fullName.getValue(), user.getPassword(), email.getValue(),
+						description.getValue(), user.getPhoto(), genderCB.getValue(), date.getValue().toString(),
+						user.getRating(), user.getHost(), user.getTraveler(), user.getLikes(), user.getRates(), (TreeSet<LanguagesEnum>) setLanguages,
+						user.getInterests(), user.getMatches());
+				Pair<Integer, Object> result = Controller.getInstance().action(Commands.CommandModifyBasicInformation,
+						newUser);
+				if ((boolean) result.getRight()) {
+					Notification notif = new Notification("Changes saved!");
+					notif.setDelayMsec(3000);
+					notif.setPosition(Position.MIDDLE_CENTER);
+					notif.show(Page.getCurrent());
+				}
 			} else {
-				Notification notif = new Notification("Please fill all of the fields correctly. Then click save.");
+				Notification notif = new Notification(
+						"Please fill all of the fields correctly and and enter a valid date (min 16 years). Then click save.");
 				notif.setDelayMsec(5000);
 				notif.setPosition(Position.MIDDLE_CENTER);
 				notif.show(Page.getCurrent());
@@ -415,22 +453,14 @@ public class MyProfileUI extends UI {
 		});
 		save.setId("ProfileSave");
 
-		TextArea description = new TextArea("Description");
-		description.setWordWrap(true);
-		if (user.getDescription() != null)
-			description.setValue(user.getDescription());
-		else
-			description.setValue("");
-		description.setStyleName("v-textarea v-widget v-textarea-prompt");
-		description.setId("ProfileDescription");
-
 		fields.addComponent(fullName, 0, 0);
 		fields.addComponent(username, 1, 0);
 		fields.addComponent(email, 0, 1);
-		fields.addComponent(genderCB, 1, 1);
-		fields.addComponent(languageCB, 0, 2);
-		fields.addComponent(stars, 1, 2);
-		fields.addComponent(description, 0, 3, 2, 4);
+		fields.addComponent(genderCB, 1, 2);
+		fields.addComponent(country, 0, 2);
+		fields.addComponent(date, 1, 1);
+		fields.addComponent(lenguages, 3, 0);
+		fields.addComponent(description, 0, 3, 3, 4);
 
 		sections.addComponent(fields, 1, 0);
 
@@ -741,6 +771,7 @@ public class MyProfileUI extends UI {
 			card.setVisibleLikeButton(false);
 			card.setVisibleAcceptButton(false);
 			card.setVisibleDeclineButton(false);
+			card.setStarsAvailable(true);
 			resultLayout.setComponentAlignment(card, Alignment.TOP_LEFT);
 		}
 		resultLayout.setHeight("100%");
