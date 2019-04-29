@@ -29,12 +29,9 @@ import com.vaadin.ui.VerticalLayout;
 
 public class Card extends Panel {
 
-	Button like;
-	Button acceptLikes;
-	Button declineLikes;
-
-	
-
+	private Button like;
+	private Button acceptLikes;
+	private Button declineLikes;
 	private RatingStars stars;
 
 	public Card(TUser tUser) {
@@ -135,7 +132,7 @@ public class Card extends Panel {
 		acceptLikes.setIcon(FontAwesome.CHECK);
 		acceptLikes.addClickListener(event -> {
 
-			TMatches acceptLike = new TMatches(AuthService.getUserNickName(), tUser.getNickname());
+			TMatches acceptLike = new TMatches(tUser.getNickname(), AuthService.getUserNickName());
 			Pair<Integer, Object> result = Controller.getInstance().action(Commands.CommandAcceptLike, acceptLike);
 			if (result.getLeft() == 1) {
 
@@ -155,7 +152,7 @@ public class Card extends Panel {
 		declineLikes.setIcon(FontAwesome.CLOSE);
 		declineLikes.addClickListener(event -> {
 
-			TMatches declineLike = new TMatches(AuthService.getUserNickName(), tUser.getNickname());
+			TMatches declineLike = new TMatches(tUser.getNickname(), AuthService.getUserNickName());
 			Pair<Integer, Object> result = Controller.getInstance().action(Commands.CommandDeclineLike, declineLike);
 			if (result.getLeft() == 1) {
 
