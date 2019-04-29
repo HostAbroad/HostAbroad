@@ -12,6 +12,8 @@ import com.business.enums.CountriesEnum;
 import com.business.enums.CountriesTokens;
 import com.business.enums.DurationOfStayEnum;
 import com.business.enums.FamilyUnit;
+import com.business.enums.InterestsEnum;
+import com.business.enums.InterestsTokens;
 import com.business.enums.KnowledgesEnum;
 import com.business.enums.KnowledgesTokens;
 import com.business.enums.LanguagesEnum;
@@ -44,7 +46,6 @@ import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.shared.ui.slider.SliderOrientation;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.CheckBoxGroup;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.GridLayout;
@@ -408,6 +409,7 @@ public class MyProfileUI extends UI {
 
 		mainGrid.addComponent(sections);
 		mainGrid.addComponent(save);
+		mainGrid.addComponent(new Label("&nbsp;", ContentMode.HTML));
 		return mainGrid;
 	}
 
@@ -567,9 +569,15 @@ public class MyProfileUI extends UI {
 		mainLayoutInterests.setSizeFull();
 		mainLayoutInterests.setSpacing(true);
 
-		CheckBoxGroup<KnowledgesEnum> knowledges = new CheckBoxGroup<>("Knowledges");
-		knowledges.setItems(KnowledgesEnum.values());
-		knowledges.setId("knowledges");
+		AdvancedTokenField knowledges = new AdvancedTokenField();
+		knowledges.setCaption("Interests");
+		knowledges.setIcon(FontAwesome.BOOK);
+		knowledges.setWidth("100%");
+		knowledges.setAllowNewTokens(false);
+		knowledges.clearTokens();
+		knowledges.getTokensOfInputField().clear();
+		InterestsTokens tokens = new InterestsTokens();
+		knowledges.addTokensToInputField(tokens.getTokens());
 
 		Pair<Integer, Object> resultRead = Controller.getInstance().action(Commands.CommandReadHostInformation, user);
 
@@ -577,7 +585,7 @@ public class MyProfileUI extends UI {
 			ArrayList<KnowledgesEnum> knowledgesArr = new ArrayList<KnowledgesEnum>(
 					((THost) resultRead.getRight()).getListOfKnowledges());
 			for (int i = 0; i < knowledgesArr.size(); i++)
-				knowledges.select(knowledgesArr.get(i));
+				knowledges.addToken(new Token(knowledgesArr.get(i).getString()));
 
 		}
 
@@ -586,6 +594,11 @@ public class MyProfileUI extends UI {
 		Button saveButton = new Button("Save");
 		saveButton.setId("saveButton");
 		saveButton.addClickListener(event -> {
+			
+			ArrayList<InterestsEnum> arrayListKnowledges = new ArrayList<InterestsEnum>();
+			List<InterestsEnum> setKnowledges = new ArrayList<>();
+			knowledges.getTokens().forEach(e -> setKnowledges.add(InterestsEnum.valueOf(e.getValue())));
+			arrayListKnowledges.addAll(setKnowledges);
 
 			/*
 			 * InterestsEnum arrayInterests[] = null; ArrayList<InterestsEnum>
@@ -642,9 +655,7 @@ public class MyProfileUI extends UI {
 
 		} else {
 
-			Label labelNoLikes = new Label("No likes");
-			labelNoLikes.setId("labelNoLikes");
-			mainVertical.addComponent(labelNoLikes);
+			Notification.show("No likes");
 		}
 
 		return mainLayout;
@@ -676,9 +687,7 @@ public class MyProfileUI extends UI {
 
 		} else {
 
-			Label labelNoMatches = new Label("No Matches");
-			labelNoMatches.setId("labelNoMatches");
-			mainVertical.addComponent(labelNoMatches);
+			Notification.show("No matches");
 		}
 
 		return mainLayout;
