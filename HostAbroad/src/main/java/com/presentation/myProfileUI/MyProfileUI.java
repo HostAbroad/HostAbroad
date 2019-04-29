@@ -117,8 +117,6 @@ public class MyProfileUI extends UI {
 			pages.setComponent(addPlaces());
 		});
 
-		buttons.addRow().withComponents(places);
-
 		Button traveler = new Button("Traveler settings", VaadinIcons.PAPERPLANE);
 		traveler.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-t");
 		traveler.setWidth("158.55px");
@@ -136,6 +134,11 @@ public class MyProfileUI extends UI {
 			pages.setComponent(hostInfo(myUser));
 		});
 		buttons.addRow().withComponents(hostInfo);
+		
+		if(myUser.getHost())
+			buttons.addRow().withComponents(places);
+		
+		
 
 		Button like = new Button("My likes", VaadinIcons.HEART);
 		like.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-ml");
