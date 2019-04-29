@@ -9,7 +9,6 @@ import javax.persistence.Table;
 import com.business.enums.FamilyUnit;
  
 @Entity 
-@Table
 public class Place {
 	@Id
 	private String address;
