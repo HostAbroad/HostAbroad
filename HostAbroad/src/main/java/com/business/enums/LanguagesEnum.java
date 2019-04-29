@@ -1,7 +1,5 @@
 package com.business.enums;
 
-import com.business.businessObjects.Language;
-
 public enum LanguagesEnum{
 
 	Albanian("Albanian"),
@@ -64,7 +62,7 @@ public enum LanguagesEnum{
 		return this.name;
 	}
 	
-	public LanguagesEnum setToEnum(String name) {
+	public static LanguagesEnum setToEnum(String name) {
 		for(LanguagesEnum language : LanguagesEnum.values()) {
 			if(language.getString().equals(name))
 				return language;

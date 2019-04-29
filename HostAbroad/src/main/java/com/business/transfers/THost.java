@@ -1,27 +1,26 @@
 package com.business.transfers;
+import java.util.TreeSet;
 
-import java.util.ArrayList;
-
-import com.business.enums.InterestsEnum;
+import com.business.enums.KnowledgesEnum;
 
 public class THost {
 	
-	private ArrayList<InterestsEnum> listOfInterests;
+	private TreeSet<KnowledgesEnum> knowledges;
 	private String nickname;
 	
 	public THost() {}
 	
-	public THost(String nickname, ArrayList<InterestsEnum> listOfInterests) {
+	public THost(String nickname, TreeSet<KnowledgesEnum> knowledges) {
 		this.nickname = nickname;
-		this.listOfInterests = listOfInterests;
+		this.knowledges = knowledges;
 	}
 	
-	public void setListOfInterests(ArrayList<InterestsEnum> listOfInterests) {
-		this.listOfInterests = listOfInterests;
+	public void setListOfKnowledges(TreeSet<KnowledgesEnum> knowledges) {
+		this.knowledges = knowledges;
 	}
 	
-	public ArrayList<InterestsEnum> getListOfInterests() {
-		return this.listOfInterests;
+	public TreeSet<KnowledgesEnum> getListOfKnowledges() {
+		return this.knowledges;
 	}
 
 	public String getNickname() {
