@@ -59,7 +59,7 @@ public class RegisterUserUI extends UI {
 
 		// Here are all of the validations
 		binder.forField(fullName)
-				.withValidator(new RegexpValidator("Field full name should have a least 4 letters.", "^.{3,60}\\D+$"))
+				.withValidator(new RegexpValidator("Field full name should have only letters (at least 4)", "^.{3,60}\\D+$"))
 				.bind("fullName");
 
 		binder.forField(nickname)
@@ -67,7 +67,7 @@ public class RegisterUserUI extends UI {
 						new StringLengthValidator("Field nickname should contains between 4 and 20 characters.", 4, 20))
 				.bind("nickname");
 
-		binder.forField(email).withValidator(new EmailValidator("Invalid e-mail address {0}.")).bind("email");
+		binder.forField(email).withValidator(new EmailValidator("Invalid e-mail format {0}.")).bind("email");
 		binder.forField(password).withValidator(new RegexpValidator(
 				"Should contains minimum eight characters, at least one uppercase letter, one lowercase letter and one number.",
 				"^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$")).bind("password");
@@ -122,7 +122,7 @@ public class RegisterUserUI extends UI {
 					notif.show(Page.getCurrent());
 					Page.getCurrent().setLocation("login");
 				} else {
-					Notification.show("User with this email or nickname abready exists.", Notification.Type.ERROR_MESSAGE);
+					Notification.show("User with this email or nickname already exists.", Notification.Type.ERROR_MESSAGE);
 				}
 
 			} else {

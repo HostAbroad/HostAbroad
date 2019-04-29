@@ -1,9 +1,14 @@
 package com.business;
 
 import java.util.TreeSet;
+
+import com.business.ASUser.ASUserImp;
+import com.business.enums.CountriesEnum;
+import com.business.enums.DurationOfStayEnum;
 import com.business.enums.KnowledgesEnum;
 import com.business.transfers.THost;
 import com.business.transfers.TTraveler;
+import com.business.transfers.TUser;
 import com.presentation.commands.CommandEnum.Commands;
 import com.presentation.controller.Controller;
 
@@ -13,8 +18,9 @@ public class Main {
 		// TODO Auto-generated method stub
 
 		//ASUserImp asUser = new ASUserImp();
-		//ASLikesImp asLikes = new ASLikesImp();
 		//asUser.createUser(new TUser("Veronika", "Veronika Yanova", "veronikayankova3@gmail.com", "roniponi"));
+		//ASLikesImp asLikes = new ASLikesImp();
+		
 //		TreeSet<InterestsEnum> l = new TreeSet<InterestsEnum>();
 //		l.add(InterestsEnum.Animals);
 //		l.add(InterestsEnum.Nature);
@@ -55,10 +61,15 @@ public class Main {
 //		Pair<Integer,Object> pair = Controller.getInstance().action(Commands.CommandAddPlace, place);
 //		System.out.println("Added place:" + pair.getRight());
 		
-		TreeSet<KnowledgesEnum> interests = new TreeSet<KnowledgesEnum>();
-		interests.add(KnowledgesEnum.Arts);
+		TreeSet<CountriesEnum> interests = new TreeSet<CountriesEnum>();
+		interests.add(CountriesEnum.Albania);
+		
+		TreeSet<KnowledgesEnum> interests2 = new TreeSet<KnowledgesEnum>();
+		interests2.add(KnowledgesEnum.Biology);
+		
+		
 //		ASUserImp asu = new ASUserImp();
 //		System.out.println(asu.readHostInformation(new TUser("User")).getNickname());
-		//Controller.getInstance().action(Commands.CommandEditTraveler, new TTraveler("Veronika", interests));
+		Controller.getInstance().action(Commands.CommandEditTraveler, new TTraveler("Veronika", interests, interests2, DurationOfStayEnum.MoreThanMonth));
 	}
 }

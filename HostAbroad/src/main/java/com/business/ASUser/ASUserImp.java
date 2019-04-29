@@ -223,7 +223,7 @@ public class ASUserImp implements ASUser {
 				traveler = em.find(Traveler.class, tTraveler.getNickname());
 				oldCountries = traveler.getListOfCountries();
 				oldKnowledges = traveler.getListOfKnowledges();
-			} catch (NoResultException e) {
+			} catch (NullPointerException e) {
 				traveler = new Traveler();
 				traveler.setUser(user);
 			}
