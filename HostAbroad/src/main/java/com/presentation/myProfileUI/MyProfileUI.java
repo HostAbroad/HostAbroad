@@ -11,6 +11,7 @@ import org.vaadin.teemu.ratingstars.RatingStars;
 import com.business.enums.CountriesEnum;
 import com.business.enums.CountriesTokens;
 import com.business.enums.DurationOfStayEnum;
+import com.business.enums.FamilyUnit;
 import com.business.enums.InterestsEnum;
 import com.business.enums.InterestsTokens;
 import com.business.enums.KnowledgesEnum;
@@ -18,6 +19,7 @@ import com.business.enums.KnowledgesTokens;
 import com.business.enums.LanguagesEnum;
 import com.business.enums.LanguagesTokens;
 import com.business.transfers.THost;
+import com.business.transfers.TPlace;
 import com.business.transfers.TTraveler;
 import com.business.transfers.TUser;
 import com.fo0.advancedtokenfield.main.AdvancedTokenField;
@@ -31,6 +33,7 @@ import com.presentation.commands.Pair;
 import com.presentation.controller.Controller;
 import com.presentation.headerAndFooter.Footer;
 import com.presentation.headerAndFooter.Header;
+import com.presentation.loginUI.AuthService;
 import com.presentation.myPlacesUI.MyPlacesUI;
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.Binder;
@@ -116,7 +119,7 @@ public class MyProfileUI extends UI {
 		places.setWidth("158.55px");
 		places.setHeight(75, Unit.PIXELS);
 		places.addClickListener(event -> {
-			pages.setComponent(new MyPlacesUI());
+			pages.setComponent(addPlaces());
 		});
 
 		buttons.addRow().withComponents(places);
@@ -421,6 +424,7 @@ public class MyProfileUI extends UI {
 		description.setId("ProfileDescription");
 
 		Button save = new Button("Save");
+		save.setId("saveButton");
 		save.setStyleName("v-button-register");
 		save.setIcon(FontAwesome.SAVE);
 		save.addClickListener(event -> {
@@ -477,7 +481,7 @@ public class MyProfileUI extends UI {
 		mainGrid.setSizeFull();
 		mainGrid.setWidth("100%");
 
-		GridLayout info = new GridLayout(3, 2);
+		GridLayout info = new GridLayout(3, 3);
 		info.setSpacing(true);
 		info.setMargin(true);
 		info.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
@@ -550,6 +554,8 @@ public class MyProfileUI extends UI {
 
 		Button saveButton = new Button("Save");
 		saveButton.setId("saveButton");
+		saveButton.setStyleName("v-button-register");
+		saveButton.setIcon(FontAwesome.SAVE);
 		saveButton.addClickListener(event -> {
 			/*
 			 * The problem is that you can get a List of Tokens or a List of Strings, but
@@ -583,7 +589,9 @@ public class MyProfileUI extends UI {
 			}
 
 		});
-		info.addComponent(saveButton, 1, 1);
+
+		info.addComponent(new Label("&nbsp;", ContentMode.HTML));
+		info.addComponent(saveButton, 2, 2);
 
 		Pair<Integer, Object> resultRead = Controller.getInstance().action(Commands.CommandReadTravelerInformation,
 				user);
@@ -776,5 +784,129 @@ public class MyProfileUI extends UI {
 		}
 		resultLayout.setHeight("100%");
 		return resultLayout;
+	}
+	
+	private GridLayout addPlaces() {
+		GridLayout mainGrid = new GridLayout(1, 2);
+		mainGrid.setSpacing(true);
+		mainGrid.setResponsive(false);
+		mainGrid.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+		GridLayout sections = new GridLayout(2, 1);
+		sections.setSpacing(true);
+		sections.setMargin(true);
+		sections.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+		VerticalLayout image = new VerticalLayout();
+		image.setSpacing(true);
+		image.setMargin(true);
+		image.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+		GridLayout fields = new GridLayout(2, 2);
+		fields.setSpacing(true);
+		fields.setMargin(true);
+		fields.setSizeFull();
+		fields.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+
+		Image placeImg = new Image();
+		placeImg.setSource(new ExternalResource("https://raw.githubusercontent.com/OmegaSkyres/images/master/null.png"));
+		placeImg.setId("PlaceImage");
+
+		UploadField uploadField = new UploadField();
+		uploadField.setId("uploadField");
+		uploadField.setClearButtonVisible(false);
+		uploadField.setButtonCaption("Select image");
+		
+		Button changeImg = new Button("Change image");
+		changeImg.setIcon(FontAwesome.UPLOAD);
+		changeImg.addClickListener(event -> {
+			Notification.show("File: " + uploadField.getLastFileName());
+		});
+		changeImg.setId("PlaceChangeImg");
+		
+		image.addComponent(placeImg);
+		image.addComponent(uploadField);
+		
+		sections.addComponent(image, 0, 0);
+		
+		TextArea description = new TextArea("Description");
+		description.setWordWrap(false);
+		description.setHeight("90%");
+		description.setSizeFull();
+		description.setId("PlaceDescription");
+
+		TextField address = new TextField("Address");
+		address.setId("PlaceAddress");
+		address.setWidth("150%");
+
+		VerticalLayout stay = new VerticalLayout();
+		stay.setWidth("100%");
+		stay.setSizeFull();
+        Slider duration = new Slider("Maximum duration of stay: ", 0, 4);
+        duration.setId("slider");
+        duration.setOrientation(SliderOrientation.HORIZONTAL);
+        duration.setWidth("200px");
+        Label days = new Label("Days");
+        duration.addValueChangeListener(event -> {
+            if(duration.getValue() == 0.0) {
+					days.setValue("Days");
+				}
+				else if(duration.getValue() == 1.0) {
+					days.setValue("1 Day - 6 Days");
+				}
+				else if(duration.getValue() == 2.0) {
+					days.setValue("1 Week - 2 Weeks");
+				}
+				else if(duration.getValue() == 3.0) {
+					days.setValue("2 Weeks - 4 Weeks");
+				}
+				else if(duration.getValue() == 4.0) {
+					days.setValue("1 Month or more");
+				}
+				else if(duration.getValue() == 5.0) {
+					days.setValue("More than a month");
+				}
+        });
+        stay.addComponentsAndExpand(duration);
+        stay.addComponent(new Label("&nbsp;", ContentMode.HTML));
+        stay.addComponentsAndExpand(days);
+
+		ComboBox<String> unitfamily = new ComboBox<>("I live with");
+		unitfamily.setItems("Single", "With friends", "With family");
+		unitfamily.setTextInputAllowed(false);
+		unitfamily.setId("unitFamily");
+		
+		fields.addComponent(address, 0, 0);
+		fields.setComponentAlignment(address, Alignment.TOP_LEFT);
+		fields.addComponent(description, 1, 0);
+		fields.setComponentAlignment(description, Alignment.TOP_LEFT);	
+		fields.addComponent(unitfamily, 0, 1);
+		fields.addComponent(stay, 1, 1);
+		sections.addComponent(fields, 1, 0);
+
+		Button save = new Button("Save", FontAwesome.SAVE);
+		save.setId("saveButton");
+		save.setStyleName("v-button-register");
+		save.addClickListener(event->{
+			FamilyUnit familyUnit;
+			if(unitfamily.getValue().equals("Alone")){
+				familyUnit = FamilyUnit.Alone;
+			}
+			else if(unitfamily.getValue().equals("With family")){
+				familyUnit = FamilyUnit.Family;
+			}
+			else{
+				familyUnit = FamilyUnit.Friends;
+			}
+				if(address.getValue().length() > 0 && address.getValue().length() < 50){
+					TPlace tPlace = new TPlace(address.getValue(),description.getValue(), new ArrayList<>(),"",familyUnit, AuthService.getUserNickName());
+					Controller.getInstance().action(Commands.CommandAddPlace, tPlace);
+				}
+				else {
+					Notification.show("Invalid Address", Notification.Type.ERROR_MESSAGE);
+				}
+			
+		});
+		
+		mainGrid.addComponent(sections);
+		mainGrid.addComponent(save);
+		return mainGrid;
 	}
 }
