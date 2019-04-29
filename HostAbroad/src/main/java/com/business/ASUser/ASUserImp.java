@@ -149,7 +149,7 @@ public class ASUserImp implements ASUser {
 				em.persist(user);
 				em.persist(host);
 			}
-
+			
 			ArrayList<KnowledgesEnum> newKnowledges = new ArrayList<KnowledgesEnum>(tHost.getListOfKnowledges());
 			int i = 0;
 			int j = 0;
@@ -328,18 +328,18 @@ public class ASUserImp implements ASUser {
 		
 		PlacesKey key = new PlacesKey(tPlace.getNickname(), tPlace.getAddress());
 		Place place;
-		try {
-			place = em.find(Place.class, key);
-		}catch(NoResultException e) {
+		place = em.find(Place.class, key);
+		if(place == null) {
 			Host host = em.find(Host.class, tPlace.getNickname());
 			place = new Place();
 			place.setHost(host);
 		}
-			
+		place.setAddress(tPlace.getAddress());
 		place.setDescription(tPlace.getDescription());
 		place.setNoAvaliableDates(tPlace.getNoAvaliableDates());
 		place.setPhoto(tPlace.getPhoto());
 		place.setFamilyUnit(tPlace.getFamilyUnit());
+		em.persist(place);
 		
 		t.commit();
 		em.close();
@@ -458,7 +458,6 @@ public class ASUserImp implements ASUser {
 		return isEditPossible;
 	}
 
-	@SuppressWarnings("unchecked")
  private void newLanguages(List<Language> oldLanguages, 
 			TreeSet<LanguagesEnum> newLanguages, EntityManager em, UserHA user){
 		int i = 0;
