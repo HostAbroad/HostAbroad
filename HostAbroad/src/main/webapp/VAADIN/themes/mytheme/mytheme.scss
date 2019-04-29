@@ -437,7 +437,6 @@ $v-panel-border: 2px solid v-shade;
 
     .v-button-icon-align-top-t:hover {
         background: #434343;
-        
         -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
@@ -453,7 +452,6 @@ $v-panel-border: 2px solid v-shade;
 
     .v-button-icon-align-top-h:hover {
         background: #434343;
-        
         -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
@@ -469,7 +467,6 @@ $v-panel-border: 2px solid v-shade;
 
     .v-button-icon-align-top-i:hover {
         background: #434343;
-        
         -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
@@ -485,7 +482,6 @@ $v-panel-border: 2px solid v-shade;
 
     .v-button-icon-align-top-c:hover {
         background: #434343;
-        
         -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
@@ -501,7 +497,6 @@ $v-panel-border: 2px solid v-shade;
 
     .v-button-icon-align-top-m:hover {
         background: #434343;
-        
         -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
@@ -517,7 +512,6 @@ $v-panel-border: 2px solid v-shade;
 
     .v-button-icon-align-top-ml:hover {
         background: #434343;
-        
         -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
@@ -533,7 +527,6 @@ $v-panel-border: 2px solid v-shade;
 
     .v-button-icon-align-top-mm:hover {
         background: #434343;
-        
         -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
@@ -561,7 +554,6 @@ $v-panel-border: 2px solid v-shade;
 
     .card-like-button:hover {
         background: #ff40a0;
-        
         -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
@@ -570,7 +562,6 @@ $v-panel-border: 2px solid v-shade;
 
     .card-acceptLike-button:hover {
         background: #40FF00;
-        
         -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
@@ -579,7 +570,6 @@ $v-panel-border: 2px solid v-shade;
 
     .card-declineLike-button:hover {
         background: red;
-        
         -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
@@ -607,6 +597,12 @@ $v-panel-border: 2px solid v-shade;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 
+    .homePage-traveler-img:hover {
+        border-radius: 50%;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        transform: scale(1.1);
+    }
+
     .homePage-traveler-title {
         font-size: 32px;
         font-weight: bold;
@@ -615,6 +611,12 @@ $v-panel-border: 2px solid v-shade;
     .homePage-host-img {
         border-radius: 50%;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .homePage-host-img:hover {
+        border-radius: 50%;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        transform: scale(1.1);
     }
 
     .homePage-host-title {
