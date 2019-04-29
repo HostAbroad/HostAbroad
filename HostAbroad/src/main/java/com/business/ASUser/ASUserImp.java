@@ -42,6 +42,7 @@ public class ASUserImp implements ASUser {
 	 * This method checks if a user with that nickname or password exists. the
 	 * password is encrypted with hashCode
 	 **/
+	
 	@Override
 	public boolean createUser(TUser tUser) {
 
@@ -230,8 +231,13 @@ public class ASUserImp implements ASUser {
 			traveler.setDurationOfStay(tTraveler.getDurationOfStay());
 			em.persist(traveler);
 			
+			ArrayList<CountriesEnum> newCountries;
+			try {
+				newCountries = new ArrayList<CountriesEnum>();
+			}catch(NullPointerException e) {
+				newCountries = new ArrayList<>();
+			}
 			
-			ArrayList<CountriesEnum> newCountries = new ArrayList<CountriesEnum>(tTraveler.getListOfCountries());
 			int i = 0;
 			int j = 0;
 			Collections.sort(oldCountries);
@@ -261,8 +267,13 @@ public class ASUserImp implements ASUser {
 				j++;
 			}
 
+			ArrayList<KnowledgesEnum> newKnowledges;
+			try {
+				newKnowledges = new ArrayList<KnowledgesEnum>(tTraveler.getListOfKnowledges());
+			}catch(NullPointerException e) {
+				newKnowledges = new ArrayList<KnowledgesEnum>();
+			}
 			
-			ArrayList<KnowledgesEnum> newKnowledges = new ArrayList<KnowledgesEnum>(tTraveler.getListOfKnowledges());
 			i = 0;
 			j = 0;
 			Collections.sort(oldCountries);
