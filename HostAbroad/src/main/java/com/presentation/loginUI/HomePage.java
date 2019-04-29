@@ -29,18 +29,7 @@ public class HomePage extends UI {
 
 	@Override
 	protected void init(VaadinRequest request) {
-		setSizeFull();
-		ResponsiveLayout mainResponsive = new ResponsiveLayout();  
-		mainResponsive.setSizeFull();
-		//setContent(mainResponsive);
-		
-		ResponsiveRow headerRow = mainResponsive.addRow();
-		headerRow.setHeight("100%");
-		
-		ResponsiveRow mainRow = mainResponsive.addRow();
-		
-		ResponsiveRow footerRow = mainResponsive.addRow();
-		
+	
 		mainLayout = new VerticalLayout();
 		mainLayout.setStyleName("v-scrollable h-scrollable homePage-main-layout");
 		mainLayout.setMargin(false);
@@ -65,6 +54,8 @@ public class HomePage extends UI {
 		mainLayout.addComponent(new Footer());
 		this.setContent(mainLayout);
 		this.setWidthUndefined();
+		
+		
 	}
 
 	private Component splitPanel() {
