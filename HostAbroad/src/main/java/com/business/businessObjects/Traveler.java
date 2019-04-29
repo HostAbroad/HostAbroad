@@ -26,7 +26,7 @@ public class Traveler{
 	@Version
 	private int version;
 	@OneToMany(mappedBy = "user")
-	private ArrayList<Country> listOfCountries;
+	private List<Country> listOfCountries;
 	@OneToMany(mappedBy = "user")
 	private List<KnowledgeTraveler> listOfKnowledges;
 	private DurationOfStayEnum durationOfStay;
@@ -70,7 +70,7 @@ public class Traveler{
 		this.listOfCountries = listOfCountries;
 	}
 
-	public ArrayList<Country> getListOfCountries() {
+	public List<Country> getListOfCountries() {
 		return this.listOfCountries;
 	}
 
