@@ -71,7 +71,7 @@ public class ASMatchesImp implements ASMatches {
 				LikesKey key = new LikesKey(userSender.getNickname(), userReceiver.getNickname());
 				Likes like = em.find(Likes.class, key);
 				em.remove(like);
-				
+				result = true;
 			}catch(NoResultException e) {}
 			
 			tr.commit();
