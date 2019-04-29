@@ -14,6 +14,7 @@ public class TUser{
 	private String description;
 	private String photo;
 	private String gender;
+	private String country;
 	private double rating;
 	private String birthday;
 	private boolean host;
@@ -32,7 +33,8 @@ public class TUser{
 	public TUser(String nickname, String fullName, String password, String email,
 			String description, String photo, String gender, String birthday, double rating, boolean host,
 			boolean traveler,ArrayList<String> likes, ArrayList<String> rates,
-			TreeSet<LanguagesEnum> languages, TreeSet<InterestsEnum> interests, ArrayList<String> matches){
+			TreeSet<LanguagesEnum> languages, TreeSet<InterestsEnum> interests, ArrayList<String> matches,
+			String country){
 
 		this.nickname = nickname;
 		this.fullName = fullName;
@@ -50,6 +52,7 @@ public class TUser{
 		this.languages = languages;
 		this.interests = interests;
 		this.matches = matches;
+		this.country = country;
 	}
 	
 	public TUser(String nickname, String fullName, String password, String email,
@@ -304,5 +307,13 @@ public class TUser{
 	
 	public void setBrthday(String birthday) {
 		this.birthday = birthday;
+	}
+	
+	public void setCountry(String country) {
+		this.country = country;
+	}
+	
+	public String getCountry() {
+		return this.country;
 	}
 }

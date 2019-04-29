@@ -21,7 +21,7 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		ASUserImp asUser = new ASUserImp();
+		//ASUserImp asUser = new ASUserImp();
 		//asUser.createUser(new TUser("Roni", "Veronika Yanova", "veronikayankova3@gmail.com", "roniponi"));
 		//ASLikesImp asLikes = new ASLikesImp();
 		//ArrayList<TUser> likes = asUser.readMyMatches(new TUser("Roni"));
@@ -61,7 +61,7 @@ public class Main {
 		//
 		//System.out.println(((ArrayList<TUser>)comS.execute(s).getRight()).get(0).getNickname());
 		//ASMatchesImp saMatches = new ASMatchesImp();
-		//saMatches.declineLike(new TMatches("Ivan", "Roni"));
+	//	saMatches.declineLike(new TMatches("Ivan", "Roni"));
 		//System.out.println(asUser.readMyMatches(new TUser("Roni")).get(0).getNickname());
 //		TPlace place = new TPlace("Calle Moondo", "I am a place", new ArrayList(), "", FamilyUnit.Alone, "Veronika");
 //		Pair<Integer,Object> pair = Controller.getInstance().action(Commands.CommandAddPlace, place);
@@ -73,7 +73,7 @@ public class Main {
 		//TreeSet<KnowledgesEnum> interests2 = new TreeSet<KnowledgesEnum>();
 		//interests2.add(KnowledgesEnum.Biology);
 		
-		asUser.addPlace(new TPlace("my place", "Ivan"));
+		//asUser.addPlace(new TPlace("my place", "Ivan"));
 		
 //		ASUserImp asu = new ASUserImp();
 //		System.out.println(asu.readHostInformation(new TUser("User")).getNickname());

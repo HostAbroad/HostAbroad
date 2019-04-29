@@ -30,6 +30,7 @@ public class UserHA {
     private String photo;
     private String gender; 
     private String birthday;
+    private String country;
     private boolean host;
     private boolean traveler;
     @OneToOne (mappedBy = "user")
@@ -57,7 +58,7 @@ public class UserHA {
 			double rating, String description, String photo, String gender, String birthday, boolean host,
 			boolean traveler, Host hostEntity, Traveler travelerEntity, 
 			Collection<Likes> likes, Collection<Matches> matchesSender, Collection<Matches> matchesReceiver,
-			Collection<Rating> rate, List<Language> languages, List<Interest> interests) {
+			Collection<Rating> rate, List<Language> languages, List<Interest> interests, String country) {
     this.nickname = nickname;
     this.fullName = fullName;
     this.rating = rating;
@@ -77,6 +78,7 @@ public class UserHA {
     this.rates = rate;
     this.languages = languages;
     this.interests = interests;
+    this.country = country;
     }
     
     public UserHA(String nickname, String fullName, String email, int password, 
@@ -380,7 +382,7 @@ public class UserHA {
     	
     	return new TUser(this.nickname, this.fullName, ((Integer)this.password).toString(), this.email, 
     			this.description, this.photo, this.gender, this.birthday, this.rating,
-    			this.host, this.traveler, myLikes, myRates, myLanguages, myInterests, myMatches);
+    			this.host, this.traveler, myLikes, myRates, myLanguages, myInterests, myMatches, country);
     }
 
 	public String getPhoto() {
@@ -421,6 +423,14 @@ public class UserHA {
 
 	public void setBirthday(String birthday) {
 		this.birthday = birthday;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
 }
 
