@@ -558,6 +558,8 @@ $v-panel-border: 2px solid v-shade;
         -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
         box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
         transition: all 0.4s ease 0s;
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
     }
 
     .card-acceptLike-button:hover {

@@ -40,8 +40,8 @@ public class Interest implements Comparable<Interest>{
 	}
 
 	@Override
-	public int compareTo(Interest lang) {
-		return this.interest.compareTo(lang.getInterest());
+	public int compareTo(Interest interest) {
+		return this.interest.compareTo(interest.getInterest());
 	}
 	
 }

@@ -27,4 +27,12 @@ public enum InterestsEnum {
 	public String getString() {
 		return this.name;
 	}
+	
+	public static InterestsEnum setToEnum(String name) {
+		for(InterestsEnum interest : InterestsEnum.values()) {
+			if(interest.getString().equals(name))
+				return interest;
+		}
+		return null;
+	}
 }

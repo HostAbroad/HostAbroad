@@ -24,6 +24,11 @@ public class TPlace {
 		this.familyUnit = familuUnit;
 		this.nickname = nickname;
 	}
+	
+	public TPlace(String address, String nickname) {
+		this.address = address;
+		this.nickname = nickname;
+	}
 
 	public String getAddress() {
 		return address;

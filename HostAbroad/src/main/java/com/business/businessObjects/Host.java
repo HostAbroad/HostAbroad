@@ -2,29 +2,28 @@ package com.business.businessObjects;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.TreeSet;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Version;
 
-import com.business.enums.InterestsEnum;
+import com.business.enums.KnowledgesEnum;
 import com.business.transfers.THost;
 
 @Entity
+@Table
 public class Host {
 	
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY) 
-	private int id; 
-	@Version
-	private int version;
+	@Id
 	@OneToOne 
 	private UserHA user;
-	private ArrayList<InterestsEnum> listOfInterests;
+	
+	@OneToMany(mappedBy = "user")
+	private List<KnowledgeHost> listOfKnowledges;
 	
 	@OneToMany(mappedBy="host")
 	private Collection<Place> places;
@@ -32,44 +31,20 @@ public class Host {
 	public Host() {}
 	
 	//full constructor
-	public Host(int id, int version, UserHA user, ArrayList<InterestsEnum> interests,
+	public Host(UserHA user, ArrayList<KnowledgeHost> listOfKnowledges,
 			ArrayList<Place> places) {
-		this.id = id;
-		this.version = version;
 		this.user = user;
-		this.listOfInterests = interests;
+		this.listOfKnowledges = listOfKnowledges;
 		this.places = places;
 	}
 	
-	public Host(ArrayList<InterestsEnum> listOfInterests) {
-		this.listOfInterests = listOfInterests;
+	public Host(ArrayList<KnowledgeHost> listOfKnowledges) {
+		this.listOfKnowledges = listOfKnowledges;
 	}
 	
-	public Host(int id, UserHA user, ArrayList<InterestsEnum> listOfInterests) {
-		this.id = id;
+	public Host(UserHA user, ArrayList<KnowledgeHost> listOfKnowledges) {
 		this.user = user;
-		this.listOfInterests = listOfInterests;
-	}
-	
-	public Host(UserHA user, ArrayList<InterestsEnum> listOfInterests) {
-		this.user = user;
-		this.listOfInterests = listOfInterests;
-	}
-	
-	public void setId(int id) {
-		this.id = id;
-	}
-	
-	public int getId() {
-		return this.id;
-	}
-
-	public void setVersion(int version) {
-		this.version = version;
-	}
-	
-	public int getVersion() {
-		return this.version;
+		this.listOfKnowledges = listOfKnowledges;
 	}
 	
 	public void setUser(UserHA user) {
@@ -80,12 +55,12 @@ public class Host {
 		return this.user;
 	}
 	
-	public void setListOfInterests(ArrayList<InterestsEnum> arrayList) {
-		this.listOfInterests = arrayList;
+	public void setListOfKnowledges(ArrayList<KnowledgeHost> listOfKnowledges) {
+		this.listOfKnowledges = listOfKnowledges;
 	}
 	
-	public ArrayList<InterestsEnum> getListOfInterests() {
-		return this.listOfInterests;
+	public List<KnowledgeHost> getListOfKnowledges() {
+		return this.listOfKnowledges;
 	}
 	
 	public void setPlaces(ArrayList<Place> places) {
@@ -97,6 +72,10 @@ public class Host {
 	}
 	
 	public THost toTransfer() {
-		return new THost(this.user.getNickname(), this.listOfInterests);
+		TreeSet<KnowledgesEnum> myKnowledges = new TreeSet<KnowledgesEnum>();
+		for(KnowledgeHost k : this.getListOfKnowledges())
+			myKnowledges.add(KnowledgesEnum.setToEnum(k.getKnowledge()));
+			
+		return new THost(this.user.getNickname(), myKnowledges);
 	}
 }

@@ -3,18 +3,19 @@ package com.business.businessObjects;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.TreeSet;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import javax.persistence.Version;
 
+import com.business.enums.InterestsEnum;
+import com.business.enums.LanguagesEnum;
 import com.business.transfers.TUser;
 
 @Entity
-@Table
 public class UserHA {
 
     @Id
@@ -35,9 +36,9 @@ public class UserHA {
 	private Host hostEntity;
     @OneToOne (mappedBy = "user")
 	private Traveler travelerEntity;
-    @OneToMany(mappedBy = "userSender")
+    @OneToMany(mappedBy = "userReceiver")
 	private Collection<Likes> likes;
-    @OneToMany(mappedBy = "userSender")
+    @OneToMany(mappedBy = "userReceiver")
 	private Collection<Rating> rates;
     @OneToMany(mappedBy = "userSender")
 	private Collection<Matches> matchesSender;
@@ -367,12 +368,19 @@ public class UserHA {
     		myRates.add(r.getUserSender().getNickname());
     	ArrayList<String> myMatches = new ArrayList<String>();
     	for(Matches m : this.getMatchesReceiver()) 
-    			myMatches.add(m.getUserSender().getNickname());
+    		myMatches.add(m.getUserSender().getNickname());
     	for(Matches m : this.getMatchesSender()) 
-    			myMatches.add(m.getUserReceiver().getNickname());
+    		myMatches.add(m.getUserReceiver().getNickname());
+    	TreeSet<LanguagesEnum> myLanguages = new TreeSet<LanguagesEnum>();
+    	for(Language l: this.getLanguages())
+    		myLanguages.add(LanguagesEnum.setToEnum(l.getLanguage()));
+    	TreeSet<InterestsEnum> myInterests = new TreeSet<InterestsEnum>();
+    	for(Interest i : this.getInterests())
+    		myInterests.add(InterestsEnum.setToEnum(i.getInterest()));
     	
-    	return new TUser(this.nickname, this.fullName, this.email, 
-    			((Integer)this.password).toString(), this.rating, this.description, this.host, this.traveler, myLikes, myRates, myMatches);
+    	return new TUser(this.nickname, this.fullName, ((Integer)this.password).toString(), this.email, 
+    			this.description, this.photo, this.gender, this.birthday, this.rating,
+    			this.host, this.traveler, myLikes, myRates, myLanguages, myInterests, myMatches);
     }
 
 	public String getPhoto() {
