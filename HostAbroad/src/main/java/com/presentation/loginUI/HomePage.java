@@ -32,7 +32,7 @@ public class HomePage extends UI {
 		setSizeFull();
 		ResponsiveLayout mainResponsive = new ResponsiveLayout();  
 		mainResponsive.setSizeFull();
-		setContent(mainResponsive);
+		//setContent(mainResponsive);
 		
 		ResponsiveRow headerRow = mainResponsive.addRow();
 		headerRow.setHeight("100%");
@@ -63,8 +63,8 @@ public class HomePage extends UI {
 		mainLayout.setComponentAlignment(bottom, Alignment.MIDDLE_CENTER);
 		mainLayout.addComponent(new Label("&nbsp;", ContentMode.HTML));
 		mainLayout.addComponent(new Footer());
-		//this.setContent(mainLayout);
-		//this.setWidthUndefined();
+		this.setContent(mainLayout);
+		this.setWidthUndefined();
 	}
 
 	private Component splitPanel() {
