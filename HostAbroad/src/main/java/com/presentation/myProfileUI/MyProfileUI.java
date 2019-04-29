@@ -396,6 +396,7 @@ public class MyProfileUI extends UI {
 		ComboBox<String> genderCB = new ComboBox<>("Gender");
 		genderCB.setItems("Male", "Female", "Other");
 		genderCB.setId("ProfileGender");
+		genderCB.setValue(user.getGender());
 
 		// Create a DateField with the default style
 		DateField date = new DateField("Birthday");
@@ -433,14 +434,14 @@ public class MyProfileUI extends UI {
 		save.addClickListener(event -> {
 
 			ArrayList<LanguagesEnum> arrayListLanguages = new ArrayList<LanguagesEnum>();
-			List<LanguagesEnum> setLanguages = new ArrayList<>();
+			TreeSet<LanguagesEnum> setLanguages = new TreeSet<>();
 			lenguages.getTokens().forEach(e -> setLanguages.add(LanguagesEnum.valueOf(e.getValue())));
 			arrayListLanguages.addAll(setLanguages);
 
 			if (binder.isValid() && (date.getValue().getYear() <= valid.getYear())) {
 				TUser newUser = new TUser(user.getNickname(), fullName.getValue(), user.getPassword(), email.getValue(),
 						description.getValue(), user.getPhoto(), genderCB.getValue(), date.getValue().toString(),
-						user.getRating(), user.getHost(), user.getTraveler(), user.getLikes(), user.getRates(), (TreeSet<LanguagesEnum>) setLanguages,
+						user.getRating(), user.getHost(), user.getTraveler(), user.getLikes(), user.getRates(), setLanguages,
 						user.getInterests(), user.getMatches());
 				Pair<Integer, Object> result = Controller.getInstance().action(Commands.CommandModifyBasicInformation,
 						newUser);
