@@ -76,14 +76,9 @@ public class MyProfileUI extends UI {
 	@Override
 	protected void init(VaadinRequest request) {
 
-		/*
-		 * Pair<Integer, Object> userLoged =
-		 * Controller.getInstance().action(Commands.CommandReadUser, new
-		 * TUser(AuthService.getUserNickName())); TUser myUser = (TUser)
-		 * userLoged.getRight();
-		 */
-
-		TUser myUser = new TUser("Ernes", "Ernesto", "ernesvivar@gmail.com", "Pablo2001", 3.0, "Holi", false, true);
+		
+		Pair<Integer, Object> userLoged = Controller.getInstance().action(Commands.CommandReadUser, new TUser(AuthService.getUserNickName())); 
+		TUser myUser = (TUser) userLoged.getRight();
 
 		setSizeFull(); // set the size of the UI to fill the screen
 
@@ -419,7 +414,10 @@ public class MyProfileUI extends UI {
 
 		TextArea description = new TextArea("Description");
 		description.setWordWrap(true);
-		description.setValue(user.getDescription());
+		if(user.getDescription() == null)
+			description.setValue("");
+		else
+			description.setValue(user.getDescription());
 		description.setStyleName("v-textarea v-widget v-textarea-prompt");
 		description.setId("ProfileDescription");
 
