@@ -159,9 +159,12 @@ public class SearchUI extends UI{
 		result.removeAllComponents();
 		int counter = 1;
 		for(TUser u: users) {
-			Card card = new Card(u.getNickname(), u.getDescription(), u.getRating(), true);
+			Card card = new Card(u);
 			card.setId("card" + counter++);
 			result.addComponent(card);
+			card.setVisibleLikeButton(true);
+			card.setVisibleAcceptButton(false);
+			card.setVisibleDeclineButton(false);
 			result.setComponentAlignment(card, Alignment.TOP_CENTER);
 		}
 		result.setWidth("100%");

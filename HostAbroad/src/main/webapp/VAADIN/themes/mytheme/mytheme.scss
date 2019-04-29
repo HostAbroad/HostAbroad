@@ -510,13 +510,29 @@ $v-panel-border: 2px solid v-shade;
     }
 
     .v-button-icon-align-top-ml {
-        background: #3b5998;
+        background: #ff40a0;
         border: none;
         color: #FFFFFF;
         text-align: center;
     }
 
     .v-button-icon-align-top-ml:hover {
+        background: #434343;
+        letter-spacing: 1px;
+        -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+        -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+        box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+        transition: all 0.4s ease 0s;
+    }
+
+    .v-button-icon-align-top-mm {
+        background: #3b5998;
+        border: none;
+        color: #FFFFFF;
+        text-align: center;
+    }
+
+    .v-button-icon-align-top-mm:hover {
         background: #434343;
         letter-spacing: 1px;
         -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
@@ -545,6 +561,24 @@ $v-panel-border: 2px solid v-shade;
     }
 
     .card-like-button:hover {
+        background: #ff40a0;
+        letter-spacing: 1px;
+        -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+        -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+        box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+        transition: all 0.4s ease 0s;
+    }
+
+    .card-acceptLike-button:hover {
+        background: #40FF00;
+        letter-spacing: 1px;
+        -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+        -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+        box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+        transition: all 0.4s ease 0s;
+    }
+
+    .card-declineLike-button:hover {
         background: red;
         letter-spacing: 1px;
         -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);

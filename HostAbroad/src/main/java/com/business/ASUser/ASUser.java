@@ -28,9 +28,13 @@ public interface ASUser {
 
 	public abstract TUser readUserNickName(TUser user);
 	
-	public abstract ArrayList<TUser> sendersLike(TUser tUser);
+	public abstract ArrayList<TUser> getMyLikes(TUser tUser);
 
 	public abstract boolean rateUser(TRating tRating);
+
+	public abstract ArrayList<TUser> readMyMatches(TUser transfer);
+
+	public TUser readUser(TUser user);
 	
 	public abstract void modifyInterests(TUser tUser);
 }

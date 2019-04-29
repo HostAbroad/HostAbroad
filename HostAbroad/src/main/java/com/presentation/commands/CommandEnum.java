@@ -11,13 +11,15 @@ public class CommandEnum {
 		CommandReadTravelerInformation,
 		CommandEditTraveler,
 		CommandEditHost,
-		CommandSendersLike,
+		CommandGetMyLike,
 		CommandModifyBasicInformation,
 		CommandSearch,
 		CommandRateUser,
 		CommandAcceptLike,
 		CommandDeclineLike,
 		CommandReadUserNickName,
+		CommandMyMatches,
+		CommandReadUser,
 		CommandAddPlace
 	}
 }

@@ -40,7 +40,9 @@ public class UserHA {
     @OneToMany(mappedBy = "userSender")
 	private Collection<Rating> rates;
     @OneToMany(mappedBy = "userSender")
-	private Collection<Matches> matches;
+	private Collection<Matches> matchesSender;
+    @OneToMany(mappedBy = "userReceiver")
+	private Collection<Matches> matchesReceiver;
     @OneToMany(mappedBy = "user")
    	private List<Language> languages; 
     @OneToMany(mappedBy = "user")
@@ -53,8 +55,8 @@ public class UserHA {
     public UserHA(String nickname, String fullName, String email, int password, 
 			double rating, String description, String photo, String gender, String birthday, boolean host,
 			boolean traveler, Host hostEntity, Traveler travelerEntity, 
-			Collection<Likes> likes, Collection<Matches> matches,Collection<Rating> rate,
-			List<Language> languages, List<Interest> interests) {
+			Collection<Likes> likes, Collection<Matches> matchesSender, Collection<Matches> matchesReceiver,
+			Collection<Rating> rate, List<Language> languages, List<Interest> interests) {
     this.nickname = nickname;
     this.fullName = fullName;
     this.rating = rating;
@@ -69,7 +71,8 @@ public class UserHA {
     this.hostEntity = hostEntity;
     this.travelerEntity = travelerEntity;
     this.likes = likes;
-    this.matches = matches;
+    this.matchesSender = matchesSender;
+    this.matchesReceiver = matchesReceiver;
     this.rates = rate;
     this.languages = languages;
     this.interests = interests;
@@ -77,7 +80,8 @@ public class UserHA {
     
     public UserHA(String nickname, String fullName, String email, int password, 
 			double rating, String description, boolean host, boolean traveler, 
-			Host hostEntity, Traveler travelerEntity, Collection<Likes> likes, Collection<Matches> matches,Collection<Rating> rate) {
+			Host hostEntity, Traveler travelerEntity, Collection<Likes> likes, Collection<Matches> matchesSender,
+			Collection<Matches> matchesReceiver,Collection<Rating> rate) {
     this.nickname = nickname;
     this.fullName = fullName;
     this.rating = rating;
@@ -89,7 +93,8 @@ public class UserHA {
     this.hostEntity = hostEntity;
     this.travelerEntity = travelerEntity;
     this.likes = likes;
-    this.matches = matches;
+    this.matchesSender = matchesSender;
+    this.matchesReceiver = matchesReceiver;
     this.rates = rate;
     }
     
@@ -336,17 +341,38 @@ public class UserHA {
     	this.setRating(this.calculateRating());
     }
       
-    public void setMatches(Collection<Matches> matches) {
-    	this.matches = matches;
+    public void setMatchesSender(Collection<Matches> matches) {
+    	this.matchesSender = matches;
     }
     
-    public Collection<Matches> getMatches(){
-    	return matches;
+    public Collection<Matches> getMatchesSender(){
+    	return matchesSender;
+    }
+    
+    public void setMatchesReceiver(Collection<Matches> matches) {
+    	this.matchesReceiver = matches;
+    }
+    
+    public Collection<Matches> getMatchesReceiver(){
+    	return this.matchesReceiver;
     }
     
     public TUser toTransfer() {
+    	
+    	ArrayList<String> myLikes = new ArrayList<String>();
+    	for(Likes l : this.getLikes())
+    		myLikes.add(l.getUserSender().getNickname());
+    	ArrayList<String> myRates = new ArrayList<String>();
+    	for(Rating r : this.getRates())
+    		myRates.add(r.getUserSender().getNickname());
+    	ArrayList<String> myMatches = new ArrayList<String>();
+    	for(Matches m : this.getMatchesReceiver()) 
+    			myMatches.add(m.getUserSender().getNickname());
+    	for(Matches m : this.getMatchesSender()) 
+    			myMatches.add(m.getUserReceiver().getNickname());
+    	
     	return new TUser(this.nickname, this.fullName, this.email, 
-    			((Integer)this.password).toString(), this.rating, this.description, this.host, this.traveler);
+    			((Integer)this.password).toString(), this.rating, this.description, this.host, this.traveler, myLikes, myRates, myMatches);
     }
 
 	public String getPhoto() {

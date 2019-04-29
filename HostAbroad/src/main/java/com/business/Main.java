@@ -3,9 +3,11 @@ package com.business;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
+import com.business.ASMatches.ASMatchesImp;
 import com.business.ASUser.ASUserImp;
 import com.business.enums.InterestsEnum;
 import com.business.enums.LanguagesEnum;
+import com.business.transfers.TMatches;
 import com.business.transfers.TUser;
 
 public class Main {
@@ -48,5 +50,8 @@ public class Main {
 		//s.add(SearchEnum.isHost);
 		//
 		//System.out.println(((ArrayList<TUser>)comS.execute(s).getRight()).get(0).getNickname());
-		}
+		ASMatchesImp saMatches = new ASMatchesImp();
+		//saMatches.acceptLike(new TMatches("Sani", "Roni"));
+		System.out.println(asUser.readMyMatches(new TUser("Roni")).get(0).getNickname());
+	}
 }

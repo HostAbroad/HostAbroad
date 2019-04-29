@@ -17,6 +17,7 @@ import com.business.businessObjects.Host;
 import com.business.businessObjects.Interest;
 import com.business.businessObjects.Language;
 import com.business.businessObjects.Likes;
+import com.business.businessObjects.Matches;
 import com.business.businessObjects.Place;
 import com.business.businessObjects.Rating;
 import com.business.businessObjects.Traveler;
@@ -303,47 +304,27 @@ public class ASUserImp implements ASUser {
 		return traveler;
 	}
 
-	public ArrayList<TUser> sendersLike(TUser tUser) {
+	public ArrayList<TUser> getMyLikes(TUser tUser) {
 
+		 ArrayList<TUser> sendersUser = new ArrayList<TUser>(); //usuarios que nos han enviado like
 		
-		 ArrayList<TUser> sendersUser = new ArrayList<TUser>();
-	
 		try {
 			EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
 			EntityManager em = emf.createEntityManager();
 			EntityTransaction tr = em.getTransaction();
 			tr.begin();
 			
-			TUser tUserSender;
-			for(Integer id : tUser.getLikes()) {
-				
-				String consulta = "SELECT * FROM LIKES WHERE id = ?1";
-				Query query = em.createNativeQuery(consulta, Likes.class);
-				query.setParameter(1, id);
+			UserHA user = em.find(UserHA.class, tUser.getNickname());
+			for(Likes like : user.getLikes()) 
+				sendersUser.add(like.getUserSender().toTransfer());
 	
-				Likes like = null;
-				
-				try {
-					like = (Likes) query.getSingleResult();
-				}
-				catch (NoResultException ex) {
-					System.out.println(ex.getMessage());
-				}
-			
-				tUserSender = new TUser(like.getUserSender().getNickname(), like.getUserSender().getRating(),
-						like.getUserSender().getDescription());
-				
-				sendersUser.add(tUserSender);
-				
-			}
+			tr.commit();
 			em.close();
 			emf.close();
 		}
 		catch (Exception ex) {
 			System.out.println(ex.getMessage());
-		}		
-		
-		
+		}	
 		return  sendersUser;
 	}
 
@@ -392,7 +373,7 @@ public class ASUserImp implements ASUser {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void newLanguages(List<Language> oldLanguages, 
+ private void newLanguages(List<Language> oldLanguages, 
 			TreeSet<LanguagesEnum> newLanguages, EntityManager em, UserHA user){
 		int i = 0;
 		int j = 0;
@@ -430,57 +411,26 @@ public class ASUserImp implements ASUser {
 	public boolean rateUser(TRating tRating) {
 
 		boolean result = false; //Devolverá false si ha habido algún error o si ese Sender ya ha valorado a Receiver
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction tr = em.getTransaction();
+		tr.begin();
 		
 		try {
-			
-			EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
-			EntityManager em = emf.createEntityManager();
-			EntityTransaction tr = em.getTransaction();
-			tr.begin();
-
 			UserHA userSender; // Usuario 1 es el que envia valoracion
 			UserHA userReceiver; // Usuario 2 es el que la recibe
-
-			try {
-				
-				String query = "SELECT * FROM USERHA WHERE NICKNAME = ?1";
-				userSender = (UserHA) em.createNativeQuery(query, UserHA.class).setParameter(1, tRating.getUserSender())
-						.getSingleResult();
-				userReceiver = (UserHA) em.createNativeQuery(query, UserHA.class).setParameter(1, tRating.getUserReceiver())
-						.getSingleResult();
-
-				query = "SELECT * FROM RATING WHERE USERRECEIVER_NICKNAME = ?1 AND USERSENDER_NICKNAME = ?2";
-				Rating rating;
-				
-				try {
-
-					rating = (Rating) em.createNativeQuery(query, Rating.class)
-							.setParameter(1, tRating.getUserReceiver()).setParameter(2, tRating.getUserSender())
-							.getSingleResult();
-
-				} catch (Exception e) {
-
-					rating = new Rating(userSender, userReceiver, tRating.getRate());
-					em.persist(rating);
-
-					userReceiver.addRate(rating);
-					userReceiver.updateRating(); // Vuelve a calcular la valoracion total para
-																	// actualizarla
-
-					em.persist(userReceiver);
-					result = true;
-
-				}
-			} catch (NoResultException e) {}
-
-			tr.commit();
-			em.close();
-			emf.close();
+			userSender = em.find(UserHA.class, tRating.getUserSender());
+			userReceiver = em.find(UserHA.class, tRating.getUserReceiver());
+			em.persist(new Rating(userSender, userReceiver, tRating.getRate()));
 			
+			tr.commit();
+			result = true;
 		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
+			tr.rollback();
 		}
-		
+			
+		em.close();
+		emf.close();
 		return result;
 	}
 
@@ -505,6 +455,41 @@ public class ASUserImp implements ASUser {
 		emf.close();
 		
 		return nickname;
+	}
+	
+	@Override
+	public TUser readUser(TUser tUser) {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
+		EntityManager em = emf.createEntityManager();		
+		UserHA user = em.find(UserHA.class, tUser.getNickname());
+		em.close();
+		emf.close();
+		return user.toTransfer();
+	}
+
+	@Override
+	public ArrayList<TUser> readMyMatches(TUser tUser) {
+		 ArrayList<TUser> myMatches = new ArrayList<TUser>();
+			
+			
+			try {
+				EntityManagerFactory emf = Persistence.createEntityManagerFactory("HostAbroad");
+				EntityManager em = emf.createEntityManager();
+				EntityTransaction tr = em.getTransaction();
+				tr.begin();
+				UserHA user = em.find(UserHA.class, tUser.getNickname());
+				for(Matches match : user.getMatchesReceiver())
+						myMatches.add(match.getUserSender().toTransfer());
+				for(Matches match : user.getMatchesSender())
+						myMatches.add(match.getUserReceiver().toTransfer());
+				tr.commit();
+				em.close();
+				emf.close();
+			}
+			catch (Exception ex) {
+				System.out.println(ex.getMessage());
+			}	
+			return myMatches;
 	}
 
 	@Override
@@ -551,5 +536,4 @@ public class ASUserImp implements ASUser {
 		em.close();
 		emf.close();
 	}
-	
 }
