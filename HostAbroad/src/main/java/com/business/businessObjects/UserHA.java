@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import javax.persistence.Version;
 
 import com.business.enums.InterestsEnum;
@@ -37,9 +36,9 @@ public class UserHA {
 	private Host hostEntity;
     @OneToOne (mappedBy = "user")
 	private Traveler travelerEntity;
-    @OneToMany(mappedBy = "userSender")
+    @OneToMany(mappedBy = "userReceiver")
 	private Collection<Likes> likes;
-    @OneToMany(mappedBy = "userSender")
+    @OneToMany(mappedBy = "userReceiver")
 	private Collection<Rating> rates;
     @OneToMany(mappedBy = "userSender")
 	private Collection<Matches> matchesSender;

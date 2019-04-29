@@ -1,12 +1,15 @@
 package com.business;
 
+import java.util.ArrayList;
 import java.util.TreeSet;
 
+import com.business.ASMatches.ASMatchesImp;
 import com.business.ASUser.ASUserImp;
 import com.business.enums.CountriesEnum;
 import com.business.enums.DurationOfStayEnum;
 import com.business.enums.KnowledgesEnum;
 import com.business.transfers.THost;
+import com.business.transfers.TMatches;
 import com.business.transfers.TTraveler;
 import com.business.transfers.TUser;
 import com.presentation.commands.CommandEnum.Commands;
@@ -17,10 +20,12 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		//ASUserImp asUser = new ASUserImp();
-		//asUser.createUser(new TUser("Veronika", "Veronika Yanova", "veronikayankova3@gmail.com", "roniponi"));
+		ASUserImp asUser = new ASUserImp();
+		//asUser.createUser(new TUser("Roni", "Veronika Yanova", "veronikayankova3@gmail.com", "roniponi"));
 		//ASLikesImp asLikes = new ASLikesImp();
-		
+		//ArrayList<TUser> likes = asUser.readMyMatches(new TUser("Roni"));
+		//for(TUser u : likes)
+		//	System.out.println(u.getNickname());
 //		TreeSet<InterestsEnum> l = new TreeSet<InterestsEnum>();
 //		l.add(InterestsEnum.Animals);
 //		l.add(InterestsEnum.Nature);
@@ -54,22 +59,22 @@ public class Main {
 		//s.add(SearchEnum.isHost);
 		//
 		//System.out.println(((ArrayList<TUser>)comS.execute(s).getRight()).get(0).getNickname());
-		//ASMatchesImp saMatches = new ASMatchesImp();
-		//saMatches.acceptLike(new TMatches("Sani", "Roni"));
+		ASMatchesImp saMatches = new ASMatchesImp();
+		saMatches.declineLike(new TMatches("Ivan", "Roni"));
 		//System.out.println(asUser.readMyMatches(new TUser("Roni")).get(0).getNickname());
 //		TPlace place = new TPlace("Calle Moondo", "I am a place", new ArrayList(), "", FamilyUnit.Alone, "Veronika");
 //		Pair<Integer,Object> pair = Controller.getInstance().action(Commands.CommandAddPlace, place);
 //		System.out.println("Added place:" + pair.getRight());
 		
-		TreeSet<CountriesEnum> interests = new TreeSet<CountriesEnum>();
-		interests.add(CountriesEnum.Albania);
+		//TreeSet<CountriesEnum> interests = new TreeSet<CountriesEnum>();
+		//interests.add(CountriesEnum.Albania);
 		
-		TreeSet<KnowledgesEnum> interests2 = new TreeSet<KnowledgesEnum>();
-		interests2.add(KnowledgesEnum.Biology);
+		//TreeSet<KnowledgesEnum> interests2 = new TreeSet<KnowledgesEnum>();
+		//interests2.add(KnowledgesEnum.Biology);
 		
 		
 //		ASUserImp asu = new ASUserImp();
 //		System.out.println(asu.readHostInformation(new TUser("User")).getNickname());
-		Controller.getInstance().action(Commands.CommandEditTraveler, new TTraveler("Veronika", interests, interests2, DurationOfStayEnum.MoreThanMonth));
+		//Controller.getInstance().action(Commands.CommandEditTraveler, new TTraveler("Veronika", interests, interests2, DurationOfStayEnum.MoreThanMonth));
 	}
 }
