@@ -23,4 +23,12 @@ public enum KnowledgesEnum {
 	public String getString() {
 	  return this.name;
 	}
+	
+	public static KnowledgesEnum setToEnum(String name) {
+		for(KnowledgesEnum knowledge : KnowledgesEnum.values()) {
+			if(knowledge.getString().equals(name))
+				return knowledge;
+		}
+		return null;
+	}
 }

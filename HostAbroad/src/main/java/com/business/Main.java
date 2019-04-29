@@ -1,35 +1,33 @@
 package com.business;
 
-import java.util.ArrayList;
 import java.util.TreeSet;
-
-import com.business.ASMatches.ASMatchesImp;
-import com.business.ASUser.ASUserImp;
-import com.business.enums.InterestsEnum;
-import com.business.enums.LanguagesEnum;
-import com.business.transfers.TMatches;
-import com.business.transfers.TUser;
+import com.business.enums.KnowledgesEnum;
+import com.business.transfers.THost;
+import com.business.transfers.TTraveler;
+import com.presentation.commands.CommandEnum.Commands;
+import com.presentation.controller.Controller;
 
 public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		ASUserImp asUser = new ASUserImp();
+		//ASUserImp asUser = new ASUserImp();
 		//ASLikesImp asLikes = new ASLikesImp();
-		//asUser.createUser(new TUser("Roni", "Veronika Yanova", "veronikayankova3@gmail.com", "roniponi"));
-	/*	TreeSet<InterestsEnum> l = new TreeSet<InterestsEnum>();
-		l.add(InterestsEnum.Animals);
-		l.add(InterestsEnum.Nature);
-		asUser.modifyInterests(new TUser("Roni", l));
-		*/
+		//asUser.createUser(new TUser("Veronika", "Veronika Yanova", "veronikayankova3@gmail.com", "roniponi"));
+//		TreeSet<InterestsEnum> l = new TreeSet<InterestsEnum>();
+//		l.add(InterestsEnum.Animals);
+//		l.add(InterestsEnum.Nature);
+//		asUser.modifyInterests(new TUser("Veronika", l));
+//		System.out.println("Interest modified");
+		
 		//asUser.editTravelerInformation(new TTraveler("prueba", null, null, null));
 		//TUser u = asUser.loginUser(new TUser("saninazer@gmail.com", "Sanii12"));
 		//asUser.addPlace(new TPlace("asd", "asd", null, "", FamilyUnit.Fam1, "sani"));
-		//ArrayList<InterestsEnum> interests = new ArrayList<InterestsEnum>();
-
-		//interests.add(InterestsEnum.Int1);
-		//asUser.editHostInformation(new THost("sani", interests));
+//		ArrayList<InterestsEnum> interests = new ArrayList<InterestsEnum>();
+//
+//		interests.add(InterestsEnum.Animals);
+//		asUser.editHostInformation(new THost("Veronika", interests));
 		//System.out.println(asUser.readHostInformation(new TUser("sani", 10, "", true)).getNickname());;
 		//asLikes.sendLike(new TLikes("sani", "Roni"));
 		
@@ -50,8 +48,17 @@ public class Main {
 		//s.add(SearchEnum.isHost);
 		//
 		//System.out.println(((ArrayList<TUser>)comS.execute(s).getRight()).get(0).getNickname());
-		ASMatchesImp saMatches = new ASMatchesImp();
+		//ASMatchesImp saMatches = new ASMatchesImp();
 		//saMatches.acceptLike(new TMatches("Sani", "Roni"));
-		System.out.println(asUser.readMyMatches(new TUser("Roni")).get(0).getNickname());
+		//System.out.println(asUser.readMyMatches(new TUser("Roni")).get(0).getNickname());
+//		TPlace place = new TPlace("Calle Moondo", "I am a place", new ArrayList(), "", FamilyUnit.Alone, "Veronika");
+//		Pair<Integer,Object> pair = Controller.getInstance().action(Commands.CommandAddPlace, place);
+//		System.out.println("Added place:" + pair.getRight());
+		
+		TreeSet<KnowledgesEnum> interests = new TreeSet<KnowledgesEnum>();
+		interests.add(KnowledgesEnum.Arts);
+//		ASUserImp asu = new ASUserImp();
+//		System.out.println(asu.readHostInformation(new TUser("User")).getNickname());
+		//Controller.getInstance().action(Commands.CommandEditTraveler, new TTraveler("Veronika", interests));
 	}
 }

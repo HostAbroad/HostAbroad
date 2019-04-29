@@ -251,7 +251,7 @@ public class MyProfileUI extends UI {
 	private HorizontalLayout hostInfo(TUser user) {
 		Panel panel = new Panel();
 		panel.setWidth("100%");
-		panel.setId("panelInterests");
+		panel.setId("panelKnowledges");
 		VerticalLayout mainLayout = new VerticalLayout();
 		mainLayout.setId("mainLayout");
 		HorizontalLayout mainLayoutInterests = new HorizontalLayout();
@@ -260,21 +260,21 @@ public class MyProfileUI extends UI {
 		mainLayoutInterests.setSizeFull();
 		mainLayoutInterests.setSpacing(true);
 
-		AdvancedTokenField interests = new AdvancedTokenField();
-		interests.setCaption("Interests: ");
-		interests.setId("interests");
-		interests.setAllowNewTokens(false);
-		interests.clearTokens();
-		interests.getTokensOfInputField().clear();
-		InterestsTokens interest = new InterestsTokens();
-		interests.addTokensToInputField(interest.getTokens());
+		AdvancedTokenField knowledges = new AdvancedTokenField();
+		knowledges.setCaption("Knowledges: ");
+		knowledges.setId("knowledges");
+		knowledges.setAllowNewTokens(false);
+		knowledges.clearTokens();
+		knowledges.getTokensOfInputField().clear();
+		KnowledgesTokens knowledge = new KnowledgesTokens();
+		knowledges.addTokensToInputField(knowledge.getTokens());
 
 		Pair<Integer, Object> resultRead = Controller.getInstance().action(Commands.CommandReadHostInformation, user);
 
 		if (resultRead.getLeft() == 1) {
-
-			for (int i = 0; i < ((THost) resultRead.getRight()).getListOfInterests().size(); i++)
-				interests.addToken(new Token(((THost) resultRead.getRight()).getListOfInterests().get(i).name()));
+			ArrayList<KnowledgesEnum> knowledgesArr = new ArrayList<KnowledgesEnum>(((THost) resultRead.getRight()).getListOfKnowledges());
+			for (int i = 0; i < ((THost) resultRead.getRight()).getListOfKnowledges().size(); i++)
+				knowledges.addToken(new Token(knowledgesArr.get(i).name()));
 
 		}
 
@@ -286,14 +286,14 @@ public class MyProfileUI extends UI {
 
 			// interests.getTokens().forEach(e -> debugLayout.addComponent(new
 			// Label(e.toString())));
-			InterestsEnum arrayInterests[] = null;
-			ArrayList<InterestsEnum> arrayListInterests = new ArrayList<InterestsEnum>();
-			List<InterestsEnum> setInterests = new ArrayList<>();
-			interests.getTokens().forEach(e -> setInterests.add(InterestsEnum.valueOf(e.getValue())));
+			KnowledgesEnum arrayKnowledges[] = null;
+			TreeSet<KnowledgesEnum> arrayListKnowledges = new TreeSet<KnowledgesEnum>();
+			List<KnowledgesEnum> setKnowlegdes = new ArrayList<KnowledgesEnum>();
+			knowledges.getTokens().forEach(e -> setKnowlegdes.add(KnowledgesEnum.valueOf(e.getValue())));
 
-			arrayListInterests.addAll(setInterests);
+			arrayListKnowledges.addAll(setKnowlegdes);
 			tHost.setNickname(user.getNickname());
-			tHost.setListOfInterests(arrayListInterests);
+			tHost.setListOfKnowledges(arrayListKnowledges);
 			Pair<Integer, Object> result = Controller.getInstance().action(Commands.CommandEditHost, tHost);
 
 			if (result.getLeft() == 1) {
@@ -309,8 +309,8 @@ public class MyProfileUI extends UI {
 
 		});
 
-		mainLayout.addComponents(interests, saveButton);
-		mainLayout.setComponentAlignment(interests, Alignment.BOTTOM_CENTER);
+		mainLayout.addComponents(knowledges, saveButton);
+		mainLayout.setComponentAlignment(knowledges, Alignment.BOTTOM_CENTER);
 		mainLayout.setComponentAlignment(saveButton, Alignment.BOTTOM_CENTER);
 		panel.setContent(mainLayout);
 		mainLayoutInterests.addComponent(mainLayout);
@@ -630,16 +630,16 @@ public class MyProfileUI extends UI {
 		mainLayoutInterests.setSizeFull();
 		mainLayoutInterests.setSpacing(true);
 
-		CheckBoxGroup<InterestsEnum> interests = new CheckBoxGroup<>("Interests");
-		interests.setItems(InterestsEnum.values());
-		interests.setId("interests");
+		CheckBoxGroup<KnowledgesEnum> knowledges = new CheckBoxGroup<>("Knowledges");
+		knowledges.setItems(KnowledgesEnum.values());
+		knowledges.setId("knowledges");
 
 		Pair<Integer, Object> resultRead = Controller.getInstance().action(Commands.CommandReadHostInformation, user);
 
 		if (resultRead.getLeft() == 1) {
-
-			for (int i = 0; i < ((THost) resultRead.getRight()).getListOfInterests().size(); i++)
-				interests.select(((THost) resultRead.getRight()).getListOfInterests().get(i));
+			ArrayList<KnowledgesEnum> knowledgesArr = new ArrayList<KnowledgesEnum>(((THost) resultRead.getRight()).getListOfKnowledges());
+			for (int i = 0; i < knowledgesArr.size(); i++)
+				knowledges.select(knowledgesArr.get(i));
 
 		}
 
@@ -669,8 +669,8 @@ public class MyProfileUI extends UI {
 			 */
 		});
 
-		mainLayout.addComponents(interests, saveButton);
-		mainLayout.setComponentAlignment(interests, Alignment.BOTTOM_CENTER);
+		mainLayout.addComponents(knowledges, saveButton);
+		mainLayout.setComponentAlignment(knowledges, Alignment.BOTTOM_CENTER);
 		mainLayout.setComponentAlignment(saveButton, Alignment.BOTTOM_CENTER);
 		panel.setContent(mainLayout);
 		mainLayoutInterests.addComponent(mainLayout);

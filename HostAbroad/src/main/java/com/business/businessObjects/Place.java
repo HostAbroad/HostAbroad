@@ -2,22 +2,23 @@ package com.business.businessObjects;
 
 import java.util.*;
 import javax.persistence.Entity;
-import javax.persistence.Id; 
+import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 import com.business.enums.FamilyUnit;
  
-@Entity 
+@Entity @IdClass(PlacesKey.class)
 public class Place {
 	@Id
 	private String address;
+	@Id
+	@ManyToOne
+	private Host host; 
 	private String description;
 	private ArrayList<Date> noAvaliableDates;
 	private String photo;
 	private FamilyUnit familyUnit;
-	@ManyToOne
-	private Host host; 
 	
 	public Place(){};
 
