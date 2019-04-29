@@ -17,7 +17,7 @@ public class ASMatchesImp implements ASMatches {
 	
 	@Override
 	public boolean acceptLike(TMatches tMatches) {
-		
+	
 		boolean result = false;
 		
 		try {
@@ -38,7 +38,7 @@ public class ASMatchesImp implements ASMatches {
 				
 				Matches match = new Matches(userSender, userReceiver);
 				em.persist(match);
-				
+				result = true;
 			}catch(NoResultException e) {}
 			
 			tr.commit();
