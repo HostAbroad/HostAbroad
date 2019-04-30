@@ -12,6 +12,8 @@ import com.business.enums.CountriesEnum;
 import com.business.enums.CountriesTokens;
 import com.business.enums.DurationOfStayEnum;
 import com.business.enums.FamilyUnit;
+import com.business.enums.InterestsEnum;
+import com.business.enums.InterestsTokens;
 import com.business.enums.KnowledgesEnum;
 import com.business.enums.KnowledgesTokens;
 import com.business.enums.LanguagesEnum;
@@ -32,7 +34,6 @@ import com.presentation.controller.Controller;
 import com.presentation.headerAndFooter.Footer;
 import com.presentation.headerAndFooter.Header;
 import com.presentation.loginUI.AuthService;
-import com.presentation.myPlacesUI.MyPlacesUI;
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.Binder;
 import com.vaadin.data.validator.EmailValidator;
@@ -48,7 +49,6 @@ import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.shared.ui.slider.SliderOrientation;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.CheckBoxGroup;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.GridLayout;
@@ -73,179 +73,120 @@ public class MyProfileUI extends UI {
 	// los campos
 	@Override
 	protected void init(VaadinRequest request) {
-		if(AuthService.isAuthenticated()) {
+		if (AuthService.isAuthenticated()) {
 
-			Pair<Integer, Object> userLoged = Controller.getInstance().action(Commands.CommandReadUser, new TUser(AuthService.getUserNickName())); 
+			Pair<Integer, Object> userLoged = Controller.getInstance().action(Commands.CommandReadUser,
+					new TUser(AuthService.getUserNickName()));
 			TUser myUser = (TUser) userLoged.getRight();
 
-			setSizeFull(); // set the size of the UI to fill the screen
+			VerticalLayout superLayout = new VerticalLayout();
+			superLayout.setStyleName("v-scrollable");
+			superLayout.setSpacing(false);
+			superLayout.setMargin(false);
 
-			ResponsiveLayout responsiveLayout = new ResponsiveLayout();
-			responsiveLayout.setSizeFull();
-			responsiveLayout.setScrollable(true);
-			setContent(responsiveLayout);
+			GridLayout grid = new GridLayout(3, 1);
 
-			ResponsiveLayout header = new ResponsiveLayout();
-			header.addComponent(new Header());
-			responsiveLayout.addComponent(header);
+			Label gap = new Label();
+			gap.setWidth("3em");
+			grid.addComponent(gap, 1, 0);
 
-			ResponsiveLayout profile = new ResponsiveLayout();
+			GridLayout menu = new GridLayout(1, 6);
 
-			profile.setSizeFull();
-			ResponsiveRow mainRow = profile.addRow();
-			ResponsiveColumn menuCol = new ResponsiveColumn(12, 12, 2, 2);
-			ResponsiveColumn pages = new ResponsiveColumn(12, 12, 10, 10);
-			ResponsiveLayout buttons = new ResponsiveLayout();
-			// Button declaration
+			HorizontalLayout pages = new HorizontalLayout();
+			pages.setSizeFull();
+			pages.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+			Panel panel = new Panel();
+			panel.setSizeFull();
+
 			Button personalInfo = new Button("Personal information", VaadinIcons.USER);
 			personalInfo.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-pi");
 
 			personalInfo.setHeight(75, Unit.PIXELS);
 			personalInfo.addClickListener(event -> {
-				pages.setComponent(personalInfoForm(myUser));
+				;
+				pages.addComponent(personalInfoForm(myUser));
+				pages.setWidth("100%");
 			});
-
-			buttons.addRow().withComponents(personalInfo);
-
-			Button places = new Button("Add places", VaadinIcons.MAP_MARKER);
-			places.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-m");
-			places.setWidth("158.55px");
-			places.setHeight(75, Unit.PIXELS);
-			places.addClickListener(event -> {
-				pages.setComponent(addPlaces());
-			});
+			menu.addComponent(personalInfo);
 
 			Button traveler = new Button("Traveler settings", VaadinIcons.PAPERPLANE);
 			traveler.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-t");
-			traveler.setWidth("158.55px");
+			traveler.setWidth("100%");
+
 			traveler.setHeight(80, Unit.PIXELS);
 			traveler.addClickListener(event -> {
-				pages.setComponent(travelerInfo(myUser));
+				;
+				pages.addComponent(travelerInfo(myUser));
 			});
-			buttons.addRow().withComponents(traveler);
+			menu.addComponent(traveler);
 
-			Button hostInfo = new Button("Host Info", VaadinIcons.HOME);
-			hostInfo.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-i");
-			hostInfo.setWidth("158.55px");
-			hostInfo.setHeight(80, Unit.PIXELS);
-			hostInfo.addClickListener(event -> {
-				pages.setComponent(hostInfo(myUser));
+			Button host = new Button("Host settings", VaadinIcons.HOME);
+			host.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-h");
+			host.setWidth("100%");
+			host.setHeight(75, Unit.PIXELS);
+			host.addClickListener(event -> {
+				;
+				pages.addComponent(hostInfo(myUser));
 			});
-			buttons.addRow().withComponents(hostInfo);
-			
-			if(myUser.getHost())
-				buttons.addRow().withComponents(places);
-			
-			
+			if (myUser.getHost())
+				menu.addComponent(host);
+
+			Button interests = new Button("Interests", VaadinIcons.CALC_BOOK);
+			interests.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-i");
+			interests.setWidth("100%");
+
+			interests.setHeight(75, Unit.PIXELS);
+			interests.addClickListener(event -> {
+				;
+				pages.addComponent(myInterests(myUser));
+			});
+			menu.addComponent(interests);
+
+			Button comments = new Button("Comments", VaadinIcons.CHAT);
+			comments.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-c");
+			comments.setWidth("100%");
+			comments.setHeight(75, Unit.PIXELS);
+			menu.addComponent(comments);
+
+			Button msgs = new Button("Messages", VaadinIcons.ENVELOPES);
+			msgs.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-m");
+			msgs.setWidth("100%");
+			msgs.setHeight(75, Unit.PIXELS);
+			menu.addComponent(msgs);
 
 			Button like = new Button("My likes", VaadinIcons.HEART);
 			like.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-ml");
-			like.setWidth("158.55px");
-			like.setHeight(80, Unit.PIXELS);
+			like.setWidth("100%");
+			like.setHeight(75, Unit.PIXELS);
 			like.addClickListener(event -> {
-				pages.setComponent(myLikes(myUser));
+				;
+				pages.addComponent(myLikes(myUser));
 			});
-			buttons.addRow().withComponents(like);
+			menu.addComponent(like);
 
-			Button matches = new Button("My matches", VaadinIcons.EXCHANGE);
+			Button matches = new Button("My matches", VaadinIcons.USERS);
 			matches.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-mm");
-			matches.setWidth("158.55px");
-			matches.setHeight(80, Unit.PIXELS);
+			matches.setWidth("100%");
+			matches.setHeight(75, Unit.PIXELS);
 			matches.addClickListener(event -> {
-				pages.setComponent(myMatches(myUser));
+				;
+				pages.addComponent(myMatches(myUser));
 			});
-			buttons.addRow().withComponents(matches);
+			menu.addComponent(matches);
 
-			buttons.setWidth("100%");
+			grid.addComponent(menu);
+			grid.addComponent(pages, 2, 0);
+			grid.setComponentAlignment(pages, Alignment.TOP_CENTER);
 
-			mainRow.addColumn(menuCol);
-			menuCol.setComponent(buttons);
-			mainRow.addColumn(pages);
-			responsiveLayout.addComponent(profile);
+			grid.setComponentAlignment(menu, Alignment.MIDDLE_CENTER);
 
-			ResponsiveLayout footer = new ResponsiveLayout();
-			footer.addComponent(new Footer());
-			responsiveLayout.addComponent(footer);
-
+			superLayout.addComponent(new Header());
+			superLayout.addComponentsAndExpand(grid);
+			superLayout.addComponent(new Footer());
 			personalInfo.click();
+			this.setContent(superLayout);
 
-			/*
-			 * VerticalLayout superLayout = new VerticalLayout();
-			 * superLayout.setStyleName("v-scrollable"); superLayout.setSpacing(false);
-			 * superLayout.setMargin(false);
-			 * 
-			 * GridLayout grid = new GridLayout(3, 1);
-			 * 
-			 * Label gap = new Label(); gap.setWidth("3em"); grid.addComponent(gap, 1, 0);
-			 * 
-			 * GridLayout menu = new GridLayout(1, 6);
-			 * 
-			 * HorizontalLayout pages = new HorizontalLayout(); pages.setSizeFull();
-			 * pages.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER); Panel panel =
-			 * new Panel(); panel.setSizeFull();
-			 * 
-			 * Button personalInfo = new Button("Personal information", VaadinIcons.USER);
-			 * personalInfo.
-			 * setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-pi");
-			 * 
-			 * personalInfo.setHeight(75, Unit.PIXELS); personalInfo.addClickListener(event
-			 * ->{ ; pages.addComponent(personalInfoForm(myUser)); pages.setWidth("100%");
-			 * }); menu.addComponent(personalInfo);
-			 * 
-			 * Button traveler = new Button("Traveler settings", VaadinIcons.PAPERPLANE);
-			 * traveler.
-			 * setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-t");
-			 * traveler.setWidth("100%");
-			 * 
-			 * traveler.setHeight(80, Unit.PIXELS); traveler.addClickListener(event -> { ;
-			 * pages.addComponent(travelerInfo(myUser)); }); menu.addComponent(traveler);
-			 * 
-			 * Button host = new Button("Host settings", VaadinIcons.HOME); host.
-			 * setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-h");
-			 * host.setWidth("100%"); host.setHeight(75, Unit.PIXELS);
-			 * host.addClickListener(event -> { ; pages.addComponent(hostInfo(myUser)); });
-			 * menu.addComponent(host);
-			 * 
-			 * Button interests = new Button("Interests", VaadinIcons.CALC_BOOK); interests.
-			 * setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-i");
-			 * interests.setWidth("100%");
-			 * 
-			 * interests.setHeight(75, Unit.PIXELS); interests.addClickListener(event->{ ;
-			 * pages.addComponent(myInterests(myUser)); }); menu.addComponent(interests);
-			 * 
-			 * Button comments = new Button("Comments", VaadinIcons.CHAT); comments.
-			 * setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-c");
-			 * comments.setWidth("100%"); comments.setHeight(75, Unit.PIXELS);
-			 * menu.addComponent(comments);
-			 * 
-			 * Button msgs = new Button("Messages", VaadinIcons.ENVELOPES); msgs.
-			 * setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-m");
-			 * msgs.setWidth("100%"); msgs.setHeight(75, Unit.PIXELS);
-			 * menu.addComponent(msgs);
-			 * 
-			 * Button like = new Button("My likes", VaadinIcons.HEART); like.
-			 * setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-ml");
-			 * like.setWidth("100%"); like.setHeight(75, Unit.PIXELS);
-			 * like.addClickListener(event->{ ; pages.addComponent(myLikes(myUser)); });
-			 * menu.addComponent(like);
-			 * 
-			 * Button matches = new Button("My matches", VaadinIcons.USERS); matches.
-			 * setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-mm");
-			 * matches.setWidth("100%"); matches.setHeight(75, Unit.PIXELS);
-			 * matches.addClickListener(event->{ ; pages.addComponent(myMatches(myUser));
-			 * }); menu.addComponent(matches);
-			 * 
-			 * grid.addComponent(menu); grid.addComponent(pages, 2, 0);
-			 * grid.setComponentAlignment(pages, Alignment.TOP_CENTER);
-			 * 
-			 * grid.setComponentAlignment(menu, Alignment.MIDDLE_CENTER);
-			 * 
-			 * superLayout.addComponent(new Header());
-			 * superLayout.addComponentsAndExpand(grid); superLayout.addComponent(new
-			 * Footer()); personalInfo.click(); this.setContent(superLayout);
-			 */
-		}
-		else {
+		} else {
 			Page.getCurrent().setLocation("HostAbroad");
 		}
 	}
@@ -274,7 +215,8 @@ public class MyProfileUI extends UI {
 		Pair<Integer, Object> resultRead = Controller.getInstance().action(Commands.CommandReadHostInformation, user);
 
 		if (resultRead.getLeft() == 1) {
-			ArrayList<KnowledgesEnum> knowledgesArr = new ArrayList<KnowledgesEnum>(((THost) resultRead.getRight()).getListOfKnowledges());
+			ArrayList<KnowledgesEnum> knowledgesArr = new ArrayList<KnowledgesEnum>(
+					((THost) resultRead.getRight()).getListOfKnowledges());
 			for (int i = 0; i < ((THost) resultRead.getRight()).getListOfKnowledges().size(); i++)
 				knowledges.addToken(new Token(knowledgesArr.get(i).name()));
 
@@ -299,13 +241,14 @@ public class MyProfileUI extends UI {
 			Pair<Integer, Object> result = Controller.getInstance().action(Commands.CommandEditHost, tHost);
 
 			if (result.getLeft() == 1) {
-				Notification not = new Notification("Your knowledges have been successfully.", Notification.Type.HUMANIZED_MESSAGE);
+				Notification not = new Notification("Your knowledges have been successfully.",
+						Notification.Type.HUMANIZED_MESSAGE);
 				not.setDelayMsec(3000);
 				not.show(Page.getCurrent());
 				Page.getCurrent().setLocation("my_profile");
+			} else {
+				Notification.show("Error, We could not save your knowledges.", Notification.Type.ERROR_MESSAGE);
 			}
-			else {
-				Notification.show("Error, We could not save your knowledges.", Notification.Type.ERROR_MESSAGE);			}
 
 		});
 
@@ -417,7 +360,7 @@ public class MyProfileUI extends UI {
 
 		TextArea description = new TextArea("Description");
 		description.setWordWrap(true);
-		if(user.getDescription() == null)
+		if (user.getDescription() == null)
 			description.setValue("");
 		else
 			description.setValue(user.getDescription());
@@ -438,8 +381,8 @@ public class MyProfileUI extends UI {
 			if (date.getValue() != null && binder.isValid() && (date.getValue().getYear() <= valid.getYear())) {
 				TUser newUser = new TUser(user.getNickname(), fullName.getValue(), user.getPassword(), email.getValue(),
 						description.getValue(), user.getPhoto(), genderCB.getValue(), date.getValue().toString(),
-						user.getRating(), user.getHost(), user.getTraveler(), user.getLikes(), user.getRates(), setLanguages,
-						user.getInterests(), user.getMatches(), user.getCountry());
+						user.getRating(), user.getHost(), user.getTraveler(), user.getLikes(), user.getRates(),
+						setLanguages, user.getInterests(), user.getMatches(), user.getCountry());
 				Pair<Integer, Object> result = Controller.getInstance().action(Commands.CommandModifyBasicInformation,
 						newUser);
 				if ((boolean) result.getRight()) {
@@ -630,16 +573,23 @@ public class MyProfileUI extends UI {
 		mainLayoutInterests.setSizeFull();
 		mainLayoutInterests.setSpacing(true);
 
-		CheckBoxGroup<KnowledgesEnum> knowledges = new CheckBoxGroup<>("Knowledges");
-		knowledges.setItems(KnowledgesEnum.values());
-		knowledges.setId("knowledges");
+		AdvancedTokenField knowledges = new AdvancedTokenField();
+		knowledges.setCaption("Interests");
+		knowledges.setIcon(FontAwesome.BOOK);
+		knowledges.setWidth("100%");
+		knowledges.setAllowNewTokens(false);
+		knowledges.clearTokens();
+		knowledges.getTokensOfInputField().clear();
+		InterestsTokens tokens = new InterestsTokens();
+		knowledges.addTokensToInputField(tokens.getTokens());
 
 		Pair<Integer, Object> resultRead = Controller.getInstance().action(Commands.CommandReadHostInformation, user);
 
 		if (resultRead.getLeft() == 1) {
-			ArrayList<KnowledgesEnum> knowledgesArr = new ArrayList<KnowledgesEnum>(((THost) resultRead.getRight()).getListOfKnowledges());
+			ArrayList<KnowledgesEnum> knowledgesArr = new ArrayList<KnowledgesEnum>(
+					((THost) resultRead.getRight()).getListOfKnowledges());
 			for (int i = 0; i < knowledgesArr.size(); i++)
-				knowledges.select(knowledgesArr.get(i));
+				knowledges.addToken(new Token(knowledgesArr.get(i).getString()));
 
 		}
 
@@ -648,6 +598,11 @@ public class MyProfileUI extends UI {
 		Button saveButton = new Button("Save");
 		saveButton.setId("saveButton");
 		saveButton.addClickListener(event -> {
+
+			ArrayList<InterestsEnum> arrayListKnowledges = new ArrayList<InterestsEnum>();
+			List<InterestsEnum> setKnowledges = new ArrayList<>();
+			knowledges.getTokens().forEach(e -> setKnowledges.add(InterestsEnum.valueOf(e.getValue())));
+			arrayListKnowledges.addAll(setKnowledges);
 
 			/*
 			 * InterestsEnum arrayInterests[] = null; ArrayList<InterestsEnum>
@@ -786,7 +741,7 @@ public class MyProfileUI extends UI {
 		resultLayout.setHeight("100%");
 		return resultLayout;
 	}
-	
+
 	private GridLayout addPlaces() {
 		GridLayout mainGrid = new GridLayout(1, 2);
 		mainGrid.setSpacing(true);
@@ -807,26 +762,27 @@ public class MyProfileUI extends UI {
 		fields.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 
 		Image placeImg = new Image();
-		placeImg.setSource(new ExternalResource("https://raw.githubusercontent.com/OmegaSkyres/images/master/null.png"));
+		placeImg.setSource(
+				new ExternalResource("https://raw.githubusercontent.com/OmegaSkyres/images/master/null.png"));
 		placeImg.setId("PlaceImage");
 
 		UploadField uploadField = new UploadField();
 		uploadField.setId("uploadField");
 		uploadField.setClearButtonVisible(false);
 		uploadField.setButtonCaption("Select image");
-		
+
 		Button changeImg = new Button("Change image");
 		changeImg.setIcon(FontAwesome.UPLOAD);
 		changeImg.addClickListener(event -> {
 			Notification.show("File: " + uploadField.getLastFileName());
 		});
 		changeImg.setId("PlaceChangeImg");
-		
+
 		image.addComponent(placeImg);
 		image.addComponent(uploadField);
-		
+
 		sections.addComponent(image, 0, 0);
-		
+
 		TextArea description = new TextArea("Description");
 		description.setWordWrap(false);
 		description.setHeight("90%");
@@ -840,44 +796,39 @@ public class MyProfileUI extends UI {
 		VerticalLayout stay = new VerticalLayout();
 		stay.setWidth("100%");
 		stay.setSizeFull();
-        Slider duration = new Slider("Maximum duration of stay: ", 0, 4);
-        duration.setId("slider");
-        duration.setOrientation(SliderOrientation.HORIZONTAL);
-        duration.setWidth("200px");
-        Label days = new Label("Days");
-        duration.addValueChangeListener(event -> {
-            if(duration.getValue() == 0.0) {
-					days.setValue("Days");
-				}
-				else if(duration.getValue() == 1.0) {
-					days.setValue("1 Day - 6 Days");
-				}
-				else if(duration.getValue() == 2.0) {
-					days.setValue("1 Week - 2 Weeks");
-				}
-				else if(duration.getValue() == 3.0) {
-					days.setValue("2 Weeks - 4 Weeks");
-				}
-				else if(duration.getValue() == 4.0) {
-					days.setValue("1 Month or more");
-				}
-				else if(duration.getValue() == 5.0) {
-					days.setValue("More than a month");
-				}
-        });
-        stay.addComponentsAndExpand(duration);
-        stay.addComponent(new Label("&nbsp;", ContentMode.HTML));
-        stay.addComponentsAndExpand(days);
+		Slider duration = new Slider("Maximum duration of stay: ", 0, 4);
+		duration.setId("slider");
+		duration.setOrientation(SliderOrientation.HORIZONTAL);
+		duration.setWidth("200px");
+		Label days = new Label("Days");
+		duration.addValueChangeListener(event -> {
+			if (duration.getValue() == 0.0) {
+				days.setValue("Days");
+			} else if (duration.getValue() == 1.0) {
+				days.setValue("1 Day - 6 Days");
+			} else if (duration.getValue() == 2.0) {
+				days.setValue("1 Week - 2 Weeks");
+			} else if (duration.getValue() == 3.0) {
+				days.setValue("2 Weeks - 4 Weeks");
+			} else if (duration.getValue() == 4.0) {
+				days.setValue("1 Month or more");
+			} else if (duration.getValue() == 5.0) {
+				days.setValue("More than a month");
+			}
+		});
+		stay.addComponentsAndExpand(duration);
+		stay.addComponent(new Label("&nbsp;", ContentMode.HTML));
+		stay.addComponentsAndExpand(days);
 
 		ComboBox<String> unitfamily = new ComboBox<>("I live with");
 		unitfamily.setItems("Single", "With friends", "With family");
 		unitfamily.setTextInputAllowed(false);
 		unitfamily.setId("unitFamily");
-		
+
 		fields.addComponent(address, 0, 0);
 		fields.setComponentAlignment(address, Alignment.TOP_LEFT);
 		fields.addComponent(description, 1, 0);
-		fields.setComponentAlignment(description, Alignment.TOP_LEFT);	
+		fields.setComponentAlignment(description, Alignment.TOP_LEFT);
 		fields.addComponent(unitfamily, 0, 1);
 		fields.addComponent(stay, 1, 1);
 		sections.addComponent(fields, 1, 0);
@@ -885,27 +836,25 @@ public class MyProfileUI extends UI {
 		Button save = new Button("Save", FontAwesome.SAVE);
 		save.setId("saveButton");
 		save.setStyleName("v-button-register");
-		save.addClickListener(event->{
+		save.addClickListener(event -> {
 			FamilyUnit familyUnit;
-			if(unitfamily.getValue().equals("Alone")){
+			if (unitfamily.getValue().equals("Alone")) {
 				familyUnit = FamilyUnit.Alone;
-			}
-			else if(unitfamily.getValue().equals("With family")){
+			} else if (unitfamily.getValue().equals("With family")) {
 				familyUnit = FamilyUnit.Family;
-			}
-			else{
+			} else {
 				familyUnit = FamilyUnit.Friends;
 			}
-				if(address.getValue().length() > 0 && address.getValue().length() < 50){
-					TPlace tPlace = new TPlace(address.getValue(),description.getValue(), new ArrayList<>(),"",familyUnit, AuthService.getUserNickName());
-					Controller.getInstance().action(Commands.CommandAddPlace, tPlace);
-				}
-				else {
-					Notification.show("Invalid Address", Notification.Type.ERROR_MESSAGE);
-				}
-			
+			if (address.getValue().length() > 0 && address.getValue().length() < 50) {
+				TPlace tPlace = new TPlace(address.getValue(), description.getValue(), new ArrayList<>(), "",
+						familyUnit, AuthService.getUserNickName());
+				Controller.getInstance().action(Commands.CommandAddPlace, tPlace);
+			} else {
+				Notification.show("Invalid Address", Notification.Type.ERROR_MESSAGE);
+			}
+
 		});
-		
+
 		mainGrid.addComponent(sections);
 		mainGrid.addComponent(save);
 		return mainGrid;
