@@ -103,7 +103,7 @@ public class MyProfileUI extends UI {
 
 			personalInfo.setHeight(75, Unit.PIXELS);
 			personalInfo.addClickListener(event -> {
-				;
+				pages.removeAllComponents();
 				pages.addComponent(personalInfoForm(myUser));
 				pages.setWidth("100%");
 			});
@@ -115,7 +115,7 @@ public class MyProfileUI extends UI {
 
 			traveler.setHeight(80, Unit.PIXELS);
 			traveler.addClickListener(event -> {
-				;
+				pages.removeAllComponents();
 				pages.addComponent(travelerInfo(myUser));
 			});
 			menu.addComponent(traveler);
@@ -125,7 +125,7 @@ public class MyProfileUI extends UI {
 			host.setWidth("100%");
 			host.setHeight(75, Unit.PIXELS);
 			host.addClickListener(event -> {
-				;
+				pages.removeAllComponents();
 				pages.addComponent(hostInfo(myUser));
 			});
 			if (myUser.getHost())
@@ -137,29 +137,17 @@ public class MyProfileUI extends UI {
 
 			interests.setHeight(75, Unit.PIXELS);
 			interests.addClickListener(event -> {
-				;
+				pages.removeAllComponents();
 				pages.addComponent(myInterests(myUser));
 			});
 			menu.addComponent(interests);
-
-			Button comments = new Button("Comments", VaadinIcons.CHAT);
-			comments.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-c");
-			comments.setWidth("100%");
-			comments.setHeight(75, Unit.PIXELS);
-			menu.addComponent(comments);
-
-			Button msgs = new Button("Messages", VaadinIcons.ENVELOPES);
-			msgs.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-m");
-			msgs.setWidth("100%");
-			msgs.setHeight(75, Unit.PIXELS);
-			menu.addComponent(msgs);
 
 			Button like = new Button("My likes", VaadinIcons.HEART);
 			like.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-ml");
 			like.setWidth("100%");
 			like.setHeight(75, Unit.PIXELS);
 			like.addClickListener(event -> {
-				;
+				pages.removeAllComponents();
 				pages.addComponent(myLikes(myUser));
 			});
 			menu.addComponent(like);
@@ -169,7 +157,7 @@ public class MyProfileUI extends UI {
 			matches.setWidth("100%");
 			matches.setHeight(75, Unit.PIXELS);
 			matches.addClickListener(event -> {
-				;
+				pages.removeAllComponents();
 				pages.addComponent(myMatches(myUser));
 			});
 			menu.addComponent(matches);
