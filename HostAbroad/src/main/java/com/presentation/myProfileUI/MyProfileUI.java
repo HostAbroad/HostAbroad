@@ -141,7 +141,7 @@ public class MyProfileUI extends UI {
 			});
 			menu.addComponent(interests);
 			
-			Button place = new Button("Interests", VaadinIcons.MAP_MARKER);
+			Button place = new Button("Add place", VaadinIcons.MAP_MARKER);
 			place.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-m");
 			place.setWidth("100%");
 
@@ -308,6 +308,8 @@ public class MyProfileUI extends UI {
 		image.setComponentAlignment(uploadField, Alignment.MIDDLE_CENTER);
 		image.addComponent(changeImg);
 		image.setComponentAlignment(changeImg, Alignment.MIDDLE_CENTER);
+		Button save = new Button("Save");
+		image.addComponent(save);
 		sections.addComponent(image, 0, 0);
 
 		TextField username = new TextField("Username");
@@ -366,7 +368,7 @@ public class MyProfileUI extends UI {
 		description.setStyleName("v-textarea v-widget v-textarea-prompt");
 		description.setId("ProfileDescription");
 
-		Button save = new Button("Save");
+		
 		save.setId("saveButton");
 		save.setStyleName("v-button-register");
 		save.setIcon(FontAwesome.SAVE);
@@ -412,7 +414,7 @@ public class MyProfileUI extends UI {
 		sections.addComponent(fields, 1, 0);
 
 		mainGrid.addComponent(sections);
-		mainGrid.addComponent(save);
+		//mainGrid.addComponent(save);
 		return mainGrid;
 	}
 
