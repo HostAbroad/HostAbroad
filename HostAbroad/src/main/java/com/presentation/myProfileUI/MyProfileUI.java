@@ -637,32 +637,31 @@ public class MyProfileUI extends UI {
 	private HorizontalLayout myLikes(TUser myUser) {
 
 		HorizontalLayout mainLayout = new HorizontalLayout();
-		mainLayout.setId("mainLayout");
-		mainLayout.setSizeFull();
-		mainLayout.setSpacing(true);
-
-		// main helper
-		VerticalLayout mainVertical = new VerticalLayout();
-		mainVertical.setId("mainVertical");
-		Panel panelMain = new Panel();
-		panelMain.setSizeFull();
-		panelMain.setContent(mainVertical);
-		panelMain.setId("panelMain");
-		mainLayout.addComponent(panelMain);
+		
 
 		Pair<Integer, Object> result = Controller.getInstance().action(Commands.CommandGetMyLike, myUser);
 
 		if (result.getLeft() == 1) {
 
+			mainLayout.setId("mainLayout");
+			mainLayout.setSizeFull();
+			mainLayout.setSpacing(true);
+
+			// main helper
+			VerticalLayout mainVertical = new VerticalLayout();
+			mainVertical.setId("mainVertical");
+			Panel panelMain = new Panel();
+			panelMain.setSizeFull();
+			panelMain.setContent(mainVertical);
+			panelMain.setId("panelMain");
+			mainLayout.addComponent(panelMain);
+			
 			VerticalLayout resultsLikes = createResultPanel((ArrayList<TUser>) result.getRight());
 			resultsLikes.setId("resultsLikes");
 			mainVertical.addComponent(resultsLikes);
 
 		} else {
-
-			Label labelNoLikes = new Label("No likes");
-			labelNoLikes.setId("labelNoLikes");
-			mainVertical.addComponent(labelNoLikes);
+			Notification.show("No Likes");
 		}
 
 		return mainLayout;
@@ -671,32 +670,32 @@ public class MyProfileUI extends UI {
 	private HorizontalLayout myMatches(TUser myUser) {
 
 		HorizontalLayout mainLayout = new HorizontalLayout();
-		mainLayout.setId("mainLayout");
-		mainLayout.setSizeFull();
-		mainLayout.setSpacing(true);
-
-		// main helper
-		VerticalLayout mainVertical = new VerticalLayout();
-		mainVertical.setId("mainVertical");
-		Panel panelMain = new Panel();
-		panelMain.setSizeFull();
-		panelMain.setContent(mainVertical);
-		panelMain.setId("panelMain");
-		mainLayout.addComponent(panelMain);
-
+		
 		Pair<Integer, Object> result = Controller.getInstance().action(Commands.CommandMyMatches, myUser);
 
 		if (result.getLeft() == 1 && !((ArrayList<TUser>) result.getRight()).isEmpty()) {
 
+			mainLayout.setId("mainLayout");
+			mainLayout.setSizeFull();
+			mainLayout.setSpacing(true);
+
+			// main helper
+			VerticalLayout mainVertical = new VerticalLayout();
+			mainVertical.setId("mainVertical");
+			Panel panelMain = new Panel();
+			panelMain.setSizeFull();
+			panelMain.setContent(mainVertical);
+			panelMain.setId("panelMain");
+			mainLayout.addComponent(panelMain);
+
+			
 			VerticalLayout resultsMatches = createResultPanelMatches((ArrayList<TUser>) result.getRight());
 			resultsMatches.setId("resultsMatches");
 			mainVertical.addComponent(resultsMatches);
 
 		} else {
 
-			Label labelNoMatches = new Label("No Matches");
-			labelNoMatches.setId("labelNoMatches");
-			mainVertical.addComponent(labelNoMatches);
+			Notification.show("No Matches");
 		}
 
 		return mainLayout;
