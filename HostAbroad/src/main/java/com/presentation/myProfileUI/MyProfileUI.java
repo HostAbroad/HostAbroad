@@ -292,10 +292,12 @@ public class MyProfileUI extends UI {
 
 		UploadField uploadField = new UploadField();
 		uploadField.setClearButtonVisible(false);
+		uploadField.setEnabled(false);
 		uploadField.setButtonCaption("Select image");
 
 		Button changeImg = new Button("Change image");
 		changeImg.setIcon(FontAwesome.UPLOAD);
+		changeImg.setEnabled(false);
 		changeImg.addClickListener(event -> {
 			Notification.show("File: " + uploadField.getLastFileName());
 		});
@@ -769,9 +771,11 @@ public class MyProfileUI extends UI {
 		UploadField uploadField = new UploadField();
 		uploadField.setId("uploadField");
 		uploadField.setClearButtonVisible(false);
+		uploadField.setEnabled(false);
 		uploadField.setButtonCaption("Select image");
 
 		Button changeImg = new Button("Change image");
+		changeImg.setEnabled(false);
 		changeImg.setIcon(FontAwesome.UPLOAD);
 		changeImg.addClickListener(event -> {
 			Notification.show("File: " + uploadField.getLastFileName());
