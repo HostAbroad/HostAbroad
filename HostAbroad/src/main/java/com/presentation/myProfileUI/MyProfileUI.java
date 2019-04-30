@@ -128,9 +128,8 @@ public class MyProfileUI extends UI {
 				pages.removeAllComponents();
 				pages.addComponent(hostInfo(myUser));
 			});
-			if (myUser.getHost())
-				menu.addComponent(host);
-
+			menu.addComponent(host);
+			
 			Button interests = new Button("Interests", VaadinIcons.CALC_BOOK);
 			interests.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-i");
 			interests.setWidth("100%");
@@ -141,6 +140,18 @@ public class MyProfileUI extends UI {
 				pages.addComponent(myInterests(myUser));
 			});
 			menu.addComponent(interests);
+			
+			Button place = new Button("Interests", VaadinIcons.MAP_MARKER);
+			place.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-m");
+			place.setWidth("100%");
+
+			place.setHeight(75, Unit.PIXELS);
+			place.addClickListener(event -> {
+				pages.removeAllComponents();
+				pages.addComponent(addPlaces());
+			});
+			if (myUser.getHost())
+				menu.addComponent(place);
 
 			Button like = new Button("My likes", VaadinIcons.HEART);
 			like.setStyleName("v-button v-widget icon-align-top v-button-icon-align-top-ml");
