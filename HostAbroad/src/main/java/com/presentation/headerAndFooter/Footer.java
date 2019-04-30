@@ -33,6 +33,9 @@ public class Footer extends Panel {
 		Button twitter = new Button();
 		twitter.setIcon(FontAwesome.TWITTER);
 		twitter.setCaption("Twitter");
+		twitter.addClickListener(event->{
+			Page.getCurrent().open("www.twitter.com", null);
+		});
 		twitter.setStyleName("button-social");
 		social.addComponent(twitter);
 		
@@ -40,12 +43,18 @@ public class Footer extends Panel {
 		facebook.setIcon(FontAwesome.FACEBOOK);
 		facebook.setCaption("Facebook");
 		facebook.setStyleName("button-social");
+		facebook.addClickListener(event->{
+			Page.getCurrent().open("https://www.facebook.com/HostAbroad-352342392064136/", null);
+		});
 		social.addComponent(facebook);
 		
 		Button instagram = new Button();
 		instagram.setIcon(FontAwesome.INSTAGRAM);
 		instagram.setCaption("Instagram");
 		instagram.setStyleName("button-social");
+		instagram.addClickListener(event->{
+			Page.getCurrent().open("www.instagram.com", null);
+		});
 		social.addComponent(instagram);
 		
 //		Button login = new Button();
