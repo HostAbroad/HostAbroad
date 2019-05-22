@@ -168,7 +168,6 @@
 				<version>1.9.0</version>
 				<configuration>
 					<basedir>${basedir}</basedir>
-					<header>${basedir}/../java-license-header.txt</header>
 					<quiet>false</quiet>
 					<failIfMissing>true</failIfMissing>
 					<aggregate>false</aggregate>
@@ -183,7 +182,6 @@
 						<exclude>*/doc/**</exclude>
 						<exclude>**/*.xml</exclude>
 						<exclude>**/README</exclude>
-						<exclude>**/LICENSE</exclude>
 					</excludes>
 					<strictCheck>true</strictCheck>
 				</configuration>
