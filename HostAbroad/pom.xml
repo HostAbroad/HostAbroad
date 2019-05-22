@@ -185,6 +185,7 @@
 						<exclude>**/README</exclude>
 						<exclude>**/LICENSE</exclude>
 					</excludes>
+					<strictCheck>true</strictCheck>
 				</configuration>
 				<executions>
 					<execution>
